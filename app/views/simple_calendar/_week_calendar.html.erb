@@ -1,0 +1,47 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <%= link_to t('simple_calendar.previous', default: '前週'), calendar.url_for_previous_view %>
+    <span class="calendar-title"><%= start_date.year %>年  <%= t('date.month_names')[start_date.month] %></span>
+    <%= link_to t('simple_calendar.next', default: '翌週'), calendar.url_for_next_view %>
+    <% reservations = Reservation.reservations_one_year %>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>時間</th>
+        <% date_range.slice(0, 7).each do |day| %>
+          <th><%= t('date.abbr_day_names')[day.wday] %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <tr>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <% passed_block.call day, sorted_events.fetch(day, []) %>
+            <% end %>
+          <% end %>
+        </tr>
+        <% times.each do |time| %>
+          <tr>
+            <td><%= time %></td>
+            <% week.each do |day| %>
+              <td>
+                <% if check_reservation(reservations, day, time) %>
+                  <%= '×' %>
+                <% else %>
+                  <%= link_to new_reservation_path(day: day, time: time) do %>
+                    <%= '○' %>
+                  <% end %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
