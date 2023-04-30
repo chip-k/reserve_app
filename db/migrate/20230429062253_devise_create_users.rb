@@ -39,6 +39,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
       t.string  :city
       t.string  :street
       t.string  :other_address
+      t.integer :admin_id
+      t.integer :reservation_id
 
 
       t.timestamps null: false

@@ -7,7 +7,7 @@
       <h1>予約画面</h1>
     </div>
     <div class="col-12 mt-3">
-      <%= week_calendar events: @reservations do |date, reservations| %>
+      <%= month_calendar events: @reservations do |date, reservations| %>
         <%= date.day %>
       <% end %>
     </div>

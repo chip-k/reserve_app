@@ -1,0 +1,30 @@
+<div class="simple-calendar">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>時間</th>
+        <th><%= @date %></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @times.each do |time| %>
+        <tr>
+          <td><%= time %></td>
+          <td>
+            <% day = @date %>
+            
+            <% if @reservations.exists?(day: day) %>
+              <%= '×' %>
+            <% else %>
+              <%= link_to new_reservation_path(day: day, time: time) do %>
+                <%= '○' %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -24,7 +24,13 @@ ActiveRecord::Schema.define(version: 2023_04_29_121853) do
     t.string "unconfirmed_email"
     t.string "name"
     t.string "phone_number"
-    t.string "address"
+    t.integer "postal_code"
+    t.string "prefecture_code"
+    t.string "city"
+    t.string "street"
+    t.string "other_address"
+    t.integer "user_id"
+    t.integer "reservation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["confirmation_token"], name: "index_admins_on_confirmation_token", unique: true
@@ -61,6 +67,8 @@ ActiveRecord::Schema.define(version: 2023_04_29_121853) do
     t.string "city"
     t.string "street"
     t.string "other_address"
+    t.integer "admin_id"
+    t.integer "reservation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

@@ -1,5 +1,5 @@
 class Reservation < ApplicationRecord
-  belongs_to :admin
+  belongs_to :admin, optional: true
   belongs_to :user
 
   validates :day, presence: true
@@ -12,6 +12,14 @@ class Reservation < ApplicationRecord
       return "過去の日付は選択できません。"
     elsif day < (Date.current + 1)
       return "当日は選択できません。"
+    elsif (Date.current + 1.years) < day
+      return "1年以降の日付は選択できません。"
+    end
+  end
+  
+  def self.check_reservation_days(day)
+    if day < Date.current
+      return "過去の日付は選択できません。"
     elsif (Date.current + 1.years) < day
       return "1年以降の日付は選択できません。"
     end

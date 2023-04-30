@@ -32,9 +32,15 @@ class DeviseCreateAdmins < ActiveRecord::Migration[6.1]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
       
-      t.string :name
-      t.string :phone_number
-      t.string :address
+      t.string  :name
+      t.string  :phone_number
+      t.integer :postal_code
+      t.string  :prefecture_code
+      t.string  :city
+      t.string  :street
+      t.string  :other_address
+      t.integer :user_id
+      t.integer :reservation_id
 
 
       t.timestamps null: false
