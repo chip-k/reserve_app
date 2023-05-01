@@ -1,15 +1,13 @@
-<% flash.each do |alert, message| %>
-  <div class="alert alert-<%= alert %>"><%= message %></div>
-<% end %>
 <div class="container">
   <div class="row">
     <div class="col-12 text-center">
       <h1>予約画面</h1>
     </div>
-    <div class="col-12 mt-3">
-      <%= month_calendar events: @reservations do |date, reservations| %>
+    
+      <%= month_calendar do |date| %>
         <%= date.day %>
       <% end %>
-    </div>
+    
+    <%= link_to "戻る", root_path, class: "btn btn-primary" %>
   </div>
 </div>

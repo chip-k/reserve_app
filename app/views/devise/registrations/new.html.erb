@@ -1,8 +1,6 @@
-<script src="jquery.min.js"></script>
-<script src="address_autofill.js"></script>
-<script type="text/javascript" src="//jpostal-1006.appspot.com/jquery.jpostal.js"></script>
-
-<h2>新規登録</h2>
+<div class="container">
+  <div class="row">
+    <h2>新規登録</h2>
 
 <%= form_with model: @user, url: user_registration_path do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
@@ -13,28 +11,28 @@
   </div>
   
   <div class="field">
-    <%= f.label :postcode, "郵便番号" %><br>
-    <%= f.text_field :postal_code, class: 'form-control' %>
+    <%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %><br>
+    <%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code" %>
   </div>
 
   <div class="field">
-    <%= f.label :prefecture_name, "都道府県" %><br>
-    <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control' %>
+    <%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %><br>
+    <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: "user_prefecture_code" %>
   </div>
 
   <div class="field">
-    <%= f.label :city, "市区町村" %><br>
-    <%= f.text_field :city, class: 'form-control' %>
+    <%= f.label :city, "市区町村", id: "user_city_label" %><br>
+    <%= f.text_field :city, class: 'form-control', id: "user_city" %>
   </div>
 
   <div class="field">
-    <%= f.label :street, "番地" %><br>
-    <%= f.text_field :street, class: 'form-control' %>
+    <%= f.label :street, "番地", id: "user_street_label" %><br>
+    <%= f.text_field :street, class: 'form-control', id: "user_street" %>
   </div>
   
   <div class="field">
-    <%= f.label :other_address, "建物名・部屋番号" %><br>
-    <%= f.text_field :other_address, class: 'form-control' %>
+    <%= f.label :other_address, "建物名・部屋番号", id: "user_other_address_label" %><br>
+    <%= f.text_field :other_address, class: 'form-control', id: "user_other_address" %>
   </div>
 
   <div class="field">
@@ -66,3 +64,5 @@
 <% end %>
 
 <%= render "devise/shared/links" %>
+  </div>
+</div>

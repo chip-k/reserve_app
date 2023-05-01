@@ -25,7 +25,7 @@ class ReservationsController < ApplicationController
   end
   
   def index
-    @reservations = Reservation.all.where("day >= ?", Date.current).where("day < ?", Date.current >> 12).order(day: :desc)
+  
   end
   
   def destroy
@@ -42,8 +42,6 @@ class ReservationsController < ApplicationController
     @start_date = Date.today
     @times = times
     @date = params[:date]
-    @reservation = Reservation.where(date: @date)
-    @bookings = Reservation.where(day: params[:day])
   end
   
   

@@ -1,9 +1,8 @@
 <div class="simple-calendar">
   <div class="calendar-heading">
-    <%= link_to t('simple_calendar.previous', default: '先月'), calendar.url_for_previous_view %>
-    <span class="calendar-title"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
-    <%= link_to t('simple_calendar.next', default: '翌月'), calendar.url_for_next_view %>
-    <% reservations = Reservation.reservations_one_year %>
+    <%= link_to t('simple_calendar.previous', default: '<<'), calendar.url_for_previous_view %>
+    <span class="calendar-title"><%= start_date.year %>年 <%= t('date.month_names')[start_date.month] %></span>
+    <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %>
   </div>
 
   <table class="table table-striped">
@@ -21,7 +20,7 @@
           <% week.each do |day| %>
             <% if Reservation.check_reservation_days(day).nil? %>
               <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-                <%= link_to day.day, "#", class: "calendar-link", data: { date: day.strftime("%Y-%m-%d") } %>
+                <%= link_to day.day, '#', class: "calendar-link", data: { date: day.strftime("%Y-%m-%d") } %>
               <% end %>
             <% else %>
               <%= content_tag :td, class: calendar.td_classes_for(day) do %>
@@ -33,15 +32,15 @@
       <% end %>
       
       <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.calendar-link').forEach(function(link) {
-          link.addEventListener('click', function(e) {
-            e.preventDefault();
-            var date = e.target.dataset.date;
-            window.location.href = "/reservations/days?date=" + date;
+        document.addEventListener('turbolinks:load', function() {
+          document.querySelectorAll('.calendar-link').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+              e.preventDefault();
+              var date = e.target.dataset.date;
+              window.location.href = "/reservations/days?date=" + date;
+            });
           });
         });
-      });
       </script>
     </tbody>
   </table>

@@ -1,8 +1,8 @@
 module ReservationsHelper
   
-  def check_reservation(bookings, day, time)
-    bookings.each do |booking|
-      return true if booking[:day].eql?(day.strftime("%Y-%m-%d")) && booking[:time].eql?(time)
+  def check_reservation(reservations, day, time)
+    reservations.each do |reservation|
+      return true if reservations[:day].eql?(day.strftime("%Y-%m-%d")) && reservations[:time].eql?(time)
     end
     false
   end
