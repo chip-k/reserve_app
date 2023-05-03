@@ -1,24 +1,26 @@
 <% flash.each do |alert, message| %>
   <div class="alert alert-<%= alert %>"><%= message %></div>
 <% end %>
-
-
   
-  <section id="main">
+  <body>
+  
+  <section id="top">
     <div class="container>">
-      <div class="main-image">
-        <%= image_tag("main-image.jpg") %>
-      </div>
-      <div class="main-text m-5">
-        <p>
-          西圓寺（西円寺）は、京都の西本願寺をご本山とする浄土真宗本願寺派の寺院です。<br>
-          <br>
-          報恩講法要（12月）、彼岸会（3月,9月）、永代経法要（4〜5月）、宗祖降誕会（5月）、盂蘭盆会（8月）の各種法要のほか、
-          壮年会、婦人会、子ども会、広報部会、さらには、コーラス、門信徒のつどい、ヨガ教室、グラウンドゴルフ、ゴルフなど、
-          1年を通して様々な活動を行っています。<br>
-          <br>
-          地域の皆さまが気軽に楽しく足を運んでいただける「敷居の低いお寺」を目指しています。
-        </p>
+      <div class="row">
+        <div class="top-image">
+          <%= image_tag("top.jpg") %>
+        </div>
+        <div class="top-text col-10 mx-auto py-5">
+          <p>
+            西圓寺（西円寺）は、京都の西本願寺をご本山とする浄土真宗本願寺派の寺院です。<br>
+            <br>
+            報恩講法要（12月）、彼岸会（3月,9月）、永代経法要（4〜5月）、宗祖降誕会（5月）、盂蘭盆会（8月）の各種法要のほか、
+            壮年会、婦人会、子ども会、広報部会、さらには、コーラス、門信徒のつどい、ヨガ教室、グラウンドゴルフ、ゴルフなど、
+            1年を通して様々な活動を行っています。<br>
+            <br>
+            地域の皆さまが気軽に楽しく足を運んでいただける「敷居の低いお寺」を目指しています。
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -26,27 +28,29 @@
   
   <section id="information">
     <div class="container">
-      <div class="information-image">
-        <%= image_tag("information-image.jpg") %>
+      <div class="row">
+        <div class="information-image mt-5">
+          <%= image_tag("information.jpg") %>
+        </div>
       </div>
-      <div class="information-content row my-5">
-        <div class="col-4">
-          <h3 class="information-content-title my-3">永代経法要のご案内</h3>
-          <p class="information-content-text">
+      <div class="row my-5">
+        <div class="information-content col-4">
+          <h3 class="information-content-title m-3 px-3">永代経法要のご案内</h3>
+          <p class="information-content-text px-3">
             永代経法要とは、永代にわたってお経(み教え)が伝わっていきますようにとの思いから勤まる法要です。
             人生の先輩方が、阿弥陀さまという仏さまがいらっしゃるということ、お浄土という世界があるということを私たちに伝えてくださったように、
             今度は私たちが子や孫など、次の世代に仏教のみ教えを伝えていこうという思いを新たにする法要でもあります。
           </p>
         </div>
-        <div class="col-4">
-          <h3 class="information-content-title my-3">春季彼岸会のご案内</h3>
-          <p class="information-content-text">
+        <div class="information-content col-4 border-start border-end">
+          <h3 class="information-content-title m-3 px-3">春季彼岸会のご案内</h3>
+          <p class="information-content-text px-3">
             春季彼岸会を勤修する予定です。どうぞお参りください。
           </p>
         </div>
-        <div class="col-4">
-          <h3 class="information-content-title my-3">報恩講法要のご案内</h3>
-          <p class="information-content-text">
+        <div class="information-content col-4">
+          <h3 class="information-content-title m-3 px-3">報恩講法要のご案内</h3>
+          <p class="information-content-text px-3">
             報恩講法要は、浄土真宗の宗祖、親鸞聖人のご命日をご縁として、聖人90年のご生涯を偲び、
             私たちに阿弥陀如来の救いを伝えてくださったそのご恩に感謝して勤める浄土真宗で最も大切な法要です。
             今年も下記の通り厳修いたしますので、どうぞお参りください。
@@ -56,5 +60,69 @@
     </div>
   </section>
   
-</div>
+  <section id="main">
+    <div class="container border-bottom pb-5">
+      <div class="row py-5">
+        <div class="main-content col-5 mx-auto">
+          <div class="main-image mb-3">
+            <%= image_tag("memorial-service.jpg") %>
+          </div>
+          <p class="main-text">
+            年忌法要など、ご法事の依頼を受け賜っています。仏事に関する疑問、ご相談などございましたら、お気軽にお尋ねください。
+          </p>
+        </div>
+        <div class="main-content col-5 mx-auto">
+          <div class="main-image mb-3">
+            <%= image_tag("funeral.jpg") %>
+          </div>
+          <p class="main-text">
+            ご門徒の皆さまはもちろん、これまでお寺にご縁のなかった皆さまのご葬儀も大切にお勤めいたします。
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="main-content col-5 mx-auto">
+          <div class="main-image mb-3">
+            <%= image_tag("disciples-association.jpg") %>
+          </div>
+          <p class="main-text">
+            浄土真宗では、いわゆる「檀家」「信者」という言葉の代わりに、「門徒」という言葉を用いてきました。
+            「門徒」とは、一門の徒輩（同じ宗門の仲間）という意味です。つまり、親鸞聖人を宗祖と仰ぐとともに、
+            お念仏申す中に、阿弥陀さまのおこころを聞いていく人々のことをいいます。
+            葬儀・法事の依頼等、継続的にお寺とのお付き合いを続けていただける方には、門徒会への加入をお願いしており、
+            その門徒会によって西圓寺は支えられています。
+          </p>
+        </div>
+        <div class="main-content col-5 mx-auto">
+          <div class="main-image mb-3">
+            <%= image_tag("ossuary.jpg") %>
+          </div>
+          <p class="main-text">
+            現在、第5期納骨堂の新規加入者を募集しております。<br>
+            第5期納骨堂には、<br>
+            「御先祖様・御家族様用（１段式納骨壇）」<br>
+            「お一人様・お二人様用（多段式納骨壇）」<br>
+            の2種類の納骨壇がございます。<br>
+            納骨堂は二階建てで、エレベーター完備です。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
   
+  <section id="contact">
+    <div class="container pt-5">
+      <div class="contact">
+        <h6>お問い合わせ先</h6>
+        <p>
+          浄土真宗本願寺派 法輪山 西圓寺<br>
+          〒811-4205<br>
+          福岡県遠賀郡岡垣町三吉869<br>
+          TEL：093-282-6765<br>
+          FAX：093-776-1859
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  </body>

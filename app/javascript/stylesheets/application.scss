@@ -2,14 +2,23 @@
 @import "~bootstrap/scss/bootstrap"; 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 
+body {
+  font-family: serif;
+  font-size: 18px;
+}
 
 section {
   width: 100%;
 }
 
-.main-image {
+.top-image {
   img {
     width: 100%;
     height: auto;
@@ -18,9 +27,20 @@ section {
 
 .information-image {
   img {
-    width: 60%;
+    width: 50%;
     border-radius: 100vh;
     margin: auto;
     display: block;
   }
+}
+
+.main-image {
+  img {
+    width: 100%;
+    border-radius: 30px;
+  }
+}
+
+.contact {
+  text-align: center;
 }
