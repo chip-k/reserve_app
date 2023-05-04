@@ -1,10 +1,11 @@
 class Reservation < ApplicationRecord
   belongs_to :admin, optional: true
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :day, presence: true
   validates :time, presence: true
   validates :start_time, presence: true, uniqueness: true
+  
 
 
   def self.check_reservation_day(day)

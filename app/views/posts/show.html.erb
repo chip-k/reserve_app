@@ -1,0 +1,10 @@
+<h1>お知らせ詳細</h1>
+
+<h2>タイトル</h2>
+<p><%= @post.title %></p>
+
+<h2>本文</h2>
+<p><%= @post.body %></p>
+
+<%= link_to '編集', edit_post_path(@post.id) %>
+<%= link_to "削除", post_path(@post.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>

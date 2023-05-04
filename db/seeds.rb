@@ -11,5 +11,9 @@ Admin.find_or_create_by(id: 1) do |admin|
  admin.email = "example@example.com"
  admin.password = "example"
  admin.phone_number = ""
- admin.address = ""
+ admin.postal_code = ""
+ admin.prefecture_code = ""
+ admin.city = ""
+ admin.street = ""
+ admin.other_address = ""
 end

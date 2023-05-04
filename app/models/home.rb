@@ -1,5 +1,2 @@
-class Home < ApplicationRecord
-  
-  has_one_attached :image
-  
+class Home < ApplicationRecor
 end

@@ -31,7 +31,11 @@ class ReservationsController < ApplicationController
   def destroy
     @reservation = Reservation.find(params[:id])
     if @reservation.destroy
-      redirect_to user_path(current_user.id), flash: { success: "予約を削除しました" }
+      if admin_signed_in?
+        redirect_to admin_path(admin.id), flash: { success: "予約を削除しました" }
+      else
+        redirect_to user_path(current_user.id), flash: { success: "予約を削除しました" }
+      end
     else
       render :show, flash: { error: "予約の削除に失敗しました" }
     end

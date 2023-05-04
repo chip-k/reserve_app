@@ -14,7 +14,14 @@
           <li class="nav-item">
             <%= link_to "予約", reservations_path, class: "nav-link" %>
           </li>
-          <% if user_signed_in? %>
+          <% if admin_signed_in? %>
+            <li class="nav-item">
+              <%= link_to "投稿", new_post_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          <% elsif user_signed_in? %>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
             </li>
@@ -24,6 +31,9 @@
             </li>
             <li class="nav-item">
               <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "管理者ログイン", new_admin_session_path, class: "nav-link" %>
             </li>
           <% end %>
         </ul>
