@@ -3,10 +3,10 @@
 <% end %>
 <div class="container">
   <div class="row">
-    <div class="col-12 text-center title">
+    <div class="col-12 text-center mt-5">
       <h1>新規予約画面</h1>
     </div>
-    <div class="col-12 mt-3 content">
+    <div class="col-2 mx-auto mt-3">
       <%= form_with model: @reservation, local: true, class: 'form' do |form| %>
       <div class="day form-group">
         <%= form.label :day, '日付' %>
@@ -23,11 +23,11 @@
       <% end %>
       <%= form.hidden_field :start_time, value: @start_time %>
       <div class="submit">
-        <%= form.submit value: '予約する', class: 'btn btn-primary mx-auto d-block' %>
+        <%= form.submit value: '仮予約する', class: 'btn btn-primary mx-auto d-block mt-3' %>
       </div>
     <% end %>
-    <div class="col-12 text-right">
-      <%= link_to "戻る", :back, class: "btn btn-primary" %>
+    <div class="text-center mt-3">
+      <%= link_to "戻る", :back %>
     </div>
     </div>
   </div>

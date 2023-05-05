@@ -1,13 +1,14 @@
-<h1>編集画面</h1>
-
-<%= form_with model: @post do |f| %>
-
-  <h4>タイトル</h4>
-  <%= f.text_field :title %>
-  
-  <h4>本文</h4>
-  <%= f.text_area :body %>
-  
-  <%= f.submit '保存' %>
-  
-<% end %>
+<div class="container">
+  <div class="row col-7 mx-auto">
+    <h1 class="text-center mt-5 mb-4">編集画面</h1>
+    <%= form_with model: @post do |f| %>
+      <h4>タイトル</h4>
+      <%= f.text_field :title, class: 'form-control mb-3' %>
+      <h4>本文</h4>
+      <%= f.text_area :body, class: 'form-control mb-5', rows: 10 %>
+      <div class="d-flex justify-content-center">
+        <%= f.submit '保存' %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,9 +1,9 @@
 <% flash.each do |alert, message| %>
   <div class="alert alert-<%= alert %>"><%= message %></div>
 <% end %>
-  
+
   <body>
-  
+
   <section id="top">
     <div class="container>">
       <div class="row">
@@ -24,8 +24,8 @@
       </div>
     </div>
   </section>
-  
-  
+
+
   <section id="information">
     <div class="container">
       <div class="row">
@@ -34,33 +34,25 @@
         </div>
       </div>
       <div class="row my-5">
-        <div class="information-content col-4">
-          <h3 class="information-content-title m-3 px-3">永代経法要のご案内</h3>
-          <p class="information-content-text px-3">
-            永代経法要とは、永代にわたってお経(み教え)が伝わっていきますようにとの思いから勤まる法要です。
-            人生の先輩方が、阿弥陀さまという仏さまがいらっしゃるということ、お浄土という世界があるということを私たちに伝えてくださったように、
-            今度は私たちが子や孫など、次の世代に仏教のみ教えを伝えていこうという思いを新たにする法要でもあります。
-          </p>
-        </div>
-        <div class="information-content col-4 border-start border-end">
-          <h3 class="information-content-title m-3 px-3">春季彼岸会のご案内</h3>
-          <p class="information-content-text px-3">
-            春季彼岸会を勤修する予定です。どうぞお参りください。
-          </p>
-        </div>
-        <div class="information-content col-4">
-          <h3 class="information-content-title m-3 px-3">報恩講法要のご案内</h3>
-          <p class="information-content-text px-3">
-            報恩講法要は、浄土真宗の宗祖、親鸞聖人のご命日をご縁として、聖人90年のご生涯を偲び、
-            私たちに阿弥陀如来の救いを伝えてくださったそのご恩に感謝して勤める浄土真宗で最も大切な法要です。
-            今年も下記の通り厳修いたしますので、どうぞお参りください。
-          </p>
-        </div>
+        <% @posts.each do |post| %>
+          <div class="information-content col-4 px-5">
+            <h2 class="information-content-title"><%= post.title %></h2>
+            <% if post.body.length <= 70 %>
+              <p class="information-content-text"><%= post.body %></p>
+            <% else %>
+              <p class="information-content-text">
+                <%= truncate(post.body, length: 70) %>
+                <small><%= link_to "続きを読む", post_path(post) %></small>
+              </p>
+            <% end %>
+            <small class="text-muted"><%= post.formatted_created_at %></small>
+          </div>
+        <% end %>
       </div>
       <h4><%= link_to '過去のお知らせはこちら', posts_path %></h4>
     </div>
   </section>
-  
+
   <section id="main">
     <div class="container border-bottom pb-5">
       <div class="row py-5">
@@ -110,7 +102,7 @@
       </div>
     </div>
   </section>
-  
+
   <section id="contact">
     <div class="container pt-5">
       <div class="contact">
@@ -125,5 +117,5 @@
       </div>
     </div>
   </section>
-  
+
   </body>

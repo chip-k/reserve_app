@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'reservations/days' => 'reservations#days'
   resources :reservations
   
+  resources :homes
   resources :posts
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
