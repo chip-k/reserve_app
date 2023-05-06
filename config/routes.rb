@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   end
   
   get 'reservations/days' => 'reservations#days'
+  get 'reservations/week' => 'reservations#week'
   resources :reservations
   
   resources :homes

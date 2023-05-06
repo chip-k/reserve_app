@@ -4,7 +4,7 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new
     @day = params[:day]
     @time = params[:time]
-    @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
+    @start_time = DateTime.parse(@day + " " + @time + ":00" + "JST")
     message = Reservation.check_reservation_day(@day.to_date)
     if !!message
       redirect_to @reservation, flash: { alert: message }
@@ -25,7 +25,7 @@ class ReservationsController < ApplicationController
   end
   
   def index
-  
+    
   end
   
   def destroy
@@ -41,9 +41,15 @@ class ReservationsController < ApplicationController
     end
   end
   
-  def days
-    @reservations = Reservation.where(day: params[:day], time: params[:time])
-    @start_date = Date.today
+  #def days
+    #@reservations = Reservation.where(day: params[:day], time: params[:time])
+    #@start_date = Date.today
+    #@times = times
+    #@date = params[:date]
+  #end
+  
+  def week
+    @reservations = Reservation.where(day: @day, time: @, start_time: @start_time)
     @times = times
     @date = params[:date]
   end

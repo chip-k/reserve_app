@@ -1,37 +1,64 @@
 <div class="simple-calendar">
   <div class="calendar-heading">
-    <%= link_to t('simple_calendar.previous', default: 'Previous'), calendar.url_for_previous_view %>
+    <%= link_to t('simple_calendar.previous', default: '<<'), calendar.url_for_previous_view %>
     <% if calendar.number_of_weeks == 1 %>
       <span class="calendar-title"><%= t('simple_calendar.week', default: 'Week') %> <%= calendar.week_number %></span>
     <% else %>
       <span class="calendar-title"><%= t('simple_calendar.week', default: 'Week') %> <%= calendar.week_number %> - <%= calendar.end_week %></span>
     <% end %>
-    <%= link_to t('simple_calendar.next', default: 'Next'), calendar.url_for_next_view %>
+    <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %>
   </div>
+</div>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <% date_range.slice(0, 7).each do |day| %>
-          <th><%= t('date.abbr_day_names')[day.wday] %></th>
+<div class="simple-calendar">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center mt-5">
+        <% if Date.parse(@date) == Date.today %>
+          <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
         <% end %>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% date_range.each_slice(7) do |week| %>
-        <tr>
-          <% week.each do |day| %>
-            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(passed_block) %>
-                <% capture_haml(day, sorted_events.fetch(day, []), &passed_block) %>
-              <% else %>
-                <% passed_block.call day, sorted_events.fetch(day, []) %>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th rowspan="3", class="text-center">日時<br>　</th>
+              <th colspan="7"><%= @date.to_date.strftime('%Y年%m月') %></th>
+            </tr>
+            <% date = Date.parse(@date) %>
+            <% date_range = date.beginning_of_week..date.end_of_week %>
+            <tr>
+              <% date_range.each_slice(7).each do |week| %>
+                <% week.each do |date| %>
+                  <th class="text-center">
+                    <%= date.strftime('%d') %><br>
+                    <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
+                    {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金', 'Sat' => '土', 'Sun' => '日'}[date.strftime('%a')]) %>
+                  </th>
+                <% end %>
               <% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @times.each do |times| %>
+              <tr>
+                <td><%= times %></td>
+                <% date = Date.parse(@date) %>
+                <% date_range = date.beginning_of_week..date.end_of_week %>
+                <% date_range.each do |day| %>
+                  <td>
+                    <% if @reservations.exists?(day: @day, time: @time, start_time: @start_time) || day.past? || day == Date.today %>
+                      <%= '×' %>
+                    <% else %>
+                      <%= link_to new_reservation_path(day: day, time: time, start_time: @start_time) do %>
+                        <%= '○' %>
+                      <% end %>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
             <% end %>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

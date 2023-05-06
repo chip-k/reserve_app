@@ -8,6 +8,15 @@
   box-sizing: border-box;
 }
 
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+td, th {
+  width: auto;
+}
+
 
 body {
   font-family: Lora, serif;

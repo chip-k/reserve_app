@@ -3,9 +3,9 @@
     <div class="col-12 text-center mt-5">
       <h1>予約画面</h1>
     </div>
-    <%= month_calendar do |date| %>
+    <%= week_calendar do |date| %>
       <%= date.day %>
     <% end %>
-    <%= link_to "戻る", root_path, class: "btn btn-primary" %>
+    <%= link_to "戻る", :back, class: "btn btn-primary" %>
   </div>
 </div>
