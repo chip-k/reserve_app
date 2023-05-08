@@ -1,68 +1,68 @@
 <div class="container">
-  <div class="row">
-    <h2>新規登録</h2>
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    <% if params[:registration_required] == "true" %>
+      <div class="alert alert-info">
+        仮予約を行うには新規登録またはログインが必要です。
+      </div>
+    <% end %>
+    <h2 class="text-center">新規登録画面</h2>
 
-<%= form_with model: @user, url: user_registration_path do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_with model: @user, url: user_registration_path do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
   
-  <div class="field">
-    <%= f.label :name, "氏名" %><br>
-    <%= f.text_field :name, class: 'form-control' %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %><br>
-    <%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code" %>
-  </div>
+      <table class="table">
+        <tr>
+          <th><%= f.label :name, "お名前(必須)" %></th>
+          <td><%= f.text_field :name, class: 'form-control', placeholder: "例) 山田 太郎" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %></th>
+          <td><%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code", placeholder: "例) 8100801" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %></th>
+          <td><%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, { prompt: '選択してください' }, class: 'form-control', id: "user_prefecture_code" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :city, "市区町村", id: "user_city_label" %></th>
+          <td><%= f.text_field :city, class: 'form-control', id: "user_city", placeholder: "例) 福岡市博多区" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :street, "番地", id: "user_street_label" %></th>
+          <td><%= f.text_field :street, class: 'form-control', id: "user_street", placeholder: "例) 〇〇1-2-3" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :other_address, "建物名・部屋番号", id: "user_other_address_label" %></th>
+          <td><%= f.text_field :other_address, class: 'form-control', id: "user_other_address", placeholder: "例) 〇〇マンション101" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :email, "メールアドレス(必須)" %></th>
+          <td><%= f.email_field :email, autocomplete: "email", class: 'form-control', placeholder: "例) example@mail.com" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :phone_number, "電話番号(必須)" %></th>
+          <td><%= f.text_field :phone_number, class: 'form-control', placeholder: "例) 09012345678" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :password, "パスワード(必須)" %></th>
+            <% if @minimum_password_length %>
+              <td><%= f.password_field :password, autocomplete: "new-password", class: 'form-control', placeholder: "例) " + @minimum_password_length.to_s + "文字以上" %></td>
+            <% else %>
+              <td><%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %></td>
+            <% end %>
+        </tr>
+        <tr>
+          <th><%= f.label :password_confirmation, "パスワード確認(必須)" %></th>
+          <td><%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: "もう一度入力してください" %></td>
+        </tr>
+      </table>
 
-  <div class="field">
-    <%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %><br>
-    <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: "user_prefecture_code" %>
-  </div>
+      <div class="actions">
+        <%= f.submit "登録" %>
+      </div>
+      
+    <% end %>
 
-  <div class="field">
-    <%= f.label :city, "市区町村", id: "user_city_label" %><br>
-    <%= f.text_field :city, class: 'form-control', id: "user_city" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :street, "番地", id: "user_street_label" %><br>
-    <%= f.text_field :street, class: 'form-control', id: "user_street" %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :other_address, "建物名・部屋番号", id: "user_other_address_label" %><br>
-    <%= f.text_field :other_address, class: 'form-control', id: "user_other_address" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email, "メールアドレス" %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'form-control' %>
-  </div>
-  
-  <div class="field">
-    <%= f.label :phone_number, "電話番号" %><br>
-    <%= f.text_field :phone_number, class: 'form-control' %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password, "パスワード" %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation, "パスワード確認" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "登録" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+    <%= render "devise/shared/links" %>
   </div>
 </div>

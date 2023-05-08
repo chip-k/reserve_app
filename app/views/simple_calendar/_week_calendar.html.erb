@@ -17,6 +17,7 @@
         <% if Date.parse(@date) == Date.today %>
           <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
         <% end %>
+        <% reservations = Reservation.all_reservations %>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -38,17 +39,17 @@
             </tr>
           </thead>
           <tbody>
-            <% @times.each do |times| %>
+            <% times.each do |time| %>
               <tr>
-                <td><%= times %></td>
+                <td><%= time %></td>
                 <% date = Date.parse(@date) %>
                 <% date_range = date.beginning_of_week..date.end_of_week %>
                 <% date_range.each do |day| %>
                   <td>
-                    <% if @reservations.exists?(day: @day, time: @time, start_time: @start_time) || day.past? || day == Date.today %>
+                    <% if check_reservation(reservations, day, time) || day.past? || day == Date.today %>
                       <%= '×' %>
                     <% else %>
-                      <%= link_to new_reservation_path(day: day, time: time, start_time: @start_time) do %>
+                      <%= link_to new_reservation_path(day: day, time: time) do %>
                         <%= '○' %>
                       <% end %>
                     <% end %>

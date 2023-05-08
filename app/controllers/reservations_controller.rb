@@ -4,16 +4,17 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new
     @day = params[:day]
     @time = params[:time]
-    @start_time = DateTime.parse(@day + " " + @time + ":00" + "JST")
+    @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
     message = Reservation.check_reservation_day(@day.to_date)
     if !!message
-      redirect_to @reservation, flash: { alert: message }
+      redirect_to @reservation, flash: { danger: message }
     end
   end
   
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
+      flash[:success] = "下記の日時で仮予約を行いました。"
       redirect_to reservation_path @reservation.id
     else
       render :new
@@ -32,25 +33,17 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.find(params[:id])
     if @reservation.destroy
       if admin_signed_in?
-        redirect_to admin_path(admin.id), flash: { success: "予約を削除しました" }
+        redirect_to admin_path(admin.id), flash: { danger: "予約を削除しました。" }
       else
-        redirect_to user_path(current_user.id), flash: { success: "予約を削除しました" }
+        redirect_to user_path(current_user.id), flash: { danger: "予約を削除しました。" }
       end
     else
-      render :show, flash: { error: "予約の削除に失敗しました" }
+      flash.now[:danger] = "予約の削除に失敗しました。"
+      render :show 
     end
   end
   
-  #def days
-    #@reservations = Reservation.where(day: params[:day], time: params[:time])
-    #@start_date = Date.today
-    #@times = times
-    #@date = params[:date]
-  #end
-  
   def week
-    @reservations = Reservation.where(day: @day, time: @, start_time: @start_time)
-    @times = times
     @date = params[:date]
   end
   
@@ -61,18 +54,5 @@ class ReservationsController < ApplicationController
     params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status)
   end
   
-  def times
-    times = ["9:00","9:30",
-             "10:00","10:30",
-             "11:00","11:30",
-             "12:00","12:30",
-             "13:00","13:30",
-             "14:00","14:30",
-             "15:00","15:30",
-             "16:00","16:30",
-             "17:00","17:30",
-             "18:00","18:30",
-             "19:00","19:30",]
-  end
   
 end

@@ -1,12 +1,10 @@
-<% if @reservation.errors.any? %>
-  <%= @reservation.errors.full_messages %>
-<% end %>
 <div class="container">
-  <div class="row">
-    <div class="col-12 text-center mt-5">
-      <h1>新規予約画面</h1>
-    </div>
-    <div class="col-2 mx-auto mt-3">
+  <div class="row  col-7 mt-5 mb-4 mx-auto">
+    <% if @reservation.errors.any? %>
+      <%= @reservation.errors.full_messages %>
+    <% end %>
+    <h1 class="text-center">新規予約画面</h1>
+    <div class="col-4 mx-auto mt-3">
       <%= form_with model: @reservation, local: true, class: 'form' do |form| %>
       <div class="day form-group">
         <%= form.label :day, '日付' %>
@@ -16,19 +14,22 @@
         <%= form.label :time, '時間' %>
         <%= form.text_field :time, class: 'form-control', value: @time, readonly: true %>
       </div>
+      <%= form.hidden_field :start_time, value: @start_time %>
       <% if admin_signed_in? %>
         <%= form.hidden_field :admin_id, value: current_admin.id %>
       <% else %>
         <%= form.hidden_field :user_id, value: current_user.id %>
       <% end %>
-      <%= form.hidden_field :start_time, value: @start_time %>
       <div class="submit">
         <%= form.submit value: '仮予約する', class: 'btn btn-primary mx-auto d-block mt-3' %>
       </div>
     <% end %>
+    </div>
+    <div>
+      <p class="pt-3">※上記の日時で仮予約を行います。仮予約後にお寺から確認のお電話を致します。</p>
+    </div>
     <div class="text-center mt-3">
       <%= link_to "戻る", :back %>
-    </div>
     </div>
   </div>
 </div>

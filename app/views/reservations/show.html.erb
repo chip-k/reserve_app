@@ -1,19 +1,21 @@
 <div class="container">
-  <div class="row">
-    <div class="col-12 text-center title">
-      <h1>予約詳細画面</h1>
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    <div class="text-center title">
+      <h1>仮予約完了画面</h1>
     </div>
-    <div class="col-12 mt-3 text-center content">
-      <div>
-        <label><strong>日付：</strong></label>
-        <p style="display:inline;"><%= @reservation.day %></p>
-      </div>
-      <div>
-        <label><strong>時間：</strong></label>
-        <p style="display:inline;"><%= @reservation.time %></p>
-      </div>
+    <table class="table mt-3 content">
+      <tr>
+        <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
+      </tr>
+      <tr>
+        <th class="text-center">時間：<td><%= @reservation.time %></td></th>
+      </tr>
+    </table>
+    <div>
+      <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
+      <p>※お寺の都合により仮予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
     </div>
-    <div class="col-12 text-right">
+    <div class="text-center mt-3">
       <%= link_to '予約画面に戻る', reservations_path %>
     </div>
   </div>
