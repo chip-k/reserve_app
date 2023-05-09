@@ -13,16 +13,38 @@
   tr {
     border-collapse: collapse;
   }
+  
+  table tr:last-child td {
+    border-bottom: none;
+  }
 
   th {
     padding: 6px;
-    border-bottom: 2px solid rgb(221, 221, 221);
+    border-bottom: 2px solid transparent;
     border-collapse: collapse;
     border-left: 1px solid rgb(221, 221, 221);
     border-right: 1px solid rgb(221, 221, 221);
     border-top: 0px none rgb(51, 51, 51);
     box-sizing: border-box;
     text-align: left;
+  }
+  
+  th:first-child {
+    color: red;
+    border-bottom-width: 0;
+  }
+  
+  td:first-child {
+    border-top: 1px solid black;
+  }
+  
+  th:last-child {
+    color: blue;
+    border-bottom-width: 0;
+  }
+  
+  td:nth-child(7) {
+    border-top: 1px solid black;
   }
 
   td {
@@ -49,19 +71,27 @@
     height: 80px;
   }
 
-  .wday-0 {}
+  .wday-0 {
+    background: #ffeaea;
+    color: #ff505c;
+  }
   .wday-1 {}
   .wday-2 {}
   .wday-3 {}
   .wday-4 {}
   .wday-5 {}
-  .wday-6 {}
+  .wday-6 {
+    background: #d4ebff;
+    color: #5984dc;
+  }
 
   .today {
     background: #FFFFC0
   }
 
-  .past {}
+  .past {
+    color: gray;
+  }
   .future {}
 
   .start-date {}
@@ -75,4 +105,8 @@
   .current-month {}
 
   .has-events {}
+}
+
+.month_table tr td.table-hover:hover {
+  background-color: #CCFFCC;
 }

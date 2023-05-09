@@ -1,10 +1,6 @@
 <div class="container">
   <div class="row col-7 mt-5 mb-4 mx-auto">
-    <% if params[:registration_required] == "true" %>
-      <div class="alert alert-info">
-        仮予約を行うには新規登録またはログインが必要です。
-      </div>
-    <% end %>
+    
     <h2 class="text-center">新規登録画面</h2>
 
     <%= form_with model: @user, url: user_registration_path do |f| %>

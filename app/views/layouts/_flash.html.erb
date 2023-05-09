@@ -3,3 +3,9 @@
     <%= content_tag(:p, value) %>
   <% end %>
 <% end %>
+
+<% if params[:registration_required] == "true" %>
+  <div class="alert alert-info">
+    仮予約を行うには新規登録またはログインが必要です。
+  </div>
+<% end %>

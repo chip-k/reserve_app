@@ -19,15 +19,9 @@
           <li class="nav-item">
             <%= link_to "お知らせ", posts_path, class: "nav-link" %>
           </li>
-          <% if user_signed_in? || admin_signed_in? %>
-            <li class="nav-item">
-              <%= link_to "仮予約", reservations_path, class: "nav-link" %>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to "仮予約", new_user_registration_path(registration_required: true), class: "nav-link" %>
-            </li>
-          <% end %>
+          <li class="nav-item">
+            <%= link_to "仮予約", reservations_path, class: "nav-link" %>
+          </li>
           <% if admin_signed_in? %>
             <li class="nav-item">
               <%= link_to "投稿", new_post_path, class: "nav-link" %>

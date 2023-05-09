@@ -1,4 +1,5 @@
 class ReservationsController < ApplicationController
+  # before_action :set_beginning_of_week
   
   def new
     @reservation = Reservation.new
@@ -44,15 +45,18 @@ class ReservationsController < ApplicationController
   end
   
   def week
-    @date = params[:date]
+    @date = Date.parse(params[:date])
   end
   
   
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status)
+    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date)
   end
   
+  # def set_beginning_of_week
+    # Date.beginning_of_week = :sunday
+  # end
   
 end

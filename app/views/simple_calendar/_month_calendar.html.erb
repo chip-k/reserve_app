@@ -4,8 +4,8 @@
     <span class="calendar-title"><%= start_date.year %>年 <%= t('date.month_names')[start_date.month] %></span>
     <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %>
   </div>
-  <table class="table table-striped">
-    <thead>
+  <table class="table month_table">
+    <thead class="table-light">
       <tr>
         <% date_range.slice(0, 7).each do |day| %>
           <th><%= t('date.abbr_day_names')[day.wday] %></th>
@@ -17,28 +17,27 @@
         <tr>
           <% week.each do |day| %>
             <% if Reservation.check_reservation_days(day).nil? %>
-              <%= content_tag :td, class: calendar.td_classes_for(day) do %>
-                <%= link_to day.day, '#', class: "calendar-link", data: { date: day.strftime("%Y-%m-%d") } %>
-              <% end %>
-            <% else %>
-              <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <td class="<%= calendar.td_classes_for(day).join(' ') %> table-hover" data-date="<%= day.strftime("%Y-%m-%d") %>">
                 <%= day.day %>
-              <% end %>
+              </td>
+            <% else %>
+              <td class="<%= calendar.td_classes_for(day).join(' ') %>">
+                <%= day.day %>
+              </td>
             <% end %>
           <% end %>
         </tr>
       <% end %>
-      <script>
-        document.addEventListener('turbolinks:load', function() {
-          document.querySelectorAll('.calendar-link').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-              e.preventDefault();
-              var date = e.target.dataset.date;
+    </tbody>
+    <script>
+      document.addEventListener('turbolinks:load', function() {
+          document.querySelectorAll('td[data-date]').forEach(function(td) {
+            td.addEventListener('click', function(e) {
+              let date = e.target.dataset.date;
               window.location.href = "/reservations/week?date=" + date;
             });
           });
         });
-      </script>
-    </tbody>
+    </script>
   </table>
 </div>
