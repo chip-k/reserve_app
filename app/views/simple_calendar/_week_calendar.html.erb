@@ -1,63 +1,78 @@
-<div class="simple-calendar">
-  <div class="calendar-heading">
-    <%= link_to t('simple_calendar.previous', default: '<<'), calendar.url_for_previous_view %>
-    <% if calendar.number_of_weeks == 1 %>
-      <span class="calendar-title"><%= t('simple_calendar.week', default: 'Week') %> <%= calendar.week_number %></span>
-    <% else %>
-      <span class="calendar-title"><%= t('simple_calendar.week', default: 'Week') %> <%= calendar.week_number %> - <%= calendar.end_week %></span>
-    <% end %>
-    <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %>
-  </div>
-</div>
-
-<div class="simple-calendar_week">
+<div class="simple-calendar-week">
   <div class="container">
-    <div class="row">
-      <div class="col-12 text-center mt-5">
-        <% if @date == Date.today %>
-          <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
+    <div class="row col-12 mt-5">
+      <div class="calendar-heading d-flex justify-content-between">
+        <% prev_week = @date - 1.week %>
+        <% next_week = @date + 1.week %>
+        <% if prev_week == Date.today - 1.week %>
+          <%= "&laquo; #{'前の一週間'}".html_safe %>
+        <% elsif prev_week <= Date.today %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: Date.today) %>
+        <% else %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: prev_week) %>
         <% end %>
-        <% reservations = Reservation.all_reservations %>
-        <table class="table table-striped table-responsive">
-          <thead>
-            <tr>
-              <th rowspan="3", class="text-center">　日時<br>　</th>
-              <th colspan="7"><%= @date.to_date.strftime('%Y年%m月') %></th>
-            </tr>
-            <% date_range = @date..(@date + 6.days) %>
-            <tr>
-              <% date_range.each_slice(7).each do |week| %>
-                <% week.each do |date| %>
+        <% if @date == Date.today %>
+          <span class="text-center">
+            <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
+          </span>
+        <% end %>
+        <%= link_to "#{'次の一週間'} &raquo;".html_safe, reservations_week_path(date: next_week) %>
+      </div>
+      <% reservations = Reservation.all_reservations %>
+      <table class="table table-responsive">
+        <thead>
+          <tr>
+            <th rowspan="3", class="text-center">日時<br>　</th>
+            <% start_date = @date %>
+            <% end_date = start_date + 6.days %>
+            <% if start_date.month == end_date.month %>
+              <th colspan="7"><%= start_date.strftime('%Y年%m月') %></th>
+            <% else %>
+              <% days_in_month = start_date.end_of_month.day - start_date.day + 1 %>
+              <th colspan="<%= days_in_month %>"><%= start_date.strftime('%Y年%m月') %></th>
+              <th colspan="<%= 7 - days_in_month %>"><%= end_date.strftime('%Y年%m月') %></th>
+            <% end %>
+          </tr>
+          <% date_range = @date..(@date + 6.days) %>
+          <tr>
+            <% date_range.each_slice(7).each do |week| %>
+              <% week.each do |date| %>
+                <% if date.sunday? %>
+                  <th class="text-center text-red">
+                <% elsif date.saturday? %>
+                  <th class="text-center text-blue">
+                <% else %>
                   <th class="text-center">
-                    <%= date.strftime('%d') %><br>
-                    <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
-                    {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金', 'Sat' => '土', 'Sun' => '日'}[date.strftime('%a')]) %>
-                  </th>
+                <% end %>
+                <%= date.strftime('%d') %><br>
+                <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
+                {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金', 'Sat' => '土', 'Sun' => '日'}[date.strftime('%a')]) %>
+              <% end %>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          <% times.each do |time| %>
+            <tr>
+              <td class="table-light times"><%= time %></td>
+              <% date_range = @date..(@date + 6.days) %>
+              <% date_range.each do |day| %>
+                <% if check_reservation(reservations, day, time) || day.past? || day == Date.today %>
+                  <td class="reserved"><%= '×' %></td>
+                <% elsif user_signed_in? || admin_signed_in? %>
+                  <td class="table-hover">
+                    <%= link_to '◎', new_reservation_path(day: day, time: time) %>
+                  </td>
+                <% else %>
+                  <td class="table-hover">
+                    <%= link_to '◎', new_user_session_path(registration_required: true) %>
+                  </td>
                 <% end %>
               <% end %>
             </tr>
-          </thead>
-          <tbody>
-            <% times.each do |time| %>
-              <tr>
-                <td><%= time %></td>
-                <% date_range = @date..(@date + 6.days) %>
-                <% date_range.each do |day| %>
-                  <td>
-                    <% if check_reservation(reservations, day, time) || day.past? || day == Date.today %>
-                      <%= '×' %>
-                    <% elsif user_signed_in? || admin_signed_in? %>
-                      <%= link_to "○", new_reservation_path(day: day, time: time) %>
-                    <% else %>
-                      <%= link_to "○", new_user_session_path(registration_required: true) %>
-                    <% end %>
-                  </td>
-                <% end %>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

@@ -20,5 +20,6 @@ module ReserveApp
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.available_locales = :ja
     config.i18n.default_locale = :ja
+    config.beginning_of_week = :sunday
   end
 end

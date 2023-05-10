@@ -1,0 +1,17 @@
+<footer class="shadow-sm bg-dark mt-5">
+  <p class="footer-text">© 浄土真宗本願寺派 法輪山 西圓寺</p>
+</footer>
+<script>
+  $(document).ready(function(){
+  var windowHeight = $(window).height();
+  var footerHeight = $('footer').outerHeight();
+  var bodyHeight = $('body').height();
+
+  if(windowHeight - (footerHeight + 50) > bodyHeight){
+    $('footer').css({
+      'position': 'fixed',
+      'bottom': '0'
+    });
+  }
+});
+</script>
