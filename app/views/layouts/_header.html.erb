@@ -44,6 +44,17 @@
               <%= link_to "管理者ログイン", new_admin_session_path, class: "nav-link" %>
             </li>
           <% end %>
+          <% unless admin_signed_in? %>
+            <% if current_page?(root_path) %>
+              <li class="nav-item">
+                <%= link_to "お問い合わせ", "#contact", class: "nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "お問い合わせ", root_path(anchor: 'contact'), class: "nav-link" %>
+              </li>
+            <% end %>
+          <% end %>
         </ul>
       </div>
     </div>

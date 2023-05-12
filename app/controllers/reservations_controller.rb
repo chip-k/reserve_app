@@ -8,7 +8,11 @@ class ReservationsController < ApplicationController
     @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
     message = Reservation.check_reservation_day(@day.to_date)
     if !!message
-      redirect_to @reservation, flash: { danger: message }
+      redirect_to reservations_path, flash: { danger: message }
+    end
+    if Reservation.reserved?(@start_time)
+      flash[:alert] = "指定された日時は既に予約済みです。"
+      redirect_to reservations_path
     end
   end
   
@@ -46,6 +50,10 @@ class ReservationsController < ApplicationController
   
   def week
     @date = Date.parse(params[:date])
+    if Reservation.check_reservation_days(@date)
+      flash[:alert] = "過去の日付は選択できません。"
+      redirect_to reservations_path
+    end
   end
   
   
