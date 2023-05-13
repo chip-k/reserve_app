@@ -3,20 +3,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  
-  def update
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-
-    if resource.update_with_password(account_update_params)
-      set_flash_message :notice, :updated
-      bypass_sign_in resource, scope: resource_name
-      redirect_to after_update_path_for(resource)
-    else
-      clean_up_passwords resource
-      set_minimum_password_length
-      respond_with resource
-    end
-  end
     
 
   # GET /resource/sign_up
@@ -79,18 +65,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def after_update_path_for(resource)
     user_path(resource)
-  end
-  
-  def account_update_params
-    params.require(:user).permit(:name, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation, :current_password)
-  end
-  
-  def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name,:email])
-  end
-  
-  def update_resource(resource, params)
-    resource.update_with_password(params)
   end
   
 end

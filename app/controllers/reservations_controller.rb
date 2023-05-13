@@ -31,21 +31,27 @@ class ReservationsController < ApplicationController
   end
   
   def index
-    
+    user_id = current_user.id
+    @reservations = Reservation.where(user_id: user_id)
+    #@admin = Admin.phone_number
+    @admin = "093-282-6765"
   end
   
   def destroy
     @reservation = Reservation.find(params[:id])
     if @reservation.destroy
       if admin_signed_in?
-        redirect_to admin_path(admin.id), flash: { danger: "予約を削除しました。" }
+        redirect_to reservations_path(@user), flash: { danger: "予約を削除しました。" }
       else
-        redirect_to user_path(current_user.id), flash: { danger: "予約を削除しました。" }
+        redirect_to reservations_path(current_user.id), flash: { danger: "予約を削除しました。" }
       end
     else
       flash.now[:danger] = "予約の削除に失敗しました。"
       render :show 
     end
+  end
+  
+  def month
   end
   
   def week

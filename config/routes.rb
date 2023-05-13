@@ -18,15 +18,16 @@ Rails.application.routes.draw do
     registrations: 'admins/registrations',
   }
   namespace :admins do
-   resources :users, only: %i(index destroy edit update)
+   resources :users, only: %i(index show destroy edit update)
   end
   
-  get 'reservations/days' => 'reservations#days'
+  get 'reservations/month' => 'reservations#month'
   get 'reservations/week' => 'reservations#week'
   resources :reservations
   
   resources :homes
   resources :posts
   resources :users, only: [:show]
+  resources :admins, only: [:index]
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

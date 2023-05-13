@@ -43,13 +43,19 @@
           </div>
         <% end %>
       </div>
-      <h4><%= link_to '過去のお知らせはこちら', posts_path %></h4>
-      <button class="button"><%= link_to 'Instagramはこちら', 'https://www.instagram.com/p/CrfRHEZvZvR/', target: "_blank" %></button>
+      <div class="text-center">
+      <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', posts_path %></h4>
+      <%= link_to 'https://www.instagram.com/p/CrfRHEZvZvR/', target: "_blank", class: "insta-btn" do %>
+        <span>
+          <i class="fab fa-instagram"></i> Instagramはこちら
+        </span>
+      <% end %>
+      </div>
     </div>
   </section>
 
   <section id="main">
-    <div class="container border-bottom pb-5">
+    <div class="container border-bottom mt-5 pb-5">
       <div class="row py-5">
         <div class="main-content col-5 mx-auto">
           <div class="main-image mb-3">

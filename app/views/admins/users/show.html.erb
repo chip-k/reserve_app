@@ -11,7 +11,7 @@
       <tr><th>メールアドレス</th><td><%= @user.email %></td></tr>
       <tr><th>電話番号</th><td><%= @user.phone_number %></td></tr>
     </table>
-    <%= link_to "編集", edit_user_registration_path(@user.id), class: "text-center" %>
+    <%= link_to "編集", edit_admins_user_path(@user.id), class: "text-center" %>
     <%= link_to "予約一覧", reservations_path(@user.id), class: "text-center" %>
   </div>
 </div>

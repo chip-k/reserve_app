@@ -1,11 +1,26 @@
 <div class="container">
-  <div class="row">
-    <div class="col-12 text-center mt-5">
-      <h1>予約画面</h1>
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    <div class="text-center title">
+      <h1>予約一覧画面</h1>
     </div>
-    <%= month_calendar do |date| %>
-      <%= date.day %>
-    <% end %>
-    <%= link_to "戻る", root_path, class: "btn btn-primary mb-5 pb-3" %>
+    <div class="text-center mt-3">
+      <% if @reservations.count > 0 %>
+        <p>下記の日時で予約されています。</p>
+        <p>※前日、当日のキャンセルは直接お電話でお知らせください。</p>
+        <p>TEL：<%= @admin %></p>
+      <% else %>
+        <p>予約がありません。</p>
+      <% end %>
+    </div>
+    <table class="table mt-3">
+      <% @reservations.each do |reservation| %>
+        <tr>
+          <td class="text-center">
+            <%= reservation.day.strftime('%Y年%m月%d日') %>　　<%= reservation.time %>　　　　
+            <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
   </div>
 </div>

@@ -59,4 +59,19 @@ class Admins::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+  
+  
+
+
+  protected
+
+
+  def after_update_path_for(resource)
+    admins_path(resource)
+  end
+  
+  def account_update_params
+    params.require(:user).permit(:name, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation, :current_password)
+  end
+  
 end
