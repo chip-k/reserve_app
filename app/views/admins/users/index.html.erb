@@ -1,15 +1,16 @@
 <div class="container">
   <div class="row col-7 mx-auto">
-    <h2 class="text-center mt-5 mb-4">ユーザー一覧</h2>
+    <h2 class="text-center mt-5 mb-4">ユーザー一覧画面</h2>
     
     <table class="table">
       <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to "ユーザーページ", admins_user_path(user.id) %></td>
-        <td><%= link_to "予約一覧", reservations_path(user.id) %></td>
+        <td><%= link_to "ユーザー詳細", admins_user_path(user.id) %></td>
+        <td><%= link_to "予約一覧", admins_user_reservations_path(user) %></td>
       </tr>
       <% end %>
     </table>
+    <%= link_to "戻る", admins_path, class: "text-center mt-3" %>
   </div>
 </div>

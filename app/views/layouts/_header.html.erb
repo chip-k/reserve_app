@@ -22,6 +22,17 @@
           <li class="nav-item">
             <%= link_to "予約", reservations_month_path, class: "nav-link" %>
           </li>
+          <% unless admin_signed_in? %>
+            <% if current_page?(root_path) %>
+              <li class="nav-item">
+                <%= link_to "お問い合わせ", "#contact", class: "nav-link" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "お問い合わせ", root_path(anchor: 'contact'), class: "nav-link" %>
+              </li>
+            <% end %>
+          <% end %>
           <% if admin_signed_in? %>
             <li class="nav-item">
               <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
@@ -43,17 +54,6 @@
             <li class="nav-item">
               <%= link_to "管理者ログイン", new_admin_session_path, class: "nav-link" %>
             </li>
-          <% end %>
-          <% unless admin_signed_in? %>
-            <% if current_page?(root_path) %>
-              <li class="nav-item">
-                <%= link_to "お問い合わせ", "#contact", class: "nav-link" %>
-              </li>
-            <% else %>
-              <li class="nav-item">
-                <%= link_to "お問い合わせ", root_path(anchor: 'contact'), class: "nav-link" %>
-              </li>
-            <% end %>
           <% end %>
         </ul>
       </div>

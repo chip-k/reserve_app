@@ -8,6 +8,7 @@ class Admins::UsersController < ApplicationController
   
   def index
     @users = User.all
+    @reservation = Reservation.all
   end
   
   def edit
@@ -27,7 +28,7 @@ class Admins::UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
-    redirect_to users_path, notice: 'ユーザーを削除しました。'
+    redirect_to admins_users_path, notice: 'ユーザーを削除しました。'
   end
 
 

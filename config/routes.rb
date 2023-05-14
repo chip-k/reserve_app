@@ -17,8 +17,12 @@ Rails.application.routes.draw do
     passwords:     'admins/passwords',
     registrations: 'admins/registrations',
   }
+  
   namespace :admins do
-   resources :users, only: %i(index show destroy edit update)
+   resources :users, only: %i(index show destroy edit update) do
+     resources :reservations, only: %i(show index destroy)
+   end
+   get 'reservations_by_day', to: 'reservations#reservations_by_day', as: 'reservations_by_day'
   end
   
   get 'reservations/month' => 'reservations#month'

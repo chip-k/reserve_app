@@ -1,13 +1,11 @@
 <div class="container">
   <div class="row col-7 mt-5 mb-4 mx-auto">
     <div class="text-center title">
-      <h2>予約一覧画面</h2>
+      <h2><%= @user.name %>様の予約一覧画面</h2>
     </div>
     <div class="text-center mt-3">
       <% if @reservations.count > 0 %>
         <p>下記の日時で予約されています。</p>
-        <p>※前日、当日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL：<%= @admin %></p>
       <% else %>
         <p>予約がありません。</p>
       <% end %>
@@ -17,10 +15,11 @@
         <tr>
           <td class="text-center">
             <%= reservation.day.strftime('%Y年%m月%d日') %>　　<%= reservation.time %>　　　　
-            <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+            <%= link_to "キャンセル", url_for([:admins, @user, reservation]), method: :delete, "data-confirm" => "本当に削除しますか？" %>
           </td>
         </tr>
       <% end %>
     </table>
+    <%= link_to "戻る", admins_users_path, class: "text-center mt-3" %>
   </div>
 </div>

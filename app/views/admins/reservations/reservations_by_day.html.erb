@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    <div class="text-center title">
+      <h2>スケジュール画面</h2>
+    </div>
+      <% if @reservations.present? %>
+  <% @reservations.each do |reservation| %>
+    <%= reservation.day %>
+    <% if reservation.user.present? %>
+      <%= reservation.user.name %>
+    <% else %>
+      ユーザー情報がありません。
+    <% end %>
+  <% end %>
+<% else %>
+  予約がありません。
+<% end %>
+<%= link_to "次の日", admins_reservations_by_day_path(day: @date.tomorrow) %>
+  </div>
+</div>
