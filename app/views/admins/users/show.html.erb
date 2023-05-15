@@ -12,6 +12,6 @@
       <tr><th>電話番号</th><td><%= @user.phone_number %></td></tr>
     </table>
     <%= link_to "編集", edit_admins_user_path(@user.id), class: "text-center" %>
-    <%= link_to "戻る", admins_users_path, class: "text-center mt-3" %>
+    <%= link_to "#{@user.name}様の予約一覧", admins_user_reservations_path(@user), class: "text-center mt-3" %>
   </div>
 </div>

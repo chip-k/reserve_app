@@ -138,6 +138,10 @@
     text-align: left;
   }
   
+  th .table-cell:hover {
+    background-color: #CCFFCC;
+  }
+  
   tr:nth-child(n+1) td {
     border-top: 1px solid black;
   }

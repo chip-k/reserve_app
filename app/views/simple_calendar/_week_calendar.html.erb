@@ -37,12 +37,22 @@
           <tr>
             <% date_range.each_slice(7).each do |week| %>
               <% week.each do |date| %>
-                <% if date.sunday? %>
-                  <th class="text-center text-red">
-                <% elsif date.saturday? %>
-                  <th class="text-center text-blue">
+                <% if admin_signed_in? %>
+                  <% if date.sunday? %>
+                    <th class="text-center text-red table-cell table-hover" data-date="<%= date %>">
+                  <% elsif date.saturday? %>
+                    <th class="text-center text-blue table-cell table-hover" data-date="<%= date %>">
+                  <% else %>
+                    <th class="text-center table-cell table-hover" data-date="<%= date %>">
+                  <% end %>
                 <% else %>
-                  <th class="text-center">
+                  <% if date.sunday? %>
+                    <th class="text-center text-red">
+                  <% elsif date.saturday? %>
+                    <th class="text-center text-blue">
+                  <% else %>
+                    <th class="text-center">
+                  <% end %>
                 <% end %>
                 <%= date.strftime('%d') %><br>
                 <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
@@ -76,3 +86,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const cells = document.querySelectorAll(".table-cell");
+    cells.forEach(function(cell) {
+      cell.addEventListener("click", function() {
+        const date = this.dataset.date;
+        window.location.href = "<%= admins_reservations_by_day_path %>?day=" + date;
+      });
+    });
+  });
+</script>

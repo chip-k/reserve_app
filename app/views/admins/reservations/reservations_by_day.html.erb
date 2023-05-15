@@ -1,20 +1,75 @@
-<div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
+<div class="container days">
+  <div class="row col-10 mt-5 mb-4 mx-auto">
     <div class="text-center title">
       <h2>スケジュール画面</h2>
+      <h4>
+        <%= @date.strftime('%Y年%m月%d日') %>
+        <% if @date.sunday? %>
+          <span class="text-center text-red">
+            <%= @date.strftime('(%a)').gsub(/(Sun)/, {'Sun' => '日'}[@date.strftime('%a')]) %>
+          </span>
+        <% elsif @date.saturday? %>
+          <span class="text-center text-blue">
+            <%= @date.strftime('(%a)').gsub(/(Sat)/, {'Sat' => '土'}[@date.strftime('%a')]) %>
+          </span>
+        <% else %>
+          <span class="text-center">
+            <%= @date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri)/, 
+            {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金'}[@date.strftime('%a')]) %>
+          </span>
+        <% end %>
+      </h4>
+      <%= form_with url: admins_reservations_by_day_path, method: :get, local: true, id: "search-form" do |f| %>
+        <%= f.label :day, "日付検索", class: "form-label" %>
+        <%= f.date_field :day, value: @search_date, name: "day", id: "search-date" %>
+      <% end %>
     </div>
-      <% if @reservations.present? %>
-  <% @reservations.each do |reservation| %>
-    <%= reservation.day %>
-    <% if reservation.user.present? %>
-      <%= reservation.user.name %>
-    <% else %>
-      ユーザー情報がありません。
-    <% end %>
-  <% end %>
-<% else %>
-  予約がありません。
-<% end %>
-<%= link_to "次の日", admins_reservations_by_day_path(day: @date.tomorrow) %>
+    <div class="d-flex justify-content-between">
+    <%= link_to "&laquo; #{'前の日'}".html_safe, admins_reservations_by_day_path(day: @date.yesterday) %>
+    <%= link_to "#{'次の日'} &raquo;".html_safe, admins_reservations_by_day_path(day: @date.tomorrow) %>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-center col-2">日時</th>
+          <th class="text-center col-3">予約</th>
+          <th class="text-center col-5">備考</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <% times.each do |time| %>
+          <tr>
+            <td class="table-light times"><%= time %></td>
+            <% if @reservations.present? %>
+              <% reservation = @reservations.find { |r| r.time == time } %>
+              <% if reservation.present? %>
+                <% if reservation.user.present? %>
+                  <td class="reserved"><%= link_to reservation.user.name, admins_user_path(reservation.user) %></td>
+                <% else %>
+                  <td class="reserved">予約あり（ユーザー名未登録）</td>
+                <% end %>
+              <% else %>
+                <td class="table-light"></td>
+              <% end %>
+            <% else %>
+              <td class="table-light"></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 </div>
+
+<script>
+  document.addEventListener("turbolinks:load", function() {
+  const searchForm = document.querySelector("#search-form");
+  const searchDate = document.querySelector("#search-date");
+
+  if (searchDate) {
+    searchDate.addEventListener("change", function() {
+      searchForm.submit();
+    });
+  }
+});
+</script>

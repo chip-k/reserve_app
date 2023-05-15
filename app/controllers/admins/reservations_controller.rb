@@ -2,9 +2,11 @@ class Admins::ReservationsController < Admins::BaseController
 
   def reservations_by_day
     @date = params[:day] ? Date.parse(params[:day]) : Date.today
-  start_time = @date.beginning_of_day
-  end_time = @date.end_of_day
-  @reservations = Reservation.where(start_time: start_time..end_time).includes(:user)
+    start_time = @date.beginning_of_day
+    end_time = @date.end_of_day
+    @reservations = Reservation.where(start_time: start_time..end_time).includes(:user)
+    session[:search_date] = params[:day]
+    @search_date = session[:search_date] || Date.today
   end
   
   def destroy
