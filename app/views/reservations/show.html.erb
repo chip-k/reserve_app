@@ -21,7 +21,7 @@
       <%= link_to '予約画面に戻る', reservations_month_path %><br>
       <br>
       <% if admin_signed_in? %>
-        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day), from_link: true %>
+        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
       <% elsif user_signed_in? %>
         <%= link_to "予約一覧へ", reservations_path %>
       <% end %>

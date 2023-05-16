@@ -34,6 +34,12 @@ class Admins::ReservationsController < Admins::BaseController
     @search_date = session[:search_date] || Date.today
   end
   
+  def destroy_by_day
+    @reservation = Reservation.find(params[:id])
+    @reservation.destroy
+    redirect_to admins_reservations_by_day_path(day: @reservation.start_time.to_date), notice: '予約を削除しました。'
+  end
+  
   def destroy
     @user = User.find(params[:user_id])
     @reservation = @user.reservations.find(params[:id])
@@ -47,7 +53,7 @@ class Admins::ReservationsController < Admins::BaseController
   end
   
   def edit
-    @reservation = @user.reservations
+    @reservation = Reservation.find(params[:id])
   end
   
   def update

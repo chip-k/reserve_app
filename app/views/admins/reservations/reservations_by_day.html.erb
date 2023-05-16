@@ -32,35 +32,32 @@
       <thead>
         <tr>
           <th class="text-center col-1">日時</th>
-          <th class="text-center col-3">予約</th>
+          <th class="text-center col-2">予約</th>
           <th class="text-center col-5">備考</th>
-          <th class="col-1"></th>
+          <th class="text-center col-2"></th>
         </tr>
       </thead>
       <tbody class="text-center">
         <% times.each do |time| %>
           <tr>
             <td class="table-light times"><%= time %></td>
-            <% if @reservations.present? %>
-              <% reservation = @reservations.find { |r| r.time == time } %>
-              <% if reservation.present? %>
-                <% if reservation.user.present? %>
-                  <td class="reserved"><%= link_to reservation.user.name, admins_user_path(reservation.user) %></td>
-                <% else %>
-                  <td class="reserved">予約あり（ユーザー名未登録）</td>
-                <% end %>
-                <td></td>
-                <td></td>
-                <td>
-                  <%= link_to "削除", admins_reservations_by_day_path, method: :delete, "data-confirm" => "本当に削除しますか？" %>
-                  <%= link_to "編集", edit_admins_reservation_path %>
-                </td>
+            <% reservation = @reservations.find { |r| r.time == time } %>
+            <% if reservation.present? %>
+              <% if reservation.user.present? %>
+                <td class="reserved"><%= link_to reservation.user.name, admins_user_path(reservation.user) %></td>
               <% else %>
-                <td class="table-light"></td>
-                <td class="table-light"></td>
-                <td></td>
+                <td class="reserved">予約あり（ユーザー名未登録）</td>
               <% end %>
+              <td></td>
+              <td>
+                <%= link_to "編集", edit_admins_reservation_path(reservation) %>
+                ｜
+                <%= link_to "削除", admins_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+              </td>
             <% else %>
+              <td class="table-light"></td>
+              <td class="table-light"></td>
+              <td class="table-light"></td>
             <% end %>
           </tr>
         <% end %>
