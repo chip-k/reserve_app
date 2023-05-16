@@ -11,14 +11,20 @@
         <th class="text-center">時間：<td><%= @reservation.time %></td></th>
       </tr>
     </table>
-    <div>
-      <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
-      <p>※お寺の都合により仮予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
-    </div>
+    <% unless admin_signed_in? %>
+      <div>
+        <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
+        <p>※お寺の都合により仮予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
+      </div>
+    <% end %>
     <div class="text-center mt-3">
       <%= link_to '予約画面に戻る', reservations_month_path %><br>
       <br>
-      <%= link_to "予約一覧へ", reservations_path %>
+      <% if admin_signed_in? %>
+        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day), from_link: true %>
+      <% elsif user_signed_in? %>
+        <%= link_to "予約一覧へ", reservations_path %>
+      <% end %>
     </div>
   </div>
 </div>

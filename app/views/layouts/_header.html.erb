@@ -3,9 +3,13 @@
     <div class="container">
       <%= link_to "浄土真宗本願寺派 法輪山 西圓寺", root_path, class: "navbar-brand" %>
       <span class="navbar-text">福岡県遠賀郡岡垣町の寺院です</span>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      
+        <div class="navbar-toggler openbtn" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mx-auto">
           <li class="nav-item">
@@ -60,3 +64,12 @@
     </div>
   </nav>
 </header>
+
+<script>
+  $(document).on('turbolinks:load', function() {
+    $(".openbtn").click(function () {
+      $(this).toggleClass('active');
+      $("#navbarNavDropdown").toggleClass('show');
+    });
+  });
+</script>

@@ -31,9 +31,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="text-center col-2">日時</th>
+          <th class="text-center col-1">日時</th>
           <th class="text-center col-3">予約</th>
           <th class="text-center col-5">備考</th>
+          <th class="col-1"></th>
         </tr>
       </thead>
       <tbody class="text-center">
@@ -48,11 +49,18 @@
                 <% else %>
                   <td class="reserved">予約あり（ユーザー名未登録）</td>
                 <% end %>
+                <td></td>
+                <td></td>
+                <td>
+                  <%= link_to "削除", admins_reservations_by_day_path, method: :delete, "data-confirm" => "本当に削除しますか？" %>
+                  <%= link_to "編集", edit_admins_reservation_path %>
+                </td>
               <% else %>
                 <td class="table-light"></td>
+                <td class="table-light"></td>
+                <td></td>
               <% end %>
             <% else %>
-              <td class="table-light"></td>
             <% end %>
           </tr>
         <% end %>

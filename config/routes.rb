@@ -22,6 +22,7 @@ Rails.application.routes.draw do
    resources :users, only: %i(index show destroy edit update) do
      resources :reservations, only: %i(show index destroy)
    end
+   resources :reservations, only: %i(new edit update destroy)
    get 'reservations_by_day', to: 'reservations#reservations_by_day', as: 'reservations_by_day'
   end
   
