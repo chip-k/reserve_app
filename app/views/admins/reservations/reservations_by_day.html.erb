@@ -45,12 +45,10 @@
             <% if reservation.present? %>
               <% if reservation.user.present? %>
                 <td class="reserved"><%= link_to reservation.user.name, admins_user_path(reservation.user) %></td>
+              <% elsif reservation.new_user_name.present? %>
+                <td class="reserved"><%= reservation.new_user_name %></td>
               <% else %>
-                <% if reservation.new_user_name.present? %>
-                  <td class="reserved"><%= reservation.new_user_name %></td>
-                <% else %>
-                  <td class="reserved">予約あり（ユーザー名未登録）</td>
-                <% end %>
+                <td class="reserved">予約あり（ユーザー名未登録）</td>
               <% end %>
               <td></td>
               <td>

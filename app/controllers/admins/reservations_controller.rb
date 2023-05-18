@@ -72,7 +72,13 @@ class Admins::ReservationsController < Admins::BaseController
     else
     @reservation.update(reservation_params)
     end
-    redirect_to admins_reservations_by_day_path, notice: '予約を編集しました'
+    
+    if params[:reservation][:user_id] == "saienji"
+      @reservation.new_user_name = "西圓寺"
+    end
+    @reservation.save
+    updated_date = @reservation.day
+    redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
   end
   
   private

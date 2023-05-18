@@ -13,66 +13,11 @@
         <br>
         <%= f.label :user_id, "ユーザー名", class: "form-label" %>
         
-        
         <% user_options = User.where(id: @reservation.user_id).pluck(:name, :id) %>
-        <% user_options << [@reservation.new_user_name, @reservation.new_user_name] if @reservation.new_user_name.present? %>
         <% user_options << ["西圓寺", "saienji"] %>
-
-        <% existing_user_names = User.pluck(:name) %>
-        <% similar_names = existing_user_names.select { |name| name.downcase.include?(@reservation.new_user_name.downcase) } if @reservation.new_user_name.present? %>
-        <% user_options += similar_names.map { |name| [name, name] } if similar_names.present? %>
-
-<% user_options = User.where(id: @reservation.user_id).pluck(:name, :id) %>
-<% user_options << [@reservation.new_user_name, @reservation.new_user_name] if @reservation.new_user_name.present? %>
-<% user_options << ["西圓寺", "saienji"] %>
-
-<% existing_user_names = User.pluck(:name) %>
-<% similar_names = existing_user_names.select { |name| name.downcase.include?(@reservation.new_user_name.downcase) } if @reservation.new_user_name.present? %>
-<% user_options += similar_names.map { |name| [name, User.find_by(name: name).id] } if similar_names.present? %>
-
-<%= select_tag "reservation[user_id]", options_for_select(user_options.push(["任意の名前を入力", "new"])), include_blank: true, id: "user-select", onchange: "toggleNewUserName(this)" %>
-<%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var userOptions = JSON.parse('<%= user_options.to_json.html_safe %>');
-
-    var userSelect = document.getElementById('user-select');
-    var newUserName = document.getElementById('new-user-name');
-
-    userSelect.addEventListener('change', function() {
-      if (userSelect.value === 'new') {
-        newUserName.classList.remove('d-none');
-      } else {
-        newUserName.classList.add('d-none');
-      }
-    });
-
-    newUserName.addEventListener('input', function() {
-      var inputName = newUserName.value.trim().toLowerCase();
-      var similarOptions = userOptions.filter(function(option) {
-        return option[0].toLowerCase().includes(inputName);
-      });
-      updateSelectOptions(similarOptions);
-    });
-
-    function updateSelectOptions(options) {
-      userSelect.innerHTML = '';
-
-      options.forEach(function(option) {
-        var newOption = new Option(option[0], option[1]);
-        userSelect.add(newOption);
-      });
-
-      var newOption = new Option('任意の名前を入力', 'new');
-      userSelect.add(newOption);
-
-      userSelect.value = 'new';
-    }
-
-    updateSelectOptions(userOptions);
-  });
-</script>
+        
+        <%= select_tag "reservation[user_id]", options_for_select(user_options.push(["任意の名前を入力", "new"])), include_blank: true, id: "user-select", onchange: "toggleNewUserName(this)" %>
+        <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
 
         <%= f.submit "更新", class: "btn btn-primary" %>
         
