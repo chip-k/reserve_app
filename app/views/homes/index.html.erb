@@ -109,10 +109,10 @@
       <div class="contact">
         <h6>お問い合わせ先</h6>
         <p>
-          浄土真宗本願寺派 法輪山 西圓寺<br>
-          〒811-4205<br>
-          福岡県遠賀郡岡垣町三吉869<br>
-          TEL：093-282-6765<br>
+          浄土真宗本願寺派 法輪山 <%= @admin.name %><br>
+          〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
+          <%= @admin.prefecture_code %><%= @admin.city %><%= @admin.street %><br>
+          TEL：<%= @admin.phone_number %><br>
           FAX：093-776-1859
         </p>
       </div>

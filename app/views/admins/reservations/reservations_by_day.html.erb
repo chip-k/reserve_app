@@ -47,6 +47,8 @@
                 <td class="reserved"><%= link_to reservation.user.name, admins_user_path(reservation.user) %></td>
               <% elsif reservation.new_user_name.present? %>
                 <td class="reserved"><%= reservation.new_user_name %></td>
+              <% elsif reservation.admin.present? %>
+                <td class="reserved"><%= reservation.admin.name %></td>
               <% else %>
                 <td class="reserved">予約あり（ユーザー名未登録）</td>
               <% end %>
@@ -59,7 +61,7 @@
             <% else %>
               <td class="table-light"></td>
               <td class="table-light"></td>
-              <td class="table-light"></td>
+              <td class="table-light"><%= link_to "追加", new_admins_reservation_path(day: @date, time: time) %></td>
             <% end %>
           </tr>
         <% end %>

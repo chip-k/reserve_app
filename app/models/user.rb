@@ -7,6 +7,11 @@ class User < ApplicationRecord
   
   has_many :reservations
   
+  def self.search(search)
+    return User.all unless search
+    User.where(['name LIKE ?', "%#{search}%"])
+  end
+  
   include JpPrefecture
   jp_prefecture :prefecture_code
   

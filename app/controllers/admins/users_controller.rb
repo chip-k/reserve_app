@@ -7,8 +7,8 @@ class Admins::UsersController < ApplicationController
   end
   
   def index
-    @users = User.all
     @reservation = Reservation.all
+    @users = User.search(params[:search])
   end
   
   def edit

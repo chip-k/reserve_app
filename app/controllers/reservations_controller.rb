@@ -32,8 +32,7 @@ class ReservationsController < ApplicationController
   def index
     user_id = current_user.id
     @reservations = Reservation.where(user_id: user_id)
-    #@admin = Admin.phone_number
-    @admin = "093-282-6765"
+    @admin = Admin.find(1)
   end
   
   def destroy
@@ -54,6 +53,7 @@ class ReservationsController < ApplicationController
   end
   
   def week
+    @admin = Admin.find(1)
     @date = Date.parse(params[:date])
     if Reservation.check_reservation_days(@date)
       flash[:alert] = "過去の日付は選択できません。"

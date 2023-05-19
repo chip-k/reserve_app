@@ -15,6 +15,7 @@
           <% if @date == Date.today %>
             <span class="text-center">
               <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
+              (TEL: <%= @admin.phone_number %>)
             </span>
           <% end %>
         <% end %>

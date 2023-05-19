@@ -4,6 +4,14 @@
       <%= @reservation.errors.full_messages %>
     <% end %>
     <h1 class="text-center">新規予約画面</h1>
+    
+    <%= form_tag(new_admins_reservation_path(day: @day, time: @time), method: :get, class: "input-group") do %>
+      <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
+      <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
+        <i class="fas fa-search"></i> 検索
+      <% end %>
+    <% end %>
+    
     <div class="col-4 mx-auto mt-3">
       <%= form_with model: @reservation, local: true, class: 'form' do |form| %>
       <div class="day form-group">
