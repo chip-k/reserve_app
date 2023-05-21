@@ -1,7 +1,9 @@
 class Admins::ReservationsController < Admins::BaseController
   
   def new
-    @users = User.search(params[:search])
+    #@users = User.search(params[:search])
+    @user_id = params[:user_id]
+    @user = User.find_by(id: @user_id)
     @reservation = Reservation.new
     @day = params[:day]
     @time = params[:time]
@@ -57,10 +59,12 @@ class Admins::ReservationsController < Admins::BaseController
     @reservations = @user.reservations
   end
   
+  def show
+    
+  
   def edit
     @reservation = Reservation.find(params[:id])
     user_options = User.pluck(:name, :id).push(["任意の名前を入力", "new"])
-    #existing_user_names = User.pluck(:name)
     if @reservation.new_user_name.present?
       user_options.push([@reservation.new_user_name, @reservation.new_user_name])
     end

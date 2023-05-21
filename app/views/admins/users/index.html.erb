@@ -15,6 +15,9 @@
         <td><%= user.name %></td>
         <td><%= link_to "ユーザー詳細", admins_user_path(user.id) %></td>
         <td><%= link_to "予約一覧", admins_user_reservations_path(user) %></td>
+        <% if params[:source] == 'admins_users' %>
+          <td><%= link_to '予約へ追加', new_admins_reservation_path(user_id: user.id, source: 'admins_users', day: params[:day], time: params[:time]) %></td>
+        <% end %>
       </tr>
       <% end %>
     </table>
