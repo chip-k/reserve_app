@@ -10,8 +10,17 @@
       <tr>
         <th class="text-center">時間：<td><%= @reservation.time %></td></th>
       </tr>
+      <tr>
+        <% if @reservation.user.present? %>
+          <th class="text-center">ユーザー名：　　　<td><%= @reservation.user.name %></td></th>
+        <% elsif @reservation.new_user_name.present? %>
+          <th class="text-center">ユーザー名：　　　<td><%= @reservation.new_user_name %></td></th>
+        <% elsif @reservation.admin.present? %>
+          <th class="text-center">ユーザー名：　　　<td><%= @reservation.admin.name %></td></th>
+        <% end %>
+      </tr>
     </table>
-    <% unless admin_signed_in? %>
+    <% if user_signed_in? %>
       <div>
         <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
         <p>※お寺の都合により仮予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>

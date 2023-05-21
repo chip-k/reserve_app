@@ -6,8 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-#Admin.find_or_create_by(id: 1) do |admin|
- admin = Admin.find(1)
+Admin.find_or_create_by(id: 1) do |admin|
+ #admin = Admin.find(1)
  admin.name = "西圓寺"
  admin.email = "example@example.com"
  admin.password = "example"
@@ -17,6 +17,6 @@
  admin.city = "遠賀郡"
  admin.street = "岡垣町三吉869"
  admin.other_address = ""
- if admin.save
- end
-#end
+ #if admin.save
+ #end
+end

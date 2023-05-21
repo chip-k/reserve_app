@@ -1,7 +1,6 @@
 <div class="simple-calendar">
   <h3 class="calendar-title text-center mt-3"><%= start_date.year %>年 <%= t('date.month_names')[start_date.month] %></h3>
   <div class="calendar-heading d-flex justify-content-between">
-    
     <% if Date.parse(calendar.url_for_previous_view) > Date.current.beginning_of_month %>
       <%= link_to t('simple_calendar.previous', default: "&laquo; #{'前月'}".html_safe), calendar.url_for_previous_view %>
     <% else %>

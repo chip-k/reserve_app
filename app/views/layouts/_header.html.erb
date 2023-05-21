@@ -39,10 +39,10 @@
           <% end %>
           <% if admin_signed_in? %>
             <li class="nav-item">
-              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+              <%= link_to "管理メニュー", admins_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "管理メニュー", admins_path, class: "nav-link" %>
+              <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "nav-link" %>
             </li>
           <% elsif user_signed_in? %>
             <li class="nav-item">
