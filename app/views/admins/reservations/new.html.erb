@@ -25,10 +25,16 @@
       <% if @user_id.present? %>
         <%= link_to "ユーザーを変更", admins_users_path(source: 'admins_users', day: @day, time: @time) %>
         |
-        <%= link_to "削除", new_admins_reservation_path(day: @day, time: @time) %>
+        <%= link_to "削除", new_admins_reservation_path(day: @day, time: @time), id: "delete-user-link" %>
       <% else %>
-        <%= link_to "ユーザーを追加", admins_users_path(source: 'admins_users', day: @day, time: @time) %>
+        <%= link_to "ユーザーを追加", admins_users_path(source: 'admins_users', day: @day, time: @time), id: 'add-user-link' %>
       <% end %>
+      
+      <%= check_box_tag "reservation[user_id]", "new", false, id: "new-user-checkbox" %>
+      <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
+
+      <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+      
       
       <%= form.hidden_field :start_time, value: @start_time %>
       <%= form.hidden_field :admin_id, value: current_admin.id %>
@@ -40,3 +46,38 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('turbolinks:load', function() {
+    var newUserNameField = document.getElementById('new-user-name');
+    var newUserCheckbox = document.getElementById('new-user-checkbox');
+    var addLink = document.getElementById('add-user-link');
+
+    newUserCheckbox.addEventListener('change', function() {
+      if (newUserCheckbox.checked) {
+        newUserNameField.classList.remove('d-none');
+        addLink.style.display = 'none';
+      } else {
+        newUserNameField.classList.add('d-none');
+        addLink.style.display = 'block';
+      }
+    });
+  });
+</script>
+
+<script>
+  function clickDeleteLink() {
+    var deleteLink = document.getElementById('delete-user-link');
+    deleteLink.click();
+  }
+
+  document.addEventListener('turbolinks:load', function() {
+    var newUserCheckbox = document.getElementById('new-user-checkbox');
+
+    newUserCheckbox.addEventListener('change', function() {
+      if (newUserCheckbox.checked) {
+        clickDeleteLink();
+      }
+    });
+  });
+</script>

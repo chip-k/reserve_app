@@ -16,7 +16,7 @@ class Admins::ReservationsController < Admins::BaseController
   
   def create
     if params[:reservation][:user_id] == 'new'
-      @reservation = Reservation.new(reservation_params.merge(user_name: params[:reservation][:new_user_name]))
+      @reservation = Reservation.new(reservation_params.merge(new_user_name: params[:reservation][:new_user_name]))
     else
       @reservation = Reservation.new(reservation_params)
       if @reservation.save
