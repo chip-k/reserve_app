@@ -1,7 +1,6 @@
 class Admins::ReservationsController < Admins::BaseController
   
   def new
-    #@users = User.search(params[:search])
     @user_id = params[:user_id]
     @user = User.find_by(id: @user_id)
     @reservation = Reservation.new
@@ -29,11 +28,7 @@ class Admins::ReservationsController < Admins::BaseController
   end
 
   def reservations_by_day
-    if params[:from_link] == 'true'
-      @date = Data.parse(params[:day])
-    else
-      @date = params[:day] ? Date.parse(params[:day]) : Date.today
-    end
+    @date = params[:day] ? Date.parse(params[:day]) : Date.today
     start_time = @date.beginning_of_day
     end_time = @date.end_of_day
     @reservations = Reservation.where(start_time: start_time..end_time).includes(:user)
@@ -65,26 +60,33 @@ class Admins::ReservationsController < Admins::BaseController
   
   def edit
     @reservation = Reservation.find(params[:id])
-    user_options = User.pluck(:name, :id).push(["任意の名前を入力", "new"])
-    if @reservation.new_user_name.present?
-      user_options.push([@reservation.new_user_name, @reservation.new_user_name])
-    end
+    @user_id = params[:user_id]
+    @user = User.find_by(id: @user_id)
   end
   
   def update
     @reservation = Reservation.find(params[:id])
+    if params[:reservation][:day].present?
+      new_day = Date.parse(params[:reservation][:day])
+      puts "new_day: #{new_day}"
+      @reservation.day = new_day
+    end
     if params[:reservation] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     else
-    @reservation.update(reservation_params)
+      @reservation.update(reservation_params)
     end
-    
-    if params[:reservation][:user_id] == "saienji"
-      @reservation.new_user_name = "西圓寺"
+    if @reservation.save
+      updated_date = @reservation.day
+      @reservations = Reservation.where(day: updated_date)
+      redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
     end
-    @reservation.save
-    updated_date = @reservation.day
-    redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
+  end
+  
+  def delete_user
+    @reservation = Reservation.find(params[:id])
+    @reservation.update(user_id: nil)
+    redirect_to edit_admins_reservation_path(@reservation, user_id: nil)
   end
   
   private

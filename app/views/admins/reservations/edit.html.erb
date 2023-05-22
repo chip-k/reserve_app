@@ -1,25 +1,46 @@
 <div class="container days">
-  <div class="row col-10 mt-5 mb-4 mx-auto">
-    <div class="text-center title">
-      <h2>予約編集画面</h2>
+  <div class="row col-7 mt-5 mx-auto text-center">
+    <h2 class="text-center mb-3">予約編集画面</h2>
       <%= form_with model: @reservation, url: admins_reservation_path(@reservation), method: :patch, local: true, id: "edit-form" do |f| %>
-        <%= f.label :day, "日付", class: "form-label" %>
-        <%= f.date_field :day, value: @reservation.day.to_date, name: "reservation[day]", id: "reservation-day" %>
+        <table>
+          <tbody>
+            <tr>
+              <th><%= f.label :day, "日付", class: "form-label" %></th>
+              <td><%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %></td>
+            </tr>
+            <tr>
+              <th><%= f.label :time, "時間", class: "form-label" %></th>
+              <td><%= select_tag "reservation[time]", options_for_select((9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }, selected: @reservation&.time), include_blank: false, prompt: '選択してください', class: "form-control" %></td>
+            </tr>
+            <tr>
+              <% if params[:user_id].present? %>
+                <% @reservation.user_id = params[:user_id] %>
+                <%= @user.name %>
+                <%= f.hidden_field :user_id, value: @reservation.user_id %>
+              <% elsif @reservation.user.present? %>
+                <%= @reservation.user.name %>
+              <% end %>
+              <% if @reservation.user_id.present? %>
+                <%= link_to "ユーザーを変更", admins_users_path(source: 'edit_admins_users', reservation_id: @reservation.id) %>
+                |
+                <%= link_to "削除", delete_user_admins_reservation_path(@reservation, user_id: @reservation.user_id), method: :patch, id: "delete-user-link" %>
+              <% else %>
+                <%= link_to "ユーザーを追加", admins_users_path(source: 'edit_admins_users', reservation_id: @reservation.id), id: 'add-user-link' %>
+              <% end %>
+            </tr>
+          </tbody>
+        </table>
         
-        <%= f.label :time, "時間", class: "form-label" %>
-        
-        <%= select_tag "reservation[time]", options_for_select((9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }, selected: @reservation&.time), include_blank: false, prompt: '選択してください' %>
-        
-        <br>
-        <%= f.label :user_id, "ユーザー名", class: "form-label" %>
-        
-        <% user_options = User.where(id: @reservation.user_id).pluck(:name, :id) %>
-        <% user_options << ["西圓寺", "saienji"] %>
-        
-        <%= select_tag "reservation[user_id]", options_for_select(user_options.push(["任意の名前を入力", "new"])), include_blank: true, id: "user-select", onchange: "toggleNewUserName(this)" %>
-        <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+        <%= check_box_tag "reservation[user_id]", "new", false, id: "new-user-checkbox" %>
+        <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
 
-        <%= f.submit "更新", class: "btn btn-primary" %>
+        <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+        
+        <div class="text-center">
+          <%= f.submit "更新", class: "btn btn-primary" %>
+        </div>
+        
+        <%= f.hidden_field :admin_id, value: current_admin.id %>
         
       <% end %>
     </div>
@@ -27,12 +48,23 @@
 </div>
         
 <script>
-  function toggleNewUserName(selectElement) {
-    let newUserName = document.getElementById('new-user-name');
-    if (selectElement.value === 'new') {
-      newUserName.classList.remove('d-none');
-    } else {
-      newUserName.classList.add('d-none');
-    }
-  }
+  document.addEventListener('turbolinks:load', function() {
+    let deleteLink = document.getElementById('delete-user-link');
+    let newUserNameField = document.getElementById('new-user-name');
+    let newUserCheckbox = document.getElementById('new-user-checkbox');
+    let addLink = document.getElementById('add-user-link');
+
+    newUserCheckbox.addEventListener('change', function() {
+      if (newUserCheckbox.checked) {
+        if (deleteLink) {
+          deleteLink.click();
+        }
+        newUserNameField.classList.remove('d-none');
+        addLink.style.display = 'none';
+      } else {
+        newUserNameField.classList.add('d-none');
+        addLink.style.display = 'block';
+      }
+    });
+  });
 </script>

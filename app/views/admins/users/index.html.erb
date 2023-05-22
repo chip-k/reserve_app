@@ -2,7 +2,7 @@
   <div class="row col-7 mx-auto">
     <h2 class="text-center mt-5 mb-4">ユーザー一覧画面</h2>
     
-    <%= form_tag(admins_users_path(source: 'admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>
+    <%= form_tag(admins_users_path(source: 'new_admins_users' || 'edit_admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>
       <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
       <%= hidden_field_tag(:source, 'admins_users') %>
       <%= hidden_field_tag(:day, params[:day]) %>
@@ -18,8 +18,10 @@
         <td><%= user.name %></td>
         <td><%= link_to "ユーザー詳細", admins_user_path(user.id) %></td>
         <td><%= link_to "予約一覧", admins_user_reservations_path(user) %></td>
-        <% if params[:source] == 'admins_users' %>
-          <td><%= link_to '予約へ追加', new_admins_reservation_path(user_id: user.id, source: 'admins_users', day: params[:day], time: params[:time]) %></td>
+        <% if params[:source] == 'new_admins_users' %>
+          <td><%= link_to '予約へ追加', new_admins_reservation_path(user_id: user.id, source: 'new_admins_users', day: params[:day], time: params[:time]) %></td>
+        <% elsif params[:source] == 'edit_admins_users' %>
+          <td><%= link_to '予約へ追加', edit_admins_reservation_url(params[:reservation_id], user_id: user.id, source: 'edit_admins_users') %></td>
         <% end %>
       </tr>
       <% end %>
