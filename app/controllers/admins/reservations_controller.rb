@@ -68,10 +68,10 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation = Reservation.find(params[:id])
     if params[:reservation][:day].present?
       new_day = Date.parse(params[:reservation][:day])
-      puts "new_day: #{new_day}"
       @reservation.day = new_day
+      @reservation.start_time = DateTime.parse(params[:reservation][:day] + " " + params[:reservation][:time] + " " + "JST")
     end
-    if params[:reservation] == "new" && params[:reservation][:new_user_name].present?
+    if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     else
       @reservation.update(reservation_params)
@@ -80,6 +80,8 @@ class Admins::ReservationsController < Admins::BaseController
       updated_date = @reservation.day
       @reservations = Reservation.where(day: updated_date)
       redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
+    else
+      render :edit
     end
   end
   
