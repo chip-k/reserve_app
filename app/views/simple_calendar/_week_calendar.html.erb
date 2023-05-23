@@ -4,17 +4,17 @@
       <div class="calendar-heading d-flex justify-content-between">
         <% prev_week = @date - 1.week %>
         <% next_week = @date + 1.week %>
-        <% if prev_week == Date.today - 1.week + 1.day %>
+        <% if prev_week == Time.zone.today - 1.week %>
           <%= "&laquo; #{'前の一週間'}".html_safe %>
-        <% elsif prev_week <= Date.today %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: Date.today + 1.day) %>
+        <% elsif prev_week <= Time.zone.today %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: Time.zone.today) %>
         <% else %>
           <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: prev_week) %>
         <% end %>
         <% unless admin_signed_in? %>
-          <% if @date == Date.today %>
+          <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
             <span class="text-center">
-              <%= '※当日の仮予約はできません。お電話にてご相談ください。' %>
+              <%= '※当日、翌日の予約はできません。お電話にてご相談ください。' %>
               (TEL: <%= @admin.phone_number %>)
             </span>
           <% end %>
@@ -71,7 +71,7 @@
               <% date_range = @date..(@date + 6.days) %>
               <% date_range.each do |day| %>
                 <% unless admin_signed_in? %>
-                  <% if check_reservation(reservations, day, time) || day.past? || day == Date.today %>
+                  <% if check_reservation(reservations, day, time) || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
                   <% elsif user_signed_in? %>
                     <td class="table-hover">
@@ -102,7 +102,7 @@
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("turbolinks:load", function() {
     const cells = document.querySelectorAll(".table-cell");
     cells.forEach(function(cell) {
       cell.addEventListener("click", function() {

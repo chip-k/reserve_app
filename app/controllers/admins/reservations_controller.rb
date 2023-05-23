@@ -28,12 +28,12 @@ class Admins::ReservationsController < Admins::BaseController
   end
 
   def reservations_by_day
-    @date = params[:day] ? Date.parse(params[:day]) : Date.today
+    @date = params[:day] ? Date.parse(params[:day]) : Time.zone.today
     start_time = @date.beginning_of_day
     end_time = @date.end_of_day
     @reservations = Reservation.where(start_time: start_time..end_time).includes(:user)
     session[:search_date] = params[:day]
-    @search_date = session[:search_date] || Date.today
+    @search_date = session[:search_date] || Time.zone.today
   end
   
   def destroy_by_day
@@ -51,7 +51,7 @@ class Admins::ReservationsController < Admins::BaseController
   
   def index
     @user = User.find(params[:user_id])
-    @reservations = @user.reservations
+    @reservations = @user.reservations.where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
   end
   
   def show

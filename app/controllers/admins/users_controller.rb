@@ -8,7 +8,7 @@ class Admins::UsersController < ApplicationController
   
   def index
     @reservation = Reservation.all
-    @users = User.search(params[:search])
+    @users = User.search(params[:search]).order(:name_kana)
   end
   
   def edit
@@ -39,14 +39,14 @@ class Admins::UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
-    params.require(:user).permit(:name, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation).except(:current_password)
+    params.require(:user).permit(:name, :name_kana, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation).except(:current_password)
   end
   
   def configure_permitted_parameters
     if admin_signed_in?
-      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :name_kana, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number])
     else
-      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation, :current_password])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:name, :name_kana, :postal_code, :prefecture_code, :city, :street, :other_address, :email, :phone_number, :password, :password_confirmation, :current_password])
     end
   end
   

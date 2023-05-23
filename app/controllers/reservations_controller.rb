@@ -31,7 +31,7 @@ class ReservationsController < ApplicationController
   
   def index
     user_id = current_user.id
-    @reservations = Reservation.where(user_id: user_id)
+    @reservations = Reservation.where(user_id: user_id).where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
     @admin = Admin.find(1)
   end
   

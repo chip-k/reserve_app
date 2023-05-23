@@ -9,6 +9,11 @@
         <%= f.label :name, "氏名" %><br>
         <%= f.text_field :name, class: 'form-control' %>
       </div>
+      
+      <div class="field">
+        <%= f.label :name_kana, "氏名(カナ)" %><br>
+        <%= f.text_field :name_kana, class: 'form-control' %>
+      </div>
   
       <div class="field">
         <%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %><br>
@@ -75,8 +80,13 @@
 
     <h3 class="text-center mt-5 mb-4">アカウント削除</h3>
     <div class="text-center">
-      アカウントを削除しますか？
-      <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete %>
+      <% if @user.reservations.where("day >= ?", Date.today).exists? %>
+        予約が作成されているため削除できません。
+        <%= link_to "予約一覧", reservations_path(@user.id) %>
+      <% else %>
+        アカウントを削除しますか？
+        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete %>
+      <% end %>
     </div>
 
     <%= link_to "キャンセル", user_path(@user), class: "text-center mt-3" %>

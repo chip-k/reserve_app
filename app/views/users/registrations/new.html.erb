@@ -9,7 +9,11 @@
       <table class="table">
         <tr>
           <th class="required"><%= f.label :name, "名前" %></th>
-          <td><%= f.text_field :name, class: 'form-control', placeholder: "例) 山田 太郎" %></td>
+          <td><%= f.text_field :name, class: 'form-control', placeholder: "例) 山田太郎" %></td>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :name_kana, "名前(カナ)" %></th>
+          <td><%= f.text_field :name_kana, class: 'form-control', placeholder: "例) ヤマダタロウ" %></td>
         </tr>
         <tr>
           <th><%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %></th>

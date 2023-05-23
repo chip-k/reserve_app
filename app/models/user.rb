@@ -5,7 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_many :reservations
+  has_many :reservations, dependent: :destroy
   
   def self.search(search)
     return User.all unless search

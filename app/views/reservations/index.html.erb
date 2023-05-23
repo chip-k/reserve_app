@@ -6,7 +6,7 @@
     <div class="text-center mt-3">
       <% if @reservations.count > 0 %>
         <p>下記の日時で予約されています。</p>
-        <p>※前日、当日のキャンセルは直接お電話でお知らせください。</p>
+        <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
         <p>TEL：<%= @admin.phone_number %></p>
       <% else %>
         <p>予約がありません。</p>
@@ -17,7 +17,11 @@
         <tr>
           <td class="text-center">
             <%= reservation.day.strftime('%Y年%m月%d日') %>　　<%= reservation.time %>　　　　
-            <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+            <% unless reservation.day == Date.today || reservation.day == Date.tomorrow %>
+              <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+            <% else %>
+              　　　　　
+            <% end %>
           </td>
         </tr>
       <% end %>

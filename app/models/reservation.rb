@@ -8,15 +8,15 @@ class Reservation < ApplicationRecord
   
   
   def self.check_reservation_day(day)
-    if day < Date.current
+    if day < Time.zone.today
       return "過去の日付は選択できません。"
-    elsif day == Date.current
-      return "当日は選択できません。"
+    elsif day == Time.zone.today || Time.zone.tomorrow
+      return "当日、翌日は選択できません。"
     end
   end
   
   def self.check_reservation_days(day)
-    if day < Date.current
+    if day < Time.zone.today
       return "過去の日付は選択できません。"
     end
   end
