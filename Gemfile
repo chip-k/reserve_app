@@ -61,3 +61,6 @@ gem 'jquery-rails'
 gem "simple_calendar", "~> 2.4"
 gem 'rails-i18n'
 gem 'devise-i18n'
+gem 'dotenv-rails'
+gem 'gmaps4rails'
+gem 'geocoder'

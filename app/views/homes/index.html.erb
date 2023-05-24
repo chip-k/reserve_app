@@ -111,7 +111,7 @@
         <p>
           浄土真宗本願寺派 法輪山 <%= @admin.name %><br>
           〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
-          <%= @admin.prefecture_code %><%= @admin.city %><%= @admin.street %><br>
+          <%= @admin.address %><br>
           TEL：<%= @admin.phone_number %><br>
           FAX：093-776-1859
         </p>
@@ -119,3 +119,33 @@
     </div>
   </section>
   
+  
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+  <script>
+  function initMap(){
+    
+    let mapPosition = {lat: <%= @admin.latitude %> , lng: <%= @admin.longitude %> };
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: mapPosition
+    });
+    let transitLayer = new google.maps.TransitLayer();
+    transitLayer.setMap(map);
+    
+    let contentString = '<%= @admin.address %>';
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    let marker = new google.maps.Marker({
+      position: mapPosition,
+      map: map,
+      title: contentString
+    });
+  }
+  </script>
+  
+  
+  <div class="map">
+    <div id="map"></div>
+  </div>
