@@ -43,6 +43,7 @@
         <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
       
         <%= form.hidden_field :start_time, value: @start_time %>
+        <%= form.hidden_field :status, value: @status %>
         <%= form.hidden_field :admin_id, value: current_admin.id %>
       
         <div class="submit">

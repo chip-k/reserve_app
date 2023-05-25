@@ -10,7 +10,7 @@ class Reservation < ApplicationRecord
   def self.check_reservation_day(day)
     if day < Time.zone.today
       return "過去の日付は選択できません。"
-    elsif day == Time.zone.today || Time.zone.tomorrow
+    elsif day == Time.zone.today || day == Time.zone.tomorrow
       return "当日、翌日は選択できません。"
     end
   end
@@ -36,5 +36,12 @@ class Reservation < ApplicationRecord
     reservation_data
   end
   
+  def status
+    if self[:status]
+      "確定"
+    else
+      "確認中"
+    end
+  end
 
 end

@@ -14,9 +14,11 @@
     </div>
     <table class="table mt-3">
       <% @reservations.each do |reservation| %>
-        <tr>
-          <td class="text-center">
-            <%= reservation.day.strftime('%Y年%m月%d日') %>　　<%= reservation.time %>　　　　
+        <tr class="text-center">
+          <td><%= reservation.day.strftime('%Y年%m月%d日') %></td>
+          <td><%= reservation.time %></td>
+          <td><%= reservation.status %></td>
+          <td>
             <% unless reservation.day == Date.today || reservation.day == Date.tomorrow %>
               <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
             <% else %>

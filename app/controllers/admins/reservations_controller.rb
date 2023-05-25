@@ -4,6 +4,7 @@ class Admins::ReservationsController < Admins::BaseController
     @user_id = params[:user_id]
     @user = User.find_by(id: @user_id)
     @reservation = Reservation.new
+    @status = false
     @day = params[:day]
     @time = params[:time]
     @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
@@ -52,6 +53,7 @@ class Admins::ReservationsController < Admins::BaseController
   def index
     @user = User.find(params[:user_id])
     @reservations = @user.reservations.where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
+    @reservation_ids = @reservations.pluck(:id)
   end
   
   def show
@@ -82,6 +84,16 @@ class Admins::ReservationsController < Admins::BaseController
       redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
     else
       render :edit
+    end
+  end
+  
+  def update_status
+    reservation = Reservation.find(params[:reservation_id])
+    reservation.update(status: params[:reservation][:status])
+    if reservation.save
+      render json: { status: 'success' }
+    else
+      render json: { status: 'error' }, status: :unprocessable_entity
     end
   end
   

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
    end
    resources :reservations, only: %i(new edit update) do
      patch :delete_user, on: :member
+     patch 'update_status', to: 'reservations#update_status', as: 'update_status'
    end
    get 'reservations_by_day', to: 'reservations#reservations_by_day', as: 'reservations_by_day'
    delete 'reservations_by_day', to: 'reservations#destroy_by_day', as: 'destroy_reservations_by_day'
