@@ -19,15 +19,20 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save
-      flash[:success] = "下記の日時で仮予約を行いました。"
-      redirect_to reservation_path @reservation.id
+      flash[:success] = "下記の日時で予約を行いました。"
+      redirect_to complete_reservation_path @reservation.id
     else
       render :new
     end
   end
   
+  def complete
+    @reservation = Reservation.find(params[:id])
+  end
+  
   def show
     @reservation = Reservation.find(params[:id])
+    @admin = Admin.find(1)
   end
   
   def index
@@ -66,7 +71,7 @@ class ReservationsController < ApplicationController
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name)
+    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
   
 end

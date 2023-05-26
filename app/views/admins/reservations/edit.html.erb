@@ -43,11 +43,16 @@
 
         <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
         
-        <div class="text-center">
-          <%= f.submit "更新", class: "btn btn-primary" %>
+        <div class="comment form-group mt-2">
+          <%= f.label :comment, '備考欄', class: "form-label" %>
+          <%= f.text_area :comment, class: 'form-control' %>
         </div>
         
         <%= f.hidden_field :admin_id, value: current_admin.id %>
+        
+        <div class="text-center mt-3">
+          <%= f.submit "更新", class: "btn btn-primary" %>
+        </div>
         
       <% end %>
     </div>

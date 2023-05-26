@@ -32,7 +32,9 @@ Rails.application.routes.draw do
   
   get 'reservations/month' => 'reservations#month'
   get 'reservations/week' => 'reservations#week'
-  resources :reservations
+  resources :reservations do
+    get 'complete', on: :member
+  end
   
   resources :homes
   resources :posts

@@ -41,7 +41,13 @@
         <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
 
         <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
-      
+        
+        
+        <div class="comment form-group mt-2">
+          <%= form.label :comment, '備考欄', class: "form-label" %>
+          <%= form.text_area :comment, class: 'form-control' %>
+        </div>
+        
         <%= form.hidden_field :start_time, value: @start_time %>
         <%= form.hidden_field :status, value: @status %>
         <%= form.hidden_field :admin_id, value: current_admin.id %>

@@ -19,12 +19,12 @@ class Admins::ReservationsController < Admins::BaseController
       @reservation = Reservation.new(reservation_params.merge(new_user_name: params[:reservation][:new_user_name]))
     else
       @reservation = Reservation.new(reservation_params)
-      if @reservation.save
-        flash[:success] = "下記の日時で仮予約を行いました。"
-        redirect_to reservation_path @reservation.id
-      else
-        render :new
-      end
+    end
+    if @reservation.save
+      flash[:success] = "下記の日時で仮予約を行いました。"
+      redirect_to complete_reservation_path @reservation.id
+    else
+      render :new
     end
   end
 
@@ -106,7 +106,7 @@ class Admins::ReservationsController < Admins::BaseController
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name)
+    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
   
 end

@@ -33,8 +33,8 @@
         <tr>
           <th class="text-center col-1">日時</th>
           <th class="text-center col-2">予約</th>
-          <th class="text-center col-5">備考</th>
-          <th class="text-center col-2"></th>
+          <th class="text-center col-6">備考</th>
+          <th class="text-center col-3"></th>
         </tr>
       </thead>
       <tbody class="text-center">
@@ -52,8 +52,14 @@
               <% else %>
                 <td class="reserved">予約あり（ユーザー名未登録）</td>
               <% end %>
-              <td></td>
+              <td><%= reservation.comment %></td>
               <td>
+                <span  class="toggle_button col-auto">
+                  <span id="status-<%= reservation.id %>"><%= reservation.status %></span>
+                  <input id="toggle-<%= reservation.id %>" class="toggle_input" type="checkbox" data-reservation-id="<%= reservation.id %>" data-update-url="<%= admins_reservation_update_status_path(reservation) %>" <%= reservation.status ? 'checked' : '' %> />
+                  <label for="toggle-<%= reservation.id %>" class="toggle_label"></label>
+                </span>
+                ｜
                 <%= link_to "編集", edit_admins_reservation_path(reservation) %>
                 ｜
                 <%= link_to "削除", admins_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
@@ -78,6 +84,56 @@
   if (searchDate) {
     searchDate.addEventListener("change", function() {
       searchForm.submit();
+    });
+  }
+});
+</script>
+
+
+<script>
+  document.addEventListener('turbolinks:load', function() {
+  const toggleInputs = document.querySelectorAll('.toggle_input');
+
+  toggleInputs.forEach(function(input) {
+    const reservationId = input.getAttribute('data-reservation-id');
+    const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
+    const initialStatus = storedStatus ? storedStatus === 'true' : false;
+    
+    input.checked = initialStatus;
+    
+    input.addEventListener('change', function() {
+      const reservationId = input.getAttribute('data-reservation-id');
+      const status = input.checked;
+      
+      localStorage.setItem(`reservation-${reservationId}-status`, status);
+
+      updateReservationStatus(reservationId, status);
+    });
+  });
+
+  function updateReservationStatus(reservationId, status) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const url = "/admins/reservations/" + reservationId + "/update_status";
+
+    fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      body: JSON.stringify({ status: status.toString() })
+    })
+    .then(function(response) {
+      if (response.ok) {
+        const statusElement = document.querySelector(`#status-${reservationId}`);
+        const newStatus = status ? '確定' : '確認中';
+        statusElement.textContent = newStatus;
+      } else {
+        // ステータスの更新が失敗した場合の処理を記述
+      }
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
     });
   }
 });
