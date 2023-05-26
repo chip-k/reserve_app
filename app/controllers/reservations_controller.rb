@@ -5,11 +5,8 @@ class ReservationsController < ApplicationController
     @status = false
     @day = params[:day]
     @time = params[:time]
-    @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
-    message = Reservation.check_reservation_day(@day.to_date)
-    if !!message
-      redirect_to reservations_path, flash: { danger: message }
-    end
+    @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
+    @end_time = @start_time + 30.minutes
     if Reservation.reserved?(@start_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to reservations_path
@@ -71,7 +68,7 @@ class ReservationsController < ApplicationController
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
+    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
   
 end

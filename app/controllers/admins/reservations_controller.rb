@@ -7,7 +7,7 @@ class Admins::ReservationsController < Admins::BaseController
     @status = false
     @day = params[:day]
     @time = params[:time]
-    @start_time = DateTime.parse(@day + " " + @time + " " + "JST")
+    @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
     if Reservation.reserved?(@start_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to reservations_path
@@ -20,6 +20,12 @@ class Admins::ReservationsController < Admins::BaseController
     else
       @reservation = Reservation.new(reservation_params)
     end
+    
+    end_day = params[:reservation][:day]
+    end_hour = params[:reservation]["end_time(4i)"]
+    end_minute = params[:reservation]["end_time(5i)"]
+    end_time = DateTime.parse("#{end_day} #{end_hour}:#{end_minute}")
+    @reservation.end_time = end_time
     if @reservation.save
       flash[:success] = "下記の日時で仮予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
@@ -106,7 +112,7 @@ class Admins::ReservationsController < Admins::BaseController
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
+    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
   
 end

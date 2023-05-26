@@ -22,7 +22,7 @@ Rails.application.routes.draw do
    resources :users, only: %i(index show destroy edit update) do
      resources :reservations, only: %i(show index destroy)
    end
-   resources :reservations, only: %i(new edit update) do
+   resources :reservations, only: %i(new create edit update) do
      patch :delete_user, on: :member
      patch 'update_status', to: 'reservations#update_status', as: 'update_status'
    end
