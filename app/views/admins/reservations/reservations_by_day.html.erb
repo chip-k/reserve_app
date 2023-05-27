@@ -53,7 +53,7 @@
               <% else %>
                 <td class="reserved">予約あり（ユーザー名未登録）</td>
               <% end %>
-              <td><%= reservation.comment %></td>
+              <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %><br><%= reservation.comment %></td>
               <td>
                 <span id="status-<%= reservation.id %>"><%= reservation.reservation_status %></span>
                 <label class="toggle col-auto">

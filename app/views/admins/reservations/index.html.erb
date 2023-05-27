@@ -13,7 +13,7 @@
     <table class="table mt-3">
       <% @reservations.each do |reservation| %>
         <tr class="text-center">
-          <td><%= link_to reservation.day.strftime('%Y年%m月%d日'), admins_reservations_by_day_path(reservation) %></td>
+          <td><%= link_to reservation.day.strftime('%Y年%m月%d日'), admins_reservations_by_day_path(day: reservation.day) %></td>
           <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
           <td><%= reservation.reservation_status %></td>
           <td><%= link_to "キャンセル", url_for([:admins, @user, reservation]), method: :delete, "data-confirm" => "本当に削除しますか？" %></td>

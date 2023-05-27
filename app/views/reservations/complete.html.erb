@@ -8,7 +8,11 @@
         <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
       </tr>
       <tr>
-        <th class="text-center">時間：<td><%= @reservation.time %></td></th>
+        <% if user_signed_in? %>
+          <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %></td></th>
+        <% elsif admin_signed_in? %>
+          <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %>　-　<%= @reservation.end_time.strftime("%H:%M") %></td></th>
+        <% end %>
       </tr>
       <tr>
         <% if @reservation.user.present? %>

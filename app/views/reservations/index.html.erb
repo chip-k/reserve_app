@@ -17,9 +17,9 @@
         <tr class="text-center">
           <td><%= link_to reservation.day.strftime('%Y年%m月%d日'), reservation_path(reservation) %></td>
           <td><%= reservation.time %></td>
-          <td><%= reservation.status %></td>
+          <td><%= reservation.reservation_status %></td>
           <td>
-            <% if reservation.status == '確認中' || (reservation.day != Time.zone.today && reservation.day != Time.zone.tomorrow) %>
+            <% if reservation.reservation_status == '確認中' || (reservation.day != Time.zone.today && reservation.day != Time.zone.tomorrow) %>
               <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
             <% else %>
               キャンセル

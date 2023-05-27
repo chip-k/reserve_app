@@ -6,11 +6,6 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation = Reservation.new
     @day = params[:day]
     @time = params[:time]
-    @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
-    if Reservation.reserved?(@start_time)
-      flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to reservations_path
-    end
   end
   
   def create
@@ -20,12 +15,18 @@ class Admins::ReservationsController < Admins::BaseController
       @reservation = Reservation.new(reservation_params)
     end
     @reservation.status = false
+    @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
+    @reservation.start_time = @start_time
     end_day = params[:reservation][:day]
     end_hour = params[:reservation]["end_time(4i)"]
     end_minute = params[:reservation]["end_time(5i)"]
-    end_time = DateTime.parse("#{end_day} #{end_hour}:#{end_minute}")
-    @reservation.end_time = end_time
-    if @reservation.save
+    @end_time = DateTime.parse("#{end_day} #{end_hour}:#{end_minute}")
+    @end_time -= 9.hours
+    @reservation.end_time = @end_time
+    if Reservation.reserved?(@start_time, @end_time)
+      flash[:alert] = "指定された日時は既に予約済みです。"
+      redirect_to admins_reservations_by_day_path(@reservation)
+    elsif @reservation.save
       flash[:success] = "下記の日時で仮予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
     else
@@ -35,9 +36,9 @@ class Admins::ReservationsController < Admins::BaseController
 
   def reservations_by_day
     @date = params[:day] ? Date.parse(params[:day]) : Time.zone.today
-    start_time = @date.beginning_of_day
-    end_time = @date.end_of_day
-    @reservations = Reservation.where(start_time: start_time..end_time).includes(:user)
+    start_date = @date.beginning_of_day
+    end_date = @date.end_of_day
+    @reservations = Reservation.where(start_time: start_date..end_date).includes(:user)
     session[:search_date] = params[:day]
     @search_date = session[:search_date] || Time.zone.today
   end

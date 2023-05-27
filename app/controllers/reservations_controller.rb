@@ -4,18 +4,20 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new
     @day = params[:day]
     @time = params[:time]
-    @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
-    @end_time = @start_time + 30.minutes
-    if Reservation.reserved?(@start_time)
-      flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to reservations_path
-    end
   end
   
   def create
     @reservation = Reservation.new(reservation_params)
     @reservation.status = false
-    if @reservation.save
+    @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
+    @reservation.start_time = @start_time
+    @reservation.end_time = @reservation.start_time + 30.minutes
+    @end_time = @reservation.end_time
+    if Reservation.reserved?(@start_time, @end_time)
+      flash[:alert] = "指定された日時は既に予約済みです。"
+      date = Date.current
+      redirect_to reservations_week_path(date: date)
+    elsif @reservation.save
       flash[:success] = "下記の日時で予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
     else
@@ -60,7 +62,7 @@ class ReservationsController < ApplicationController
     @date = Date.parse(params[:date])
     if Reservation.check_reservation_days(@date)
       flash[:alert] = "過去の日付は選択できません。"
-      redirect_to reservations_path
+      render :week
     end
   end
   

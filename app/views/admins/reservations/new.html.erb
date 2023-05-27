@@ -22,11 +22,10 @@
           <div class="end_time form-group my-3 col-6">
             <%= form.label :end_time, '終了時間', class: "form-label" %>
             <div class="d-flex">
-              <%= form.time_select :end_time, { start_hour: 9, end_hour: 19, minute_step: 30, include_seconds: false }, { class: 'form-control mr-2', id: 'end_time_select' } %>
+              <%= form.time_select :end_time, { start_hour: 9, end_hour: 23, minute_step: 30, include_seconds: false }, { class: 'form-control mr-2', id: 'end_time_select' } %>
             </div>
           </div>
         </div>
-        
       
         <table class="mt-3">
           <tbody>
@@ -58,7 +57,7 @@
           <%= form.text_area :comment, class: 'form-control' %>
         </div>
         
-        <%= form.hidden_field :start_time, value: @start_time %>
+        <%#= form.hidden_field :start_time, value: @start_time %>
         <%= form.hidden_field :admin_id, value: current_admin.id %>
       
         <div class="submit">
