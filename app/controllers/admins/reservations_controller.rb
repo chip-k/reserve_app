@@ -4,7 +4,6 @@ class Admins::ReservationsController < Admins::BaseController
     @user_id = params[:user_id]
     @user = User.find_by(id: @user_id)
     @reservation = Reservation.new
-    @status = false
     @day = params[:day]
     @time = params[:time]
     @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
@@ -20,7 +19,7 @@ class Admins::ReservationsController < Admins::BaseController
     else
       @reservation = Reservation.new(reservation_params)
     end
-    
+    @reservation.status = false
     end_day = params[:reservation][:day]
     end_hour = params[:reservation]["end_time(4i)"]
     end_minute = params[:reservation]["end_time(5i)"]
@@ -95,8 +94,8 @@ class Admins::ReservationsController < Admins::BaseController
   
   def update_status
     reservation = Reservation.find(params[:reservation_id])
-    reservation.update(status: params[:reservation][:status])
-    if reservation.save
+    new_status = params[:status] == 'true'
+    if reservation.update(status: new_status)
       render json: { status: 'success' }
     else
       render json: { status: 'error' }, status: :unprocessable_entity

@@ -36,7 +36,7 @@ class Reservation < ApplicationRecord
     reservation_data
   end
   
-  def status
+  def reservation_status
     if self[:status]
       "確定"
     else

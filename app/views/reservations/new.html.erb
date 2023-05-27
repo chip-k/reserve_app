@@ -16,7 +16,6 @@
       </div>
       <%= form.hidden_field :start_time, value: @start_time %>
       <%= form.hidden_field :end_time, value: @end_time %>
-      <%= form.hidden_field :status, value: @status %>
       <%= form.hidden_field :user_id, value: current_user.id %>
       <div class="submit">
         <%= form.submit value: '予約する', class: 'btn btn-primary mx-auto d-block mt-3' %>

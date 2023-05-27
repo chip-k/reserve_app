@@ -33,8 +33,9 @@
         <tr>
           <th class="text-center col-1">日時</th>
           <th class="text-center col-2">予約</th>
-          <th class="text-center col-6">備考</th>
-          <th class="text-center col-3"></th>
+          <th class="text-center col-5">備考</th>
+          <th class="text-center col-2">ステータス</th>
+          <th class="text-center col-2"></th>
         </tr>
       </thead>
       <tbody class="text-center">
@@ -54,17 +55,19 @@
               <% end %>
               <td><%= reservation.comment %></td>
               <td>
-                <span  class="toggle_button col-auto">
-                  <span id="status-<%= reservation.id %>"><%= reservation.status %></span>
-                  <input id="toggle-<%= reservation.id %>" class="toggle_input" type="checkbox" data-reservation-id="<%= reservation.id %>" data-update-url="<%= admins_reservation_update_status_path(reservation) %>" <%= reservation.status ? 'checked' : '' %> />
-                  <label for="toggle-<%= reservation.id %>" class="toggle_label"></label>
-                </span>
-                ｜
+                <span id="status-<%= reservation.id %>"><%= reservation.reservation_status %></span>
+                <label class="toggle col-auto">
+                  <input id="toggle-<%= reservation.id %>" class="toggle-input" type="checkbox" data-reservation-id="<%= reservation.id %>" data-update-url="<%= admins_reservation_update_status_path(reservation) %>" <%= reservation.status ? 'checked' : '' %> />
+                  <span for="toggle-<%= reservation.id %>" class="toggle-slider"></span>
+                </label>
+              </td>
+              <td>
                 <%= link_to "編集", edit_admins_reservation_path(reservation) %>
                 ｜
                 <%= link_to "削除", admins_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
               </td>
             <% else %>
+              <td class="table-light"></td>
               <td class="table-light"></td>
               <td class="table-light"></td>
               <td class="table-light"><%= link_to "追加", new_admins_reservation_path(day: @date, time: time) %></td>
@@ -92,49 +95,55 @@
 
 <script>
   document.addEventListener('turbolinks:load', function() {
-  const toggleInputs = document.querySelectorAll('.toggle_input');
+    const toggleInputs = document.querySelectorAll('.toggle-input');
 
-  toggleInputs.forEach(function(input) {
-    const reservationId = input.getAttribute('data-reservation-id');
-    const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
-    const initialStatus = storedStatus ? storedStatus === 'true' : false;
-    
-    input.checked = initialStatus;
-    
-    input.addEventListener('change', function() {
+    toggleInputs.forEach(function(input) {
       const reservationId = input.getAttribute('data-reservation-id');
-      const status = input.checked;
-      
-      localStorage.setItem(`reservation-${reservationId}-status`, status);
+      const statusElement = document.querySelector(`#status-${reservationId}`);
+      const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
+      const initialStatus = storedStatus ? storedStatus === 'true' : false;
 
-      updateReservationStatus(reservationId, status);
+      input.checked = initialStatus;
+      updateStatusDisplay(statusElement, initialStatus);
+
+      input.addEventListener('change', function() {
+        const status = input.checked;
+
+        // ボタンの有効・無効を切り替える前にローカルストレージの値を更新
+        localStorage.setItem(`reservation-${reservationId}-status`, status);
+
+        // 非同期でステータスの更新リクエストを送信
+        updateReservationStatus(reservationId, status, statusElement);
+      });
     });
+
+    function updateReservationStatus(id, status, statusElement) {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      const url = "/admins/reservations/" + id + "/update_status";
+
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ status: status.toString() })
+      })
+        .then(function(response) {
+          if (response.ok) {
+            const newStatus = status ? '確定' : '確認中';
+            updateStatusDisplay(statusElement, status);
+          } else {
+            // ステータスの更新が失敗した場合の処理を記述
+          }
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
+    }
+
+    function updateStatusDisplay(statusElement, status) {
+      statusElement.textContent = status ? '確定' : '確認中';
+    }
   });
-
-  function updateReservationStatus(reservationId, status) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const url = "/admins/reservations/" + reservationId + "/update_status";
-
-    fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
-      },
-      body: JSON.stringify({ status: status.toString() })
-    })
-    .then(function(response) {
-      if (response.ok) {
-        const statusElement = document.querySelector(`#status-${reservationId}`);
-        const newStatus = status ? '確定' : '確認中';
-        statusElement.textContent = newStatus;
-      } else {
-        // ステータスの更新が失敗した場合の処理を記述
-      }
-    })
-    .catch(function(error) {
-      console.error('Error:', error);
-    });
-  }
-});
 </script>

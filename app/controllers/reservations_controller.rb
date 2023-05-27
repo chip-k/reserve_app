@@ -2,7 +2,6 @@ class ReservationsController < ApplicationController
   
   def new
     @reservation = Reservation.new
-    @status = false
     @day = params[:day]
     @time = params[:time]
     @start_time = Time.zone.parse(@day + " " + @time).in_time_zone + 9.hours
@@ -15,6 +14,7 @@ class ReservationsController < ApplicationController
   
   def create
     @reservation = Reservation.new(reservation_params)
+    @reservation.status = false
     if @reservation.save
       flash[:success] = "下記の日時で予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
