@@ -14,12 +14,14 @@ class Admins::ReservationsController < Admins::BaseController
     else
       @reservation = Reservation.new(reservation_params)
     end
-    @reservation.status = false
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
-    if Reservation.reserved?(@start_time, @end_time)
+    if Reservation.before_start_time(@start_time, @end_time)
+      flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
+      redirect_to admins_reservations_by_day_path(@reservation)
+    elsif Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to admins_reservations_by_day_path(@reservation)
     elsif @reservation.save
@@ -78,7 +80,10 @@ class Admins::ReservationsController < Admins::BaseController
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     end
-    if Reservation.reserved?(@start_time, @end_time)
+    if Reservation.before_start_time(@start_time, @end_time)
+      flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
+      redirect_to admins_reservations_by_day_path(@reservation)
+    elsif Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to admins_reservations_by_day_path(@reservation)
     elsif @reservation.save
@@ -106,7 +111,9 @@ class Admins::ReservationsController < Admins::BaseController
     redirect_to edit_admins_reservation_path(@reservation, user_id: nil)
   end
   
+  
   private
+  
   
   def reservation_params
     params.require(:reservation).permit(:day, :time, :user_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)

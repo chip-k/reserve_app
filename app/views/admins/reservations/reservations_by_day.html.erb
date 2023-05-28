@@ -102,9 +102,13 @@
       const statusElement = document.querySelector(`#status-${reservationId}`);
       const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
       const initialStatus = storedStatus ? storedStatus === 'true' : false;
-
-      input.checked = initialStatus;
-      updateStatusDisplay(statusElement, initialStatus);
+      
+      console.log('initialStatus:', initialStatus);
+      
+      if (input.checked !== initialStatus) {
+        input.checked = initialStatus;
+        updateStatusDisplay(statusElement, initialStatus);
+      }
 
       input.addEventListener('change', function() {
         const status = input.checked;
@@ -134,14 +138,17 @@
             const newStatus = status ? '確定' : '確認中';
             updateStatusDisplay(statusElement, status);
           } else {
-            // ステータスの更新が失敗した場合の処理を記述
+            console.error('ステータスの更新に失敗しました');
+            setTimeout(function() {
+              updateReservationStatus(id, status, statusElement);
+            }, 5000);
           }
         })
         .catch(function(error) {
           console.error('Error:', error);
         });
     }
-
+    
     function updateStatusDisplay(statusElement, status) {
       statusElement.textContent = status ? '確定' : '確認中';
     }

@@ -25,6 +25,12 @@ class Reservation < ApplicationRecord
     self.where("start_time < ? AND end_time > ?", end_time, start_time).exists?
   end
   
+  def self.before_start_time(start_time, end_time)
+    if end_time < start_time
+      return "終了時間は開始時間よりも後に設定してください。"
+    end
+  end
+  
   def self.all_reservations
     reservations = Reservation.all.order(day: :desc)
     reservation_data = []

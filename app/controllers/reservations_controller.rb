@@ -8,7 +8,6 @@ class ReservationsController < ApplicationController
   
   def create
     @reservation = Reservation.new(reservation_params)
-    @reservation.status = false
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
     @reservation.end_time = @reservation.start_time + 30.minutes
