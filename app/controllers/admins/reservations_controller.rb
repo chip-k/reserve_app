@@ -17,11 +17,7 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation.status = false
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
-    end_day = params[:reservation][:day]
-    end_hour = params[:reservation]["end_time(4i)"]
-    end_minute = params[:reservation]["end_time(5i)"]
-    @end_time = DateTime.parse("#{end_day} #{end_hour}:#{end_minute}")
-    @end_time -= 9.hours
+    @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
     if Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
@@ -74,17 +70,18 @@ class Admins::ReservationsController < Admins::BaseController
   
   def update
     @reservation = Reservation.find(params[:id])
-    if params[:reservation][:day].present?
-      new_day = Date.parse(params[:reservation][:day])
-      @reservation.day = new_day
-      @reservation.start_time = DateTime.parse(params[:reservation][:day] + " " + params[:reservation][:time] + " " + "JST")
-    end
+    @reservation.day = params[:reservation][:day]
+    @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
+    @reservation.start_time = @start_time
+    @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
+    @reservation.end_time = @end_time
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
-    else
-      @reservation.update(reservation_params)
     end
-    if @reservation.save
+    if Reservation.reserved?(@start_time, @end_time)
+      flash[:alert] = "指定された日時は既に予約済みです。"
+      redirect_to admins_reservations_by_day_path(@reservation)
+    elsif @reservation.save
       updated_date = @reservation.day
       @reservations = Reservation.where(day: updated_date)
       redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
