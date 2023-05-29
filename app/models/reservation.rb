@@ -49,5 +49,6 @@ class Reservation < ApplicationRecord
       "確認中"
     end
   end
+  
 
 end

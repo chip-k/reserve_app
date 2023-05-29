@@ -21,7 +21,6 @@
         <% end %>
         <%= link_to "#{'次の一週間'} &raquo;".html_safe, reservations_week_path(date: next_week) %>
       </div>
-      <% reservations = Reservation.all_reservations %>
       <table class="table table-responsive">
         <thead>
           <tr>
@@ -36,9 +35,8 @@
               <th colspan="<%= 7 - days_in_month %>"><%= end_date.strftime('%Y年%m月') %></th>
             <% end %>
           </tr>
-          <% date_range = @date..(@date + 6.days) %>
           <tr>
-            <% date_range.each_slice(7).each do |week| %>
+            <% @date_range.each_slice(7).each do |week| %>
               <% week.each do |date| %>
                 <% if admin_signed_in? %>
                   <% if date.sunday? %>
@@ -68,10 +66,12 @@
           <% times.each do |time| %>
             <tr>
               <td class="table-light times"><%= time %></td>
-              <% date_range = @date..(@date + 6.days) %>
-              <% date_range.each do |day| %>
+              <% @date_range.each do |day| %>
+              <% start_time = Time.zone.parse("#{day} #{time}") %>
+              <% end_time = start_time + 30.minutes %>
+              <% reservation = find_reservation(@reservations, day, start_time, end_time) %>
                 <% unless admin_signed_in? %>
-                  <% if check_reservation(reservations, day, time) || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
+                  <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
                   <% elsif user_signed_in? %>
                     <td class="table-hover">
@@ -84,7 +84,7 @@
                   <% end %>
                 <% end %>
                 <% if admin_signed_in? %>
-                  <% if check_reservation(reservations, day, time) || day.past? %>
+                  <% if reservation || day.past? %>
                     <td class="reserved"><%= '×' %></td>
                   <% else %>
                     <td class="table-hover">

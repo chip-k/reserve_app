@@ -20,10 +20,10 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation.end_time = @end_time
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
-      redirect_to admins_reservations_by_day_path(@reservation)
+      redirect_to admins_reservations_by_day_path(day: @reservation.day)
     elsif Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to admins_reservations_by_day_path(@reservation)
+      redirect_to admins_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.save
       flash[:success] = "下記の日時で仮予約を行いました。"
       redirect_to complete_reservation_path @reservation.id

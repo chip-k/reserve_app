@@ -59,6 +59,8 @@ class ReservationsController < ApplicationController
   def week
     @admin = Admin.find(1)
     @date = Date.parse(params[:date])
+    @date_range = @date..(@date + 6.days)
+    @reservations = Reservation.all
     if Reservation.check_reservation_days(@date)
       flash[:alert] = "過去の日付は選択できません。"
       render :week
