@@ -14,7 +14,7 @@
           <div class="edit-form my-3 col-6">
             <%= f.label :time, "開始時間", class: "form-label" %>
             <div class="d-flex">
-              <%= select_tag "reservation[time]", options_for_select((9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }, selected: @reservation&.time), include_blank: false, prompt: '選択してください', class: "form-control" %>
+              <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
             </div>
           </div>
           

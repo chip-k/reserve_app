@@ -60,14 +60,22 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation_ids = @reservations.pluck(:id)
   end
   
+  def all
+    @reservations = Reservation.all
+    @sorted_reservations = @reservations.order(start_time: :asc)
+  end
+  
   def show
     @reservation = Reservation.find(params[:id])
   end
   
   def edit
     @reservation = Reservation.find(params[:id])
-    @user_id = params[:user_id]
-    @user = User.find_by(id: @user_id)
+    start_time = @reservation.start_time
+    @start_times = (9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }
+    @selected_value = start_time.strftime("%H:%M")
+    user_id = params[:user_id]
+    @user = User.find_by(id: user_id)
   end
   
   def update
@@ -77,15 +85,16 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation.start_time = @start_time
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
+    @reservation.comment = params[:reservation][:comment]
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     end
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
-      redirect_to admins_reservations_by_day_path(@reservation)
-    elsif Reservation.reserved?(@start_time, @end_time)
+      redirect_to admins_reservations_by_day_path(day: @reservation.day)
+    elsif Reservation.reserved?(@start_time, @end_time, @reservation.id)
       flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to admins_reservations_by_day_path(@reservation)
+      redirect_to admins_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.save
       updated_date = @reservation.day
       @reservations = Reservation.where(day: updated_date)

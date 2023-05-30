@@ -10,7 +10,7 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new(reservation_params)
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
-    @reservation.end_time = @reservation.start_time + 30.minutes
+    @reservation.end_time = @reservation.start_time + 1.hour
     @end_time = @reservation.end_time
     if Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"

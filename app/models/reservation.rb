@@ -21,8 +21,12 @@ class Reservation < ApplicationRecord
     end
   end
   
-  def self.reserved?(start_time, end_time)
-    self.where("start_time < ? AND end_time > ?", end_time, start_time).exists?
+  def self.reserved?(start_time, end_time, reservation_id = nil)
+    if reservation_id.nil?
+      where("start_time < ? AND end_time > ?", end_time, start_time).exists?
+    else
+      where("start_time < ? AND end_time > ? AND id != ?", end_time, start_time, reservation_id).exists?
+    end
   end
   
   def self.before_start_time(start_time, end_time)
