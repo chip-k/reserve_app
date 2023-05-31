@@ -1,5 +1,5 @@
 class Admins::ReservationsController < Admins::BaseController
-  
+
   def new
     @user_id = params[:user_id]
     @user = User.find_by(id: @user_id)
@@ -13,7 +13,7 @@ class Admins::ReservationsController < Admins::BaseController
       redirect_to reservations_path
     end
   end
-  
+
   def create
     if params[:reservation][:user_id] == 'new'
       @reservation = Reservation.new(reservation_params.merge(new_user_name: params[:reservation][:new_user_name]))
@@ -36,36 +36,36 @@ class Admins::ReservationsController < Admins::BaseController
     session[:search_date] = params[:day]
     @search_date = session[:search_date] || Time.zone.today
   end
-  
+
   def destroy_by_day
     @reservation = Reservation.find(params[:id])
     @reservation.destroy
     redirect_to admins_reservations_by_day_path(day: @reservation.start_time.to_date), notice: '予約を削除しました。'
   end
-  
+
   def destroy
     @user = User.find(params[:user_id])
     @reservation = @user.reservations.find(params[:id])
     @reservation.destroy
     redirect_to admins_user_reservations_path(@user.id), notice: '予約を削除しました。'
   end
-  
+
   def index
     @user = User.find(params[:user_id])
     @reservations = @user.reservations.where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
     @reservation_ids = @reservations.pluck(:id)
   end
-  
+
   def show
     @reservation = Reservation.find(params[:id])
   end
-  
+
   def edit
     @reservation = Reservation.find(params[:id])
     @user_id = params[:user_id]
     @user = User.find_by(id: @user_id)
   end
-  
+
   def update
     @reservation = Reservation.find(params[:id])
     if params[:reservation][:day].present?
@@ -86,7 +86,7 @@ class Admins::ReservationsController < Admins::BaseController
       render :edit
     end
   end
-  
+
   def update_status
     reservation = Reservation.find(params[:reservation_id])
     reservation.update(status: params[:reservation][:status])
@@ -96,17 +96,17 @@ class Admins::ReservationsController < Admins::BaseController
       render json: { status: 'error' }, status: :unprocessable_entity
     end
   end
-  
+
   def delete_user
     @reservation = Reservation.find(params[:id])
     @reservation.update(user_id: nil)
     redirect_to edit_admins_reservation_path(@reservation, user_id: nil)
   end
-  
+
   private
-  
+
   def reservation_params
     params.require(:reservation).permit(:day, :time, :user_id, :start_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
-  
+
 end
