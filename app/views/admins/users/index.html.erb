@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row col-7 mx-auto">
-    <h2 class="text-center mt-5 mb-4">ユーザー一覧画面</h2>
+    <h2 class="text-center mt-5 mb-4">ユーザー管理画面</h2>
     
     <% if params[:source] == 'new_admins_users' %>
       <%= form_tag(admins_users_path(source: 'new_admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>

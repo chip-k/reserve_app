@@ -21,8 +21,18 @@ class Reservation < ApplicationRecord
     end
   end
   
-  def self.reserved?(start_time)
-    self.where(start_time: start_time).exists?
+  def self.reserved?(start_time, end_time, reservation_id = nil)
+    if reservation_id.nil?
+      where("start_time < ? AND end_time > ?", end_time, start_time).exists?
+    else
+      where("start_time < ? AND end_time > ? AND id != ?", end_time, start_time, reservation_id).exists?
+    end
+  end
+  
+  def self.before_start_time(start_time, end_time)
+    if end_time < start_time
+      return "終了時間は開始時間よりも後に設定してください。"
+    end
   end
   
   def self.all_reservations
@@ -36,12 +46,13 @@ class Reservation < ApplicationRecord
     reservation_data
   end
   
-  def status
+  def reservation_status
     if self[:status]
       "確定"
     else
       "確認中"
     end
   end
+  
 
 end

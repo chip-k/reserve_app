@@ -1,0 +1,62 @@
+.tab {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab li {
+  background: #ddd;
+  margin: 0 2px;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.tab li.active {
+  background: #fff;
+}
+
+li {
+  list-style: none;
+}
+
+.tab li .notice {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  line-height: 20px;
+  background-color: #F00;
+  border-radius: 10px;
+  color: #FFF;
+  font-weight: bold;
+}
+
+
+
+.area {
+  display: none;
+  opacity: 0;
+  background: #fff;
+  padding: 50px 20px;
+}
+
+.area.is-active {
+  display: block;
+  animation-name: displayAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes displayAnime {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

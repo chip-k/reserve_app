@@ -2,7 +2,8 @@
   <div class="row col-7 mx-auto">
     <h2 class="text-center mt-5 mb-4">管理者画面</h2>
     <%= link_to "投稿", new_post_path %>
-    <%= link_to "ユーザー一覧", admins_users_path %>
+    <%= link_to "ユーザー管理", admins_users_path %>
+    <%= link_to "予約管理", all_admins_reservations_path %>
     <%= link_to "スケジュール", admins_reservations_by_day_path(day: Time.zone.today) %>
   </div>
 </div>

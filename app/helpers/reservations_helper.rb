@@ -1,12 +1,12 @@
 module ReservationsHelper
   
-  def check_reservation(reservations, day, time)
-    reservations.each do |reservation|
-      if reservation[:day].to_date == day && reservation[:time] == time
-        return true
-      end
+  def find_reservation(reservations, day, start_time, end_time)
+    reservations.find do |reservation|
+      reservation.start_time.to_date == day &&
+        reservation.end_time.to_date == day &&
+        reservation.start_time <= end_time &&
+        reservation.end_time > start_time
     end
-    return false
   end
   
   def times
@@ -20,7 +20,7 @@ module ReservationsHelper
             "16:00","16:30",
             "17:00","17:30",
             "18:00","18:30",
-            "19:00","19:30",]
+            "19:00","19:30"]
   end
   
 end
