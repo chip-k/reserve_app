@@ -20,7 +20,7 @@
         <% end %>
       </tr>
       <tr>
-        <th class="text-center">ステータス：　　　<td><%= @reservation.status %></td></th>
+        <th class="text-center">ステータス：　　　<td><%= @reservation.reservation_status %></td></th>
       </tr>
       <% if @reservation.comment.present? %>
       <tr>
@@ -40,7 +40,7 @@
       <% end %>
     </table>
     <div class="text-center">
-      <% if @reservation.status == '確認中' || (@reservation.day != Time.zone.today && @reservation.day != Time.zone.tomorrow) %>
+      <% if @reservation.reservation_status == '確認中' || (@reservation.day != Time.zone.today && @reservation.day != Time.zone.tomorrow) %>
         <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
       <% elsif @reservation.status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
         <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>

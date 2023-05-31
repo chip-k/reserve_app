@@ -6,16 +6,25 @@
     <h1 class="text-center">新規予約画面</h1>
     
     <div class="col-7 mx-auto mt-3">
-      <%= form_with model: @reservation, local: true, class: 'form' do |form| %>
+      <%= form_with model: @reservation, url: admins_reservations_path, local: true, class: 'form' do |form| %>
       
         <div class="day form-group">
           <%= form.label :day, '日付', class: "form-label" %>
           <%= form.text_field :day, class: 'form-control', value: @day, readonly: true %>
         </div>
         
-        <div class="time form-group my-3">
-          <%= form.label :time, '時間', class: "form-label" %>
-          <%= form.text_field :time, class: 'form-control', value: @time, readonly: true %>
+        <div class="row">
+          <div class="time form-group my-3 col-6">
+            <%= form.label :time, '開始時間', class: "form-label" %>
+            <%= form.text_field :time, class: 'form-control', value: @time, readonly: true %>
+          </div>
+        
+          <div class="end_time form-group my-3 col-6">
+            <%= form.label :end_time, '終了時間', class: "form-label" %>
+            <div class="d-flex">
+              <%= form.time_select :end_time, { start_hour: 9, end_hour: 23, minute_step: 30, include_seconds: false }, { class: 'form-control mr-2', id: 'end_time_select' } %>
+            </div>
+          </div>
         </div>
       
         <table class="mt-3">
@@ -48,8 +57,6 @@
           <%= form.text_area :comment, class: 'form-control' %>
         </div>
         
-        <%= form.hidden_field :start_time, value: @start_time %>
-        <%= form.hidden_field :status, value: @status %>
         <%= form.hidden_field :admin_id, value: current_admin.id %>
       
         <div class="submit">

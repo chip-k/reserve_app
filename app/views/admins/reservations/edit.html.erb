@@ -10,9 +10,20 @@
           <%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %>
         </div>
         
-        <div class="edit-form mb-3">
-          <%= f.label :time, "時間", class: "form-label" %>
-          <%= select_tag "reservation[time]", options_for_select((9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }, selected: @reservation&.time), include_blank: false, prompt: '選択してください', class: "form-control" %>
+        <div class="row">
+          <div class="edit-form my-3 col-6">
+            <%= f.label :time, "開始時間", class: "form-label" %>
+            <div class="d-flex">
+              <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
+            </div>
+          </div>
+          
+          <div class="end_time form-group my-3 col-6">
+            <%= f.label :end_time, '終了時間', class: "form-label" %>
+            <div class="d-flex">
+              <%= f.time_select :end_time, { start_hour: 9, end_hour: 23, minute_step: 30, include_seconds: false }, { class: 'form-control mr-2', id: 'end_time_select' } %>
+            </div>
+          </div>
         </div>
         
         <table>

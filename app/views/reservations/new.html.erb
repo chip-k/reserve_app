@@ -14,13 +14,8 @@
         <%= form.label :time, '時間' %>
         <%= form.text_field :time, class: 'form-control', value: @time, readonly: true %>
       </div>
-      <%= form.hidden_field :start_time, value: @start_time %>
-      <%= form.hidden_field :status, value: @status %>
-      <% if admin_signed_in? %>
-        <%= form.hidden_field :admin_id, value: current_admin.id %>
-      <% else %>
-        <%= form.hidden_field :user_id, value: current_user.id %>
-      <% end %>
+      <%= form.hidden_field :end_time, value: @end_time %>
+      <%= form.hidden_field :user_id, value: current_user.id %>
       <div class="submit">
         <%= form.submit value: '予約する', class: 'btn btn-primary mx-auto d-block mt-3' %>
       </div>
