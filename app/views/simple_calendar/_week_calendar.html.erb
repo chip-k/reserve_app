@@ -21,6 +21,7 @@
         <% end %>
         <%= link_to "#{'次の一週間'} &raquo;".html_safe, reservations_week_path(date: next_week) %>
       </div>
+      
       <table class="table table-responsive">
         <thead>
           <tr>
@@ -62,14 +63,17 @@
             <% end %>
           </tr>
         </thead>
+        
         <tbody class="text-center">
           <% times.each do |time| %>
             <tr>
               <td class="table-light times"><%= time %></td>
+              
               <% @date_range.each do |day| %>
               <% start_time = Time.zone.parse("#{day} #{time}") %>
               <% end_time = start_time + 30.minutes %>
               <% reservation = find_reservation(@reservations, day, start_time, end_time) %>
+              
                 <% unless admin_signed_in? %>
                   <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
@@ -96,10 +100,12 @@
             </tr>
           <% end %>
         </tbody>
+        
       </table>
     </div>
   </div>
 </div>
+
 
 <script>
   document.addEventListener("turbolinks:load", function() {

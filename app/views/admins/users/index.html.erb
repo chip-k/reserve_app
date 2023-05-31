@@ -1,5 +1,6 @@
 <div class="container">
   <div class="row col-7 mx-auto">
+    
     <h2 class="text-center mt-5 mb-4">ユーザー管理画面</h2>
     
     <% if params[:source] == 'new_admins_users' %>
@@ -12,6 +13,7 @@
           <i class="fas fa-search"></i> 検索
         <% end %>
       <% end %>
+      
     <% elsif params[:source] == 'edit_admins_users' %>
       <%= form_tag(admins_users_path(source: 'new_admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>
         <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
@@ -23,6 +25,7 @@
           <i class="fas fa-search"></i> 検索
         <% end %>
       <% end %>
+      
     <% else %>
       <%= form_tag(admins_users_path, method: :get, class: "input-group") do %>
         <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>

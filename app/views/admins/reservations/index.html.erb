@@ -1,8 +1,10 @@
 <div class="container">
   <div class="row col-7 mt-5 mb-4 mx-auto">
+    
     <div class="text-center title">
       <h2><%= @user.name %>様の予約一覧画面</h2>
     </div>
+    
     <div class="text-center mt-3">
       <% if @reservations.count > 0 %>
         <p>下記の日時で予約されています。</p>
@@ -10,6 +12,7 @@
         <p>予約がありません。</p>
       <% end %>
     </div>
+    
     <table class="table mt-3">
       <% @reservations.each do |reservation| %>
         <tr class="text-center">
@@ -20,7 +23,8 @@
         </tr>
       <% end %>
     </table>
+    
     <%= link_to "#{@user.name}様の登録情報", admins_user_path(@user), class: "text-center" %>
+    
   </div>
 </div>
-

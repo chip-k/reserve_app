@@ -1,43 +1,43 @@
-.insta-btn{/*ボタンの下地*/
-  color: #FFF;/*文字・アイコン色*/
-  border-radius: 7px;/*角丸に*/
+.insta-btn{
+  color: #FFF;
+  border-radius: 7px;
   position: relative;
   display: inline-block;
-  height: 50px;/*高さ*/
-  width: 260px;/*幅*/
-  text-align: center;/*中身を中央寄せ*/
-  font-size: 25px;/*文字のサイズ*/
-  line-height: 50px;/*高さと合わせる*/
+  height: 50px;
+  width: 260px;
+  text-align: center;
+  font-size: 25px;
+  line-height: 50px;
   background: -webkit-linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;
-  background: linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;/*グラデーション①*/
-  overflow: hidden;/*はみ出た部分を隠す*/
-  text-decoration:none;/*下線は消す*/
+  background: linear-gradient(135deg, #427eff 0%, #f13f79 70%) no-repeat;
+  overflow: hidden;
+  text-decoration:none;
 }
 
-.insta-btn:before{/*グラデーション②*/
+.insta-btn:before{
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;/*全体を覆う*/
-  height: 100%;/*全体を覆う*/
+  width: 100%;
+  height: 100%;
   background: -webkit-linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
   background: linear-gradient(15deg, #ffdb2c, rgb(249, 118, 76) 25%, rgba(255, 77, 64, 0) 50%) no-repeat;
 }
 
-.insta-btn .fa-instagram{/*アイコン*/
-  font-size: 35px;/*アイコンサイズ*/
+.insta-btn .fa-instagram{
+  font-size: 35px;
   position: relative;
-  top: 4px;/*アイコン位置の微調整*/
+  top: 4px;
 }
 
-.insta-btn span {/*テキスト*/
+.insta-btn span {
   display:inline-block;
   position: relative;
   transition: .5s
 }
 
-.insta-btn:hover span{/*ホバーで一周回転*/
+.insta-btn:hover span{
   -webkit-transform: rotateX(360deg);
   -ms-transform: rotateX(360deg);
   transform: rotateX(360deg);

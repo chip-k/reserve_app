@@ -1,7 +1,9 @@
 <% flash.each do |key, value| %>
+
   <%= content_tag(:div, class: "alert alert-#{bootstrap_alert(key)}") do %>
     <%= content_tag(:p, value) %>
   <% end %>
+  
 <% end %>
 
 <% if params[:registration_required] == "true" %>

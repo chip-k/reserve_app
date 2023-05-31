@@ -1,5 +1,6 @@
 <div class="container days">
   <div class="row col-7 mt-5 mx-auto text-center">
+    
     <h2 class="text-center mb-3">予約編集画面</h2>
     
     <div class="edit-form-group col-7 mx-auto">
@@ -24,6 +25,7 @@
               <%= f.time_select :end_time, { start_hour: 9, end_hour: 23, minute_step: 30, include_seconds: false }, { class: 'form-control mr-2', id: 'end_time_select' } %>
             </div>
           </div>
+          
         </div>
         
         <table>
@@ -69,7 +71,8 @@
     </div>
   </div>
 </div>
-        
+
+
 <script>
   document.addEventListener('turbolinks:load', function() {
     let deleteLink = document.getElementById('delete-user-link');

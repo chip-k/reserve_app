@@ -1,18 +1,32 @@
 <div class="container">
   <div class="row col-7 mx-auto">
+    
     <h2 class="text-center mt-5 mb-4">登録情報</h2>
+    
     <table class="table">
+      
       <tr><th>氏名</th><td><%= @user.name %></td></tr>
+      
       <tr><th>氏名(カナ)</th><td><%= @user.name_kana %></td></tr>
+      
       <tr><th>郵便番号</th><td><%= @user.postal_code %></td></tr>
+      
       <tr><th>都道府県</th><td><%= @user.prefecture_code %></td></tr>
+      
       <tr><th>市区町村</th><td><%= @user.city %></td></tr>
+      
       <tr><th>番地</th><td><%= @user.street %></td></tr>
+      
       <tr><th>建物名・部屋番号</th><td><%= @user.other_address %></td></tr>
+      
       <tr><th>メールアドレス</th><td><%= @user.email %></td></tr>
+      
       <tr><th>電話番号</th><td><%= @user.phone_number %></td></tr>
+      
     </table>
+    
     <%= link_to "編集", edit_admins_user_path(@user.id), class: "text-center" %>
     <%= link_to "#{@user.name}様の予約一覧", admins_user_reservations_path(@user), class: "text-center mt-3" %>
+    
   </div>
 </div>

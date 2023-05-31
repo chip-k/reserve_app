@@ -1,9 +1,11 @@
   <section id="top">
     <div class="container>">
       <div class="row">
+        
         <div class="top-image">
           <%= image_tag("top.jpg") %>
         </div>
+        
         <div class="top-text col-10 mx-auto py-5">
           <p>
             西圓寺（西円寺）は、京都の西本願寺をご本山とする浄土真宗本願寺派の寺院です。<br>
@@ -15,6 +17,7 @@
             地域の皆さまが気軽に楽しく足を運んでいただける「敷居の低いお寺」を目指しています。
           </p>
         </div>
+        
       </div>
     </div>
   </section>
@@ -22,11 +25,13 @@
 
   <section id="information">
     <div class="container">
+      
       <div class="row">
         <div class="information-image mt-5">
           <%= image_tag("information.jpg") %>
         </div>
       </div>
+      
       <div class="row my-5">
         <% @posts.each do |post| %>
           <div class="information-content col-4 px-5">
@@ -43,6 +48,7 @@
           </div>
         <% end %>
       </div>
+      
       <div class="text-center">
       <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', posts_path %></h4>
       <%= link_to 'https://www.instagram.com/p/CrfRHEZvZvR/', target: "_blank", class: "insta-btn" do %>
@@ -65,6 +71,7 @@
             年忌法要など、ご法事の依頼を受け賜っています。仏事に関する疑問、ご相談などございましたら、お気軽にお尋ねください。
           </p>
         </div>
+        
         <div class="main-content col-5 mx-auto">
           <div class="main-image mb-3">
             <%= image_tag("funeral.jpg") %>
@@ -74,6 +81,7 @@
           </p>
         </div>
       </div>
+      
       <div class="row">
         <div class="main-content col-5 mx-auto">
           <div class="main-image mb-3">
@@ -87,6 +95,7 @@
             その門徒会によって西圓寺は支えられています。
           </p>
         </div>
+        
         <div class="main-content col-5 mx-auto">
           <div class="main-image mb-3">
             <%= image_tag("ossuary.jpg") %>
