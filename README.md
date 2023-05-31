@@ -1,24 +1,30 @@
-# README
+# 西圓寺HP＆予約
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## サイト概要
+### サイトテーマ
+HP＆予約サイト
 
-Things you may want to cover:
+### テーマを選んだ理由
+お寺では電話が頻繁に鳴りますが、仕事または外出中はスケジュールの確認が難しく折り返しの電話をすることが多いです。
+また、電話自体に出られないこともしばしばあります。そこで予約機能を実装することで
+*外出中であってもスケジュールが確認できる
+*スケジュールを共有できる
+*２４時間予約受付が可能
+*お互いに複数回の電話をせずに済む
+などの効果が期待でき、お寺・利用者の負担を減らすことを目的としています。
 
-* Ruby version
+### ターゲットユーザ
+お寺の利用を考えている方
 
-* System dependencies
+### 主な利用シーン
+お寺の情報を確認したい時、葬式や法要などの予約を行いたい時
 
-* Configuration
+## 設計書
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 開発環境
+- OS：Linux(CentOS)
+- 言語：HTML,CSS,JavaScript,Ruby,SQL
+- フレームワーク：Ruby on Rails
+- JSライブラリ：jQuery
+- IDE：Cloud9
