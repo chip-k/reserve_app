@@ -8,7 +8,7 @@
         
         <div class="top-text col-10 mx-auto py-5">
           <p>
-            西圓寺（西円寺）は、京都の西本願寺をご本山とする浄土真宗本願寺派の寺院です。<br>
+            他力本願寺は、他力本願寺をご本山とする他力本願寺派の寺院です。<br>
             <br>
             報恩講法要（12月）、彼岸会（3月,9月）、永代経法要（4〜5月）、宗祖降誕会（5月）、盂蘭盆会（8月）の各種法要のほか、
             壮年会、婦人会、子ども会、広報部会、さらには、コーラス、門信徒のつどい、ヨガ教室、グラウンドゴルフ、ゴルフなど、
@@ -51,11 +51,6 @@
       
       <div class="text-center">
       <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', posts_path %></h4>
-      <%= link_to 'https://www.instagram.com/p/CrfRHEZvZvR/', target: "_blank", class: "insta-btn" do %>
-        <span>
-          <i class="fab fa-instagram"></i> Instagramはこちら
-        </span>
-      <% end %>
       </div>
     </div>
   </section>
@@ -88,11 +83,8 @@
             <%= image_tag("disciples-association.jpg") %>
           </div>
           <p class="main-text">
-            浄土真宗では、いわゆる「檀家」「信者」という言葉の代わりに、「門徒」という言葉を用いてきました。
-            「門徒」とは、一門の徒輩（同じ宗門の仲間）という意味です。つまり、親鸞聖人を宗祖と仰ぐとともに、
-            お念仏申す中に、阿弥陀さまのおこころを聞いていく人々のことをいいます。
             葬儀・法事の依頼等、継続的にお寺とのお付き合いを続けていただける方には、門徒会への加入をお願いしており、
-            その門徒会によって西圓寺は支えられています。
+            その門徒会によって他力本願寺は支えられています。
           </p>
         </div>
         
@@ -118,11 +110,11 @@
       <div class="contact">
         <h6>お問い合わせ先</h6>
         <p>
-          浄土真宗本願寺派 法輪山 <%= @admin.name %><br>
+          他力本願寺派 富士山 <%= @admin.name %><br>
           〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
           <%= @admin.address %><br>
           TEL：<%= @admin.phone_number %><br>
-          FAX：093-776-1859
+          FAX：012-345-6789
         </p>
       </div>
     </div>

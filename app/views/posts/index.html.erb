@@ -2,6 +2,10 @@
   <div class="row col-7 mt-5 mx-auto">
     <h1 class="text-center">お知らせ一覧</h1>
     
+    <% if admin_signed_in? %>
+      <%= link_to "新規作成", new_post_path %>
+    <% end %>
+    
     <% @posts.each do |post| %>
     
       <div class="information-contents pb-5">

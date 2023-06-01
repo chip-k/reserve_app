@@ -8,12 +8,12 @@
 
 #Admin.find_or_create_by(id: 1) do |admin|
  admin = Admin.find(1)
- admin.name = "西圓寺"
+ admin.name = "他力本願寺"
  admin.email = "example@example.com"
  admin.password = "example"
- admin.phone_number = "093-282-6765"
- admin.postal_code = "8114205"
- admin.address = "福岡県遠賀郡岡垣町三吉869"
+ admin.phone_number = "012-345-6789"
+ admin.postal_code = "1234567"
+ admin.address = "日本県日本市日本区日本1-2-3"
  if admin.save
  end
 #end

@@ -1,8 +1,8 @@
 <header class="shadow-sm">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <%= link_to "浄土真宗本願寺派 法輪山 西圓寺", root_path, class: "navbar-brand" %>
-      <span class="navbar-text">福岡県遠賀郡岡垣町の寺院です</span>
+      <span class="navbar-brand">他力本願寺派 富士山 他力本願寺</span>
+      <span class="navbar-text">架空の寺院です</span>
       
         <div class="navbar-toggler openbtn" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false">
           <span></span>
@@ -13,10 +13,6 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mx-auto">
           
-          <li class="nav-item">
-            <%= link_to "ホーム", root_path, class: "nav-link" %>
-          </li>
-          
           <% if user_signed_in? %>
           
             <li class="nav-item">
@@ -25,15 +21,20 @@
             
           <% end %>
           
-          <li class="nav-item">
-            <%= link_to "お知らせ", posts_path, class: "nav-link" %>
-          </li>
-          
-          <li class="nav-item">
-            <%= link_to "予約", reservations_month_path, class: "nav-link" %>
-          </li>
-          
           <% unless admin_signed_in? %>
+          
+            <li class="nav-item">
+              <%= link_to "ホーム", root_path, class: "nav-link" %>
+            </li>
+          
+            <li class="nav-item">
+              <%= link_to "お知らせ", posts_path, class: "nav-link" %>
+            </li>
+          
+            <li class="nav-item">
+              <%= link_to "予約", reservations_month_path, class: "nav-link" %>
+            </li>
+          
             <% if current_page?(root_path) %>
             
               <li class="nav-item">
