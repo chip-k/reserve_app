@@ -1,19 +1,23 @@
 <div class="container">
   <div class="row col-7 mx-auto">
+    
     <h2 class="text-center mt-5 mb-4">予約管理画面</h2>
+    
     <div class="wrapper text-center">
       <ul class="tab">
         <li>全予約</li>
         <li>確定</li>
         <li>確認中<span class="notice"><%= @reservations.where(status: false).count %></span></li>
       </ul>
-      
+
       <div id="all" class="area">
         <h2>全ての予約一覧</h2>
         <ul>
           <li>
             <% if @reservations.present? %>
+            
               <table class="table">
+                
                 <thead>
                   <tr>
                     <th>予約</th>
@@ -22,6 +26,7 @@
                     <th>ステータス</th>
                   </tr>
                 </thead>
+                
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
                     <tr class="reservation-row" data-href="<%= admins_reservations_by_day_path(day: reservation.day) %>">
@@ -40,20 +45,24 @@
                     </tr>
                   <% end %>
                 </tbody>
+                
               </table>
+              
             <% else %>
               <p>予約はありません。</p>
             <% end %>
           </li>
         </ul>
       </div>
-        
+
       <div id="confirm" class="area">
         <h2>確定している予約一覧</h2>
         <ul>
           <li>
             <% if @reservations.any? { |reservation| reservation.status == true } %>
+            
               <table class="table">
+                
                 <thead>
                   <tr>
                     <th>予約</th>
@@ -61,6 +70,7 @@
                     <th>時間</th>
                   </tr>
                 </thead>
+                
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
                     <% if reservation.status == true %>
@@ -80,20 +90,24 @@
                     <% end %>
                   <% end %>
                 </tbody>
+                
               </table>
+              
             <% else %>
               <p>確定している予約はありません。</p>
             <% end %>
           </li>
         </ul>
       </div>
-        
+
       <div id="confirming" class="area">
         <h2>確認中の予約一覧</h2>
         <ul>
           <li>
             <% if @reservations.any? { |reservation| reservation.status == false } %>
+            
               <table class="table">
+                
                 <thead>
                   <tr>
                     <th>予約</th>
@@ -102,6 +116,7 @@
                     <th>予約受付</th>
                   </tr>
                 </thead>
+                
                 <tbody>
                   <% @reservations.each do |reservation| %>
                     <% if reservation.status == false %>
@@ -122,7 +137,9 @@
                     <% end %>
                   <% end %>
                 </tbody>
+                
               </table>
+              
             <% else %>
               <p>確認中の予約はありません。</p>
             <% end %>

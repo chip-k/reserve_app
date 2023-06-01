@@ -8,7 +8,9 @@
     <% end %>
     <%= link_to t('simple_calendar.next', default: "#{'翌月'} &raquo;".html_safe), calendar.url_for_next_view %>
   </div>
+  
   <table class="table month_table">
+    
     <thead class="table-light">
       <tr>
         <% date_range.slice(0, 7).each do |day| %>
@@ -16,6 +18,7 @@
         <% end %>
       </tr>
     </thead>
+    
     <tbody>
       <% date_range.each_slice(7) do |week| %>
         <tr>
@@ -33,6 +36,8 @@
         </tr>
       <% end %>
     </tbody>
+    
+    
     <script>
       document.addEventListener('turbolinks:load', function() {
           document.querySelectorAll('td[data-date]').forEach(function(td) {

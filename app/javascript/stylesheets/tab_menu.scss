@@ -17,10 +17,6 @@
   background: #fff;
 }
 
-li {
-  list-style: none;
-}
-
 .tab li .notice {
   position: absolute;
   top: -10px;
@@ -36,7 +32,9 @@ li {
   font-weight: bold;
 }
 
-
+ul li {
+  list-style: none;
+}
 
 .area {
   display: none;
