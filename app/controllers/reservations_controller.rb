@@ -1,4 +1,5 @@
 class ReservationsController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
   
   def new
     @reservation = Reservation.new
@@ -42,11 +43,7 @@ class ReservationsController < ApplicationController
   def destroy
     @reservation = Reservation.find(params[:id])
     if @reservation.destroy
-      if admin_signed_in?
-        redirect_to reservations_path(@user), flash: { danger: "予約を削除しました。" }
-      else
-        redirect_to reservations_path(current_user.id), flash: { danger: "予約を削除しました。" }
-      end
+      redirect_to reservations_path(current_user.id), flash: { danger: "予約を削除しました。" }
     else
       flash.now[:danger] = "予約の削除に失敗しました。"
       render :show 

@@ -77,13 +77,9 @@
                 <% unless admin_signed_in? %>
                   <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
-                  <% elsif user_signed_in? %>
-                    <td class="table-hover">
-                      <%= link_to '◎', new_reservation_path(day: day, time: time) %>
-                    </td>
                   <% else %>
                     <td class="table-hover">
-                      <%= link_to '◎', new_user_session_path(registration_required: true) %>
+                      <%= link_to '◎', new_reservation_path(day: day, time: time) %>
                     </td>
                   <% end %>
                 <% end %>

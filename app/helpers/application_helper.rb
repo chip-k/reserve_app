@@ -1,5 +1,6 @@
 module ApplicationHelper
   
+  # 郵便番号にハイフンを付ける
   def number_with_hyphen_format(value)
     return value if value.blank?
 

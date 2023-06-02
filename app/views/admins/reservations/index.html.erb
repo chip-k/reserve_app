@@ -6,7 +6,7 @@
     </div>
     
     <div class="text-center mt-3">
-      <% if @reservations.count > 0 %>
+      <% if @reservations.present? %>
         <p>下記の日時で予約されています。</p>
       <% else %>
         <p>予約がありません。</p>

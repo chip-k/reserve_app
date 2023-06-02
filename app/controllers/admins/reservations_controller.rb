@@ -1,4 +1,5 @@
-class Admins::ReservationsController < Admins::BaseController
+class Admins::ReservationsController < ApplicationController
+  before_action :authenticate_admin!
 
   def new
     @user_id = params[:user_id]
@@ -42,16 +43,22 @@ class Admins::ReservationsController < Admins::BaseController
   end
 
   def destroy_by_day
-    @reservation = Reservation.find(params[:id])
-    @reservation.destroy
-    redirect_to admins_reservations_by_day_path(day: @reservation.start_time.to_date), notice: '予約を削除しました。'
+    reservation = Reservation.find(params[:id])
+    if reservation.destroy
+      redirect_to admins_reservations_by_day_path(day: reservation.start_time.to_date), notice: '予約を削除しました。'
+    else
+      render :reservations_by_day
+    end
   end
 
   def destroy
-    @user = User.find(params[:user_id])
-    @reservation = @user.reservations.find(params[:id])
-    @reservation.destroy
-    redirect_to admins_user_reservations_path(@user.id), notice: '予約を削除しました。'
+    user = User.find(params[:user_id])
+    reservation = user.reservations.find(params[:id])
+    if reservation.destroy
+      redirect_to admins_user_reservations_path(user.id), notice: '予約を削除しました。'
+    else
+      render :index
+    end
   end
 
   def index
@@ -74,6 +81,9 @@ class Admins::ReservationsController < Admins::BaseController
     start_time = @reservation.start_time
     @start_times = (9..19).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }
     @selected_value = start_time.strftime("%H:%M")
+    end_time = @reservation.end_time
+    @end_times = (9..23).flat_map { |hour| [["#{hour}:00", "#{hour}:00"], ["#{hour}:30", "#{hour}:30"]] }
+    @selecteds_value = end_time.strftime("%H:%M")
     user_id = params[:user_id]
     @user = User.find_by(id: user_id)
   end
@@ -83,7 +93,7 @@ class Admins::ReservationsController < Admins::BaseController
     @reservation.day = params[:reservation][:day]
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
-    @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
+    @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_times"])
     @reservation.end_time = @end_time
     @reservation.comment = params[:reservation][:comment]
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
@@ -95,7 +105,7 @@ class Admins::ReservationsController < Admins::BaseController
     elsif Reservation.reserved?(@start_time, @end_time, @reservation.id)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to admins_reservations_by_day_path(day: @reservation.day)
-    elsif @reservation.save
+    elsif @reservation.update(reservation_params)
       updated_date = @reservation.day
       @reservations = Reservation.where(day: updated_date)
       redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
