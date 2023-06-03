@@ -4,22 +4,22 @@
     <h2 class="text-center mb-3">予約編集画面</h2>
     
     <div class="edit-form-group col-7 mx-auto">
-      <%= form_with model: @reservation, url: admins_reservation_path(@reservation), method: :patch, local: true, id: "edit-form" do |f| %>
+      <%= form_with model: @reservation, url: admins_reservation_path(@reservation), method: :patch, local: true do |f| %>
       
-        <div class="edit-form mb-3">
+        <div class="form-group mb-3">
           <%= f.label :day, "日付", class: "form-label" %>
           <%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %>
         </div>
         
         <div class="row">
-          <div class="edit-form my-3 col-6">
+          <div class="form-group my-3 col-6">
             <%= f.label :time, "開始時間", class: "form-label" %>
             <div class="d-flex">
               <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
             </div>
           </div>
           
-          <div class="end_time form-group my-3 col-6">
+          <div class="form-group my-3 col-6">
             <%= f.label :end_time, '終了時間', class: "form-label" %>
             <div class="d-flex">
               <%= select_tag "reservation[end_times]", options_for_select(@end_times, selected: @selecteds_value), include_blank: false, class: 'form-control mr-2' %>
@@ -57,7 +57,7 @@
 
         <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
         
-        <div class="comment form-group mt-2">
+        <div class="form-group mt-2">
           <%= f.label :comment, '備考欄', class: "form-label" %>
           <%= f.text_area :comment, class: 'form-control' %>
         </div>
