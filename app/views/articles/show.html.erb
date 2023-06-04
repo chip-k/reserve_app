@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    <div class="information-contents pb-5">
+      
+      <h1 class="information-content-title text-center"><%= @article.title %></h1>
+      
+      <p class="information-content-text"><%= simple_format(@article.content) %></p>
+      
+      <small class="text-muted"><%= @article.formatted_created_at %></small>
+      
+      <% if temple_signed_in? %>
+        ｜
+        <%= link_to '編集', edit_article_path(temple_id: @temple.id, id: @article.id) %>
+        ｜
+        <%= link_to "削除", article_path(temple_id: @temple.id, id: @article.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+      <% end %>
+      
+      <div class="text-center mt-5">
+        <%= link_to 'お知らせ一覧へ', articles_path(temple_id: @temple.id) %>
+      </div>
+      
+    </div>
+  </div>
+</div>

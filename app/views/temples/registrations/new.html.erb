@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="row col-7 mt-5 mb-4 mx-auto">
+    
+    <h2 class="text-center">新規登録画面</h2>
+
+    <%= form_with model: @temple, url: temple_registration_path do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+  
+      <table class="table">
+        <tr>
+          <th class="required"><%= f.label :name, "名前" %></th>
+          <td><%= f.text_field :name, class: 'form-control', placeholder: "例) 他力本願寺" %></td>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :name_kana, "名前(カナ)" %></th>
+          <td><%= f.text_field :name_kana, class: 'form-control', placeholder: "例) タリキホンガンジ" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :postal_code, "郵便番号", id: "temple_postal_code_label" %></th>
+          <td><%= f.text_field :postal_code, class: 'form-control', id: "temple_postal_code", placeholder: "例) 8100801" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :prefecture_code, "都道府県", id: "temple_prefecture_code_label" %></th>
+          <td><%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, { prompt: '選択してください' }, class: 'form-control', id: "temple_prefecture_code" %></td>
+        </tr>
+        <tr>
+          <th><%= f.label :address, "住所", id: "temple_address_label" %></th>
+          <td><%= f.text_field :address, class: 'form-control', id: "temple_address", placeholder: "例) 福岡市博多区〇〇1-2-3" %></td>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :email, "メールアドレス" %></th>
+          <td><%= f.email_field :email, autocomplete: "email", class: 'form-control', placeholder: "例) example@mail.com" %></td>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :phone_number, "電話番号" %></th>
+          <td><%= f.text_field :phone_number, class: 'form-control', placeholder: "例) 09012345678" %></td>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :password, "パスワード" %></th>
+            <% if @minimum_password_length %>
+              <td><%= f.password_field :password, autocomplete: "new-password", class: 'form-control', placeholder: "例) " + @minimum_password_length.to_s + "文字以上" %></td>
+            <% else %>
+              <td><%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %></td>
+            <% end %>
+        </tr>
+        <tr>
+          <th class="required"><%= f.label :password_confirmation, "パスワード確認" %></th>
+          <td><%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', placeholder: "もう一度入力してください" %></td>
+        </tr>
+      </table>
+
+      <div class="actions d-flex justify-content-center">
+        <%= f.submit "登録" %>
+      </div>
+      
+    <% end %>
+
+  </div>
+</div>
+
+<%= render "temples/shared/links" %>

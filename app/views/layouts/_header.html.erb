@@ -13,26 +13,28 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mx-auto">
           
-          <% if user_signed_in? %>
-          
-            <li class="nav-item">
-              <%= link_to "マイページ", user_path(current_user), class: "nav-link" %>
-            </li>
-            
-          <% end %>
-          
           <% unless admin_signed_in? %>
           
             <li class="nav-item">
               <%= link_to "ホーム", root_path, class: "nav-link" %>
             </li>
+            
+            <% if user_signed_in? %>
+          
+              <li class="nav-item">
+                <%= link_to "マイページ", user_path(current_user), class: "nav-link" %>
+              </li>
+            
+            <% elsif temple_signed_in? %>
+          
+              <li class="nav-item">
+                <%= link_to "マイページ", temple_path(current_temple), class: "nav-link" %>
+              </li>
+            
+            <% end %>
           
             <li class="nav-item">
               <%= link_to "お知らせ", posts_path, class: "nav-link" %>
-            </li>
-          
-            <li class="nav-item">
-              <%= link_to "予約", reservations_month_path, class: "nav-link" %>
             </li>
           
             <% if current_page?(root_path) %>
@@ -66,6 +68,12 @@
               <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %>
             </li>
             
+          <% elsif temple_signed_in? %>
+          
+            <li class="nav-item">
+              <%= link_to "ログアウト", destroy_temple_session_path, method: :delete, class: "nav-link" %>
+            </li>
+            
           <% else %>
           
             <li class="nav-item">
@@ -74,6 +82,14 @@
             
             <li class="nav-item">
               <%= link_to "ログイン", new_user_session_path, class: "nav-link" %>
+            </li>
+            
+            <li class="nav-item">
+              <%= link_to "寺院登録", new_temple_registration_path, class: "nav-link" %>
+            </li>
+            
+            <li class="nav-item">
+              <%= link_to "寺院ログイン", new_temple_session_path, class: "nav-link" %>
             </li>
             
             <li class="nav-item">

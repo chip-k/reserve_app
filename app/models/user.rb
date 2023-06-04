@@ -5,23 +5,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
+  #belongs_to :admin
+  belongs_to :temple
   has_many :reservations, dependent: :destroy
   
   def self.search(search)
     return User.all unless search
     User.where(['name LIKE ?', "%#{search}%"])
   end
-  
-  include JpPrefecture
-  jp_prefecture :prefecture_code
-  
-  def prefecture_name
-    JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
-  end
-
-  def prefecture_name=(prefecture_name)
-    self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
-  end
-  
   
 end

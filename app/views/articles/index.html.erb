@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row col-7 mt-5 mx-auto">
+    <h1 class="text-center"><%= @temple.name %>のお知らせ一覧</h1>
+    
+    <% if temple_signed_in? %>
+      <%= link_to "新規作成", new_article_path(temple_id: @temple.id) %>
+    <% end %>
+    
+    <% @articles.each do |article| %>
+    
+      <div class="information-contents pb-5">
+        
+        <h3 class="information-content-title mt-5 pb-2 pt-5"><%= article.title %></h3>
+        
+        <% if article.content.length <= 70 %>
+          <p class="information-content-text"><%= article.content %></p>
+        <% else %>
+          <p class="information-content-text">
+            <%= truncate(article.content, length: 70) %>
+            <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
+          </p>
+        <% end %>
+        
+        <small class="text-muted"><%= article.formatted_created_at %></small>
+        
+        <% if temple_signed_in? %>
+          ｜
+          <%= link_to '編集', edit_article_path(temple_id: @temple.id, id: article.id) %>
+          ｜
+          <%= link_to "削除", article_path(temple_id: @temple.id, id: article.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+        <% end %>
+        
+      </div>
+      
+    <% end %>
+    
+  </div>
+</div>

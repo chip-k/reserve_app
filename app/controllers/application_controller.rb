@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :configure_permitted_parameter, if: :devise_controller?
   
   
   def after_sign_in_path_for(resource)
@@ -12,26 +11,12 @@ class ApplicationController < ActionController::Base
   end
   
   
-  
   protected
   
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [
-      :email,
-      :name,
-      :kana_name,
-      :phone_number,
-      :postcode,
-      :prefecture_name,
-      :address_city,
-      :address_street,
-      :address_building
-    ])
-  end
   
-  def configure_permitted_parameter
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :kana_name, :postal_code, :prefecture_code, :city, :street, :other_address, :phone_number])
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :kana_name, :postal_code, :prefecture_code, :city, :street, :other_address, :phone_number])
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :name_kana, :postal_code, :prefecture_code, :address, :city, :street, :other_address, :phone_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :name_kana, :postal_code, :prefecture_code, :address, :city, :street, :other_address, :phone_number])
   end
 
 end

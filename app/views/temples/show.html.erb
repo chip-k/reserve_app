@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="row col-7 mx-auto">
+    
+    <h2 class="text-center mt-5 mb-4"><%= @temple.name %></h2>
+    
+    <div class="row my-5">
+        <% @articles.each do |article| %>
+          <div class="information-content col-4 px-5">
+            <h2 class="information-content-title"><%= article.title %></h2>
+            <% if article.content.length <= 70 %>
+              <p class="information-content-text"><%= article.content %></p>
+            <% else %>
+              <p class="information-content-text">
+                <%= truncate(article.content, length: 70) %>
+                <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
+              </p>
+            <% end %>
+            <small class="text-muted"><%= article.formatted_created_at %></small>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="text-center">
+      <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+      </div>
+    </div>
+    
+    <div>
+      <% if temple_signed_in? %>
+        <%= link_to "編集", edit_temple_registration_path, class: "text-center" %>
+        <%= link_to "管理画面", temple_management_path(@temple.id), class: "text-center mt-3" %>
+      <% end %>
+    </div>
+    
+    <div class="contact">
+      <h6>お問い合わせ先</h6>
+      <p>
+        <%= @temple.name %><br>
+        〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
+        <%= @temple.address_with_prefecture %><br>
+        TEL：<%= @temple.phone_number %><br>
+      </p>
+    </div>
+    
+  </div>
+</div>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+  <script>
+  function initMap(){
+    
+    let mapPosition = {lat: <%= @temple.latitude %> , lng: <%= @temple.longitude %> };
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: mapPosition
+    });
+    let transitLayer = new google.maps.TransitLayer();
+    transitLayer.setMap(map);
+    
+    let contentString = '<%= @temple.address %>';
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    let marker = new google.maps.Marker({
+      position: mapPosition,
+      map: map,
+      title: contentString
+    });
+  }
+  </script>
+  
+  
+  <div class="map">
+    <div id="map"></div>
+  </div>
