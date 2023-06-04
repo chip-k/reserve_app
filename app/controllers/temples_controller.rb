@@ -1,4 +1,5 @@
 class TemplesController < ApplicationController
+  before_action :authenticate_temple!, only: [:management]
   
   def show
     @temple = Temple.find(params[:id])

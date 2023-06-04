@@ -1,5 +1,5 @@
-class Admins::ReservationsController < ApplicationController
-  before_action :authenticate_admin!
+class Temples::ReservationsController < ApplicationController
+  before_action :authenticate_temple!
 
   def new
     @user_id = params[:user_id]
@@ -21,10 +21,10 @@ class Admins::ReservationsController < ApplicationController
     @reservation.end_time = @end_time
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
-      redirect_to admins_reservations_by_day_path(day: @reservation.day)
+      redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif Reservation.reserved?(@start_time, @end_time)
       flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to admins_reservations_by_day_path(day: @reservation.day)
+      redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.save
       flash[:success] = "下記の日時で仮予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
@@ -45,7 +45,7 @@ class Admins::ReservationsController < ApplicationController
   def destroy_by_day
     reservation = Reservation.find(params[:id])
     if reservation.destroy
-      redirect_to admins_reservations_by_day_path(day: reservation.start_time.to_date), notice: '予約を削除しました。'
+      redirect_to temples_reservations_by_day_path(day: reservation.start_time.to_date), notice: '予約を削除しました。'
     else
       render :reservations_by_day
     end
@@ -55,7 +55,7 @@ class Admins::ReservationsController < ApplicationController
     user = User.find(params[:user_id])
     reservation = user.reservations.find(params[:id])
     if reservation.destroy
-      redirect_to admins_user_reservations_path(user.id), notice: '予約を削除しました。'
+      redirect_to temples_user_reservations_path(user.id), notice: '予約を削除しました。'
     else
       render :index
     end
@@ -101,14 +101,14 @@ class Admins::ReservationsController < ApplicationController
     end
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
-      redirect_to admins_reservations_by_day_path(day: @reservation.day)
+      redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif Reservation.reserved?(@start_time, @end_time, @reservation.id)
       flash[:alert] = "指定された日時は既に予約済みです。"
-      redirect_to admins_reservations_by_day_path(day: @reservation.day)
+      redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.update(reservation_params)
       updated_date = @reservation.day
       @reservations = Reservation.where(day: updated_date)
-      redirect_to admins_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
+      redirect_to temples_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
     else
       render :edit
     end
@@ -127,7 +127,21 @@ class Admins::ReservationsController < ApplicationController
   def delete_user
     @reservation = Reservation.find(params[:id])
     @reservation.update(user_id: nil)
-    redirect_to edit_admins_reservation_path(@reservation, user_id: nil)
+    redirect_to edit_temples_reservation_path(@reservation, user_id: nil)
+  end
+  
+  def month
+  end
+  
+  def week
+    
+    @date = Date.parse(params[:date])
+    @date_range = @date..(@date + 6.days)
+    @reservations = Reservation.all
+    if Reservation.check_reservation_days(@date)
+      flash[:alert] = "過去の日付は選択できません。"
+      render :week
+    end
   end
   
   
@@ -135,7 +149,7 @@ class Admins::ReservationsController < ApplicationController
   
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
+    params.require(:reservation).permit(:day, :time, :user_id, :temple_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
 
 end

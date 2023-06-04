@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row col-7 mx-auto">
+    
+    <h2 class="text-center mt-5 mb-4">ユーザー管理画面</h2>
+    
+    <% if params[:source] == 'new_temples_users' %>
+      <%= form_tag(temples_users_path(source: 'new_temples_users', day: @day, time: @time), method: :get, class: "input-group") do %>
+        <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
+        <%= hidden_field_tag(:source, 'new_temples_users') %>
+        <%= hidden_field_tag(:day, params[:day]) %>
+        <%= hidden_field_tag(:time, params[:time]) %>
+        <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
+          <i class="fas fa-search"></i> 検索
+        <% end %>
+      <% end %>
+      
+    <% elsif params[:source] == 'edit_temples_users' %>
+      <%= form_tag(temples_users_path(source: 'new_temples_users', day: @day, time: @time), method: :get, class: "input-group") do %>
+        <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
+        <%= hidden_field_tag(:source, 'edit_temples_users') %>
+        <%= hidden_field_tag(:day, params[:day]) %>
+        <%= hidden_field_tag(:time, params[:time]) %>
+        <%= hidden_field_tag(:reservation_id, params[:reservation_id]) %>
+        <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
+          <i class="fas fa-search"></i> 検索
+        <% end %>
+      <% end %>
+      
+    <% else %>
+      <%= form_tag(temples_users_path, method: :get, class: "input-group") do %>
+        <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
+        <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
+          <i class="fas fa-search"></i> 検索
+        <% end %>
+      <% end %>
+    <% end %>
+    
+    <table class="table mt-5">
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= link_to "ユーザー詳細", temples_user_path(user.id) %></td>
+        <td><%= link_to "予約一覧", temples_user_reservations_path(user) %></td>
+        <% if params[:source] == 'new_temples_users' %>
+          <td><%= link_to '予約へ追加', new_temples_reservation_path(user_id: user.id, source: 'new_temples_users', day: params[:day], time: params[:time]) %></td>
+        <% elsif params[:source] == 'edit_temples_users' %>
+          <td><%= link_to '予約へ追加', edit_temples_reservation_path(params[:reservation_id], user_id: user.id, source: 'edit_temples_users', day: params[:day], time: params[:time]) %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

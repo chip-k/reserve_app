@@ -31,13 +31,13 @@ class ReservationsController < ApplicationController
   
   def show
     @reservation = Reservation.find(params[:id])
-    @admin = Admin.find(1)
+    @temple = Temple.find(params[:temple_id])
   end
   
   def index
     user_id = current_user.id
     @reservations = Reservation.where(user_id: user_id).where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
-    @admin = Admin.find(1)
+    @temple = Temple.find(params[:temple_id])
   end
   
   def destroy
@@ -50,25 +50,11 @@ class ReservationsController < ApplicationController
     end
   end
   
-  def month
-  end
-  
-  def week
-    @admin = Admin.find(1)
-    @date = Date.parse(params[:date])
-    @date_range = @date..(@date + 6.days)
-    @reservations = Reservation.all
-    if Reservation.check_reservation_days(@date)
-      flash[:alert] = "過去の日付は選択できません。"
-      render :week
-    end
-  end
-  
   
   private
   
   def reservation_params
-    params.require(:reservation).permit(:day, :time, :user_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
+    params.require(:reservation).permit(:day, :time, :user_id, :temple_id, :start_time, :end_time, :admin_id, :status, :start_date, :end_date, :new_user_name, :comment)
   end
   
 end

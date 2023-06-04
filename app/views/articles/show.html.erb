@@ -8,7 +8,7 @@
       
       <small class="text-muted"><%= @article.formatted_created_at %></small>
       
-      <% if temple_signed_in? %>
+      <% if temple_signed_in? && @temple.id == current_temple.id %>
         ｜
         <%= link_to '編集', edit_article_path(temple_id: @temple.id, id: @article.id) %>
         ｜

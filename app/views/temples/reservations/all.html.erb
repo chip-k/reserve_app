@@ -29,14 +29,14 @@
                 
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
-                    <tr class="reservation-row" data-href="<%= admins_reservations_by_day_path(day: reservation.day) %>">
+                    <tr class="reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
                       <td>
                         <% if reservation.user.present? %>
                           <%= reservation.user.name %>
                         <% elsif reservation.new_user_name.present? %>
                           <%= reservation.new_user_name %>
-                        <% elsif reservation.admin.present? %>
-                          <%= reservation.admin.name %>
+                        <% elsif reservation.temple.present? %>
+                          <%= reservation.temple.name %>
                         <% end %>
                       </td>
                       <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
@@ -74,14 +74,14 @@
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
                     <% if reservation.status == true %>
-                      <tr class="reservation-row" data-href="<%= admins_reservations_by_day_path(day: reservation.day) %>">
+                      <tr class="reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
                         <td>
                           <% if reservation.user.present? %>
                             <%= reservation.user.name %>
                           <% elsif reservation.new_user_name.present? %>
                             <%= reservation.new_user_name %>
-                          <% elsif reservation.admin.present? %>
-                            <%= reservation.admin.name %>
+                          <% elsif reservation.temple.present? %>
+                            <%= reservation.temple.name %>
                           <% end %>
                         </td>
                         <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
@@ -120,14 +120,14 @@
                 <tbody>
                   <% @reservations.each do |reservation| %>
                     <% if reservation.status == false %>
-                      <tr class="reservation-row" data-href="<%= admins_reservations_by_day_path(day: reservation.day) %>">
+                      <tr class="reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
                         <td>
                           <% if reservation.user.present? %>
                             <%= reservation.user.name %>
                           <% elsif reservation.new_user_name.present? %>
                             <%= reservation.new_user_name %>
-                          <% elsif reservation.admin.present? %>
-                            <%= reservation.admin.name %>
+                          <% elsif reservation.temple.present? %>
+                            <%= reservation.temple.name %>
                           <% end %>
                         </td>
                         <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>

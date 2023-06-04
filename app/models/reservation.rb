@@ -1,5 +1,5 @@
 class Reservation < ApplicationRecord
-  belongs_to :temple, optional: true
+  belongs_to :temple
   belongs_to :user, optional: true
 
   validates :day, presence: true

@@ -3,6 +3,14 @@
     
     <h2 class="text-center mt-5 mb-4"><%= @temple.name %></h2>
     
+    <% if user_signed_in? %>
+      <% if current_user.temple == @temple %>
+        <%= button_to "所属解除", unassign_temple_path, method: :patch %>
+      <% else %>
+        <%= button_to "所属する", assign_temple_path(@temple), method: :post %>
+      <% end %>
+    <% end %>
+    
     <div class="row my-5">
         <% @articles.each do |article| %>
           <div class="information-content col-4 px-5">
@@ -26,7 +34,7 @@
     </div>
     
     <div>
-      <% if temple_signed_in? %>
+      <% if temple_signed_in? && @temple.id == current_temple.id %>
         <%= link_to "編集", edit_temple_registration_path, class: "text-center" %>
         <%= link_to "管理画面", temple_management_path(@temple.id), class: "text-center mt-3" %>
       <% end %>

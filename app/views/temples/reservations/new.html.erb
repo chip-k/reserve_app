@@ -8,7 +8,7 @@
     <h1 class="text-center">新規予約画面</h1>
     
     <div class="col-7 mx-auto mt-3">
-      <%= form_with model: @reservation, url: admins_reservations_path, local: true, class: 'form' do |f| %>
+      <%= form_with model: @reservation, url: temples_reservations_path, local: true, class: 'form' do |f| %>
       
         <div class="day form-group">
           <%= f.label :day, '日付', class: "form-label" %>
@@ -38,11 +38,11 @@
                 <%= f.hidden_field :user_id, value: @reservation.user_id %>
               <% end %>
               <% if @user_id.present? %>
-                <%= link_to "ユーザーを変更", admins_users_path(source: 'new_admins_users', day: @day, time: @time) %>
+                <%= link_to "ユーザーを変更", temples_users_path(source: 'new_temples_users', day: @day, time: @time) %>
                 |
-                <%= link_to "削除", new_admins_reservation_path(day: @day, time: @time), id: "delete-user-link" %>
+                <%= link_to "削除", new_temples_reservation_path(day: @day, time: @time), id: "delete-user-link" %>
               <% else %>
-                <%= link_to "ユーザーを追加", admins_users_path(source: 'new_admins_users', day: @day, time: @time), id: 'add-user-link' %>
+                <%= link_to "ユーザーを追加", temples_users_path(source: 'new_temples_users', day: @day, time: @time), id: 'add-user-link' %>
               <% end %>
             </tr>
           </tbody>
@@ -59,7 +59,7 @@
           <%= f.text_area :comment, class: 'form-control' %>
         </div>
         
-        <%= f.hidden_field :admin_id, value: current_admin.id %>
+        <%= f.hidden_field :temple_id, value: current_temple.id %>
       
         <div class="submit">
           <%= f.submit value: '予約する', class: 'btn btn-primary mx-auto d-block mt-3' %>

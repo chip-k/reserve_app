@@ -61,6 +61,9 @@ Rails.application.routes.draw do
     get 'management', to: :collection
   end
   
+  post '/temples/:id/assign_temple', to: 'users#assign_temple', as: 'assign_temple'
+  patch '/users/unassign_temple', to: 'users#unassign_temple', as: 'unassign_temple'
+  
   resources :articles
   resources :homes,  only: [:index]
   resources :posts

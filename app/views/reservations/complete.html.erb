@@ -10,7 +10,7 @@
       <tr>
         <% if user_signed_in? %>
           <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %></td></th>
-        <% elsif admin_signed_in? %>
+        <% elsif temple_signed_in? %>
           <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %>　-　<%= @reservation.end_time.strftime("%H:%M") %></td></th>
         <% end %>
       </tr>
@@ -19,14 +19,14 @@
           <th class="text-center">ユーザー名：　　　<td><%= @reservation.user.name %></td></th>
         <% elsif @reservation.new_user_name.present? %>
           <th class="text-center">ユーザー名：　　　<td><%= @reservation.new_user_name %></td></th>
-        <% elsif @reservation.admin.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.admin.name %></td></th>
+        <% elsif @reservation.temple.present? %>
+          <th class="text-center">ユーザー名：　　　<td><%= @reservation.temple.name %></td></th>
         <% end %>
       </tr>
       <tr>
         <th class="text-center">ステータス：　　　<td><%= @reservation.reservation_status %></td></th>
       </tr>
-      <% if admin_signed_in? %>
+      <% if temple_signed_in? %>
         <tr>
           <th class="text-center">備考欄：　　<td><%= @reservation.comment %></td></th>
         </tr>
@@ -38,10 +38,10 @@
           <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
         <% elsif @reservation.reservation_status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
           <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-          <p>TEL: <%= @admin.phone_number %></p>
+          <p>TEL: <%= @temple.phone_number %></p>
         <% end %>
       <% elsif admin_signed_in? %>
-        <%= link_to "予約を取り消す", admins_reservations_by_day_path(id: @reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+        <%= link_to "予約を取り消す", temples_reservations_by_day_path(id: @reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
       <% end %>
     </div>
     <% if user_signed_in? %>
@@ -51,10 +51,10 @@
       </div>
     <% end %>
     <div class="text-center mt-3">
-      <%= link_to '予約画面に戻る', reservations_month_path %><br>
+      <%= link_to '予約画面に戻る', temples_reservations_month_path %><br>
       <br>
-      <% if admin_signed_in? %>
-        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
+      <% if temple_signed_in? %>
+        <%= link_to "スケジュール画面へ", temples_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
       <% elsif user_signed_in? %>
         <%= link_to "予約一覧へ", reservations_path %>
       <% end %>
