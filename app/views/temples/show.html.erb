@@ -9,6 +9,7 @@
       <% else %>
         <%= button_to "所属する", assign_temple_path(@temple), method: :post %>
       <% end %>
+      <%= link_to "予約する", temples_reservations_month_path(temple_id: @temple.id) %>
     <% end %>
     
     <div class="row my-5">
@@ -29,7 +30,9 @@
       </div>
       
       <div class="text-center">
-      <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+        <% if @temple.articles.count > 3 %>
+          <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+        <% end %>
       </div>
     </div>
     

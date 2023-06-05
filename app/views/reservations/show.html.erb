@@ -8,6 +8,9 @@
         <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
       </tr>
       <tr>
+        <th class="text-center">寺院：<td><%= link_to @temple.name, temple_path(@temple.id) %></td></th>
+      </tr>
+      <tr>
         <th class="text-center">時間：<td><%= @reservation.time %></td></th>
       </tr>
       <tr>

@@ -8,6 +8,9 @@
         <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
       </tr>
       <tr>
+        <th class="text-center">寺院：<td><%= link_to @temple.name, temple_path(@temple.id) %></td></th>
+      </tr>
+      <tr>
         <% if user_signed_in? %>
           <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %></td></th>
         <% elsif temple_signed_in? %>
@@ -40,7 +43,7 @@
           <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
           <p>TEL: <%= @temple.phone_number %></p>
         <% end %>
-      <% elsif admin_signed_in? %>
+      <% elsif temple_signed_in? %>
         <%= link_to "予約を取り消す", temples_reservations_by_day_path(id: @reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
       <% end %>
     </div>
@@ -51,10 +54,10 @@
       </div>
     <% end %>
     <div class="text-center mt-3">
-      <%= link_to '予約画面に戻る', temples_reservations_month_path %><br>
+      <%= link_to '予約画面に戻る', temples_reservations_month_path(temple_id: @temple.id) %><br>
       <br>
       <% if temple_signed_in? %>
-        <%= link_to "スケジュール画面へ", temples_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
+        <%= link_to "スケジュール画面へ", temples_reservations_by_day_path(day: @reservation.day.to_date, temple_id: current_temple.id), from_link: true %>
       <% elsif user_signed_in? %>
         <%= link_to "予約一覧へ", reservations_path %>
       <% end %>

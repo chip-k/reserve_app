@@ -19,7 +19,8 @@
             <%= f.text_field :time, class: 'form-control', value: @time, readonly: true %>
           </div>
         </div>
-      
+        
+        <%= f.hidden_field :temple_id, value: @temple %>
         <%= f.hidden_field :end_time, value: @end_time %>
         <%= f.hidden_field :user_id, value: current_user.id %>
       

@@ -50,6 +50,7 @@ Rails.application.routes.draw do
       patch :delete_user,     on:   :member
       patch 'update_status',  to:   'reservations#update_status', as: 'update_status'
       get   'all',            on:   :collection
+      get   'month', to: 'reservations#month'
     end
     get     'reservations/month'   =>  'reservations#month'
     get     'reservations/week'    =>  'reservations#week'

@@ -6,6 +6,6 @@
     <%= week_calendar do |date| %>
       <%= date.day %>
     <% end %>
-    <%= link_to "月カレンダーへ", temples_reservations_month_path, class: "btn btn-primary" %>
+    <%= link_to "月カレンダーへ", temples_reservations_month_path(temple_id: @temple), class: "btn btn-primary" %>
   </div>
 </div>

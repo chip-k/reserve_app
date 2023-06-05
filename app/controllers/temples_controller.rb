@@ -14,11 +14,4 @@ class TemplesController < ApplicationController
     @temple = Temple.find(params[:temple_id])
   end
   
-  
-  private
-    
-    def user_params
-      params.require(:temple).permit(:name, :name_kana, :postal_code, :prefecture_code, :address, :latitude, :longitude, :email, :phone_number, :password, :password_confirmation)
-    end
-  
 end

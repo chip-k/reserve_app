@@ -1,5 +1,5 @@
 class Temples::ReservationsController < ApplicationController
-  before_action :authenticate_temple!
+  before_action :authenticate_temple!, only: [:new, :create, :index, :show, :edit, :update, :destroy, :reservations_by_day, :destroy_by_day, :all, :delete_user, :update_status]
 
   def new
     @user_id = params[:user_id]
@@ -19,10 +19,11 @@ class Temples::ReservationsController < ApplicationController
     @reservation.start_time = @start_time
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
+    temple_id = params[:temple_id]
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
-    elsif Reservation.reserved?(@start_time, @end_time)
+    elsif Reservation.reserved?(@start_time, @end_time, temple_id)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.save
@@ -37,7 +38,7 @@ class Temples::ReservationsController < ApplicationController
     @date = params[:day] ? Date.parse(params[:day]) : Time.zone.today
     start_date = @date.beginning_of_day
     end_date = @date.end_of_day
-    @reservations = Reservation.where(start_time: start_date..end_date).includes(:user)
+    @reservations = current_temple.reservations.where(start_time: start_date..end_date).includes(:user)
     session[:search_date] = params[:day]
     @search_date = session[:search_date] || Time.zone.today
   end
@@ -63,12 +64,11 @@ class Temples::ReservationsController < ApplicationController
 
   def index
     @user = User.find(params[:user_id])
-    @reservations = @user.reservations.where("start_time >= ?", Time.zone.today.beginning_of_day).order(:start_time)
-    @reservation_ids = @reservations.pluck(:id)
+    @reservations = @user.reservations.where("start_time >= ?", Time.zone.today.beginning_of_day).where(temple_id: current_temple.id).order(:start_time)
   end
   
   def all
-    @reservations = Reservation.all
+    @reservations = current_temple.reservations
     @sorted_reservations = @reservations.order(start_time: :asc)
   end
   
@@ -96,13 +96,14 @@ class Temples::ReservationsController < ApplicationController
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_times"])
     @reservation.end_time = @end_time
     @reservation.comment = params[:reservation][:comment]
+    temple_id = params[:temple_id]
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     end
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
-    elsif Reservation.reserved?(@start_time, @end_time, @reservation.id)
+    elsif Reservation.reserved?(@start_time, @end_time, @reservation.id, temple_id)
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.update(reservation_params)
@@ -131,10 +132,11 @@ class Temples::ReservationsController < ApplicationController
   end
   
   def month
+    @temple = Temple.find(params[:temple_id])
   end
   
   def week
-    
+    @temple = Temple.find(params[:temple_id])
     @date = Date.parse(params[:date])
     @date_range = @date..(@date + 6.days)
     @reservations = Reservation.all

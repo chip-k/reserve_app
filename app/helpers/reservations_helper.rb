@@ -1,11 +1,13 @@
 module ReservationsHelper
   
-  def find_reservation(reservations, day, start_time, end_time)
+  #予約済みの枠を判定
+  def find_reservation(reservations, day, start_time, end_time, temple_id)
     reservations.find do |reservation|
       reservation.start_time.to_date == day &&
         reservation.end_time.to_date == day &&
         reservation.start_time <= end_time &&
-        reservation.end_time > start_time
+        reservation.end_time > start_time &&
+        reservation.temple_id == temple_id
     end
   end
   

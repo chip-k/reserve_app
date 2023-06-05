@@ -43,7 +43,7 @@
           document.querySelectorAll('td[data-date]').forEach(function(td) {
             td.addEventListener('click', function(e) {
               let date = e.target.dataset.date;
-              window.location.href = "/temples/reservations/week?date=" + date;
+              window.location.href = "/temples/reservations/week?date=" + date + "&temple_id=<%= @temple.id %>";
             });
           });
         });

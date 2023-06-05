@@ -6,8 +6,6 @@
     <div class="text-center mt-3">
       <% if @reservations.count > 0 %>
         <p>下記の日時で予約されています。</p>
-        <p>※（確定後）当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL：<%= @temple.phone_number %></p>
       <% else %>
         <p>予約がありません。</p>
       <% end %>
@@ -16,15 +14,9 @@
       <% @reservations.each do |reservation| %>
         <tr class="text-center">
           <td><%= link_to reservation.day.strftime('%Y年%m月%d日'), reservation_path(reservation) %></td>
+          <td><%= link_to reservation.temple.name, temple_path(reservation.temple_id) %></td>
           <td><%= reservation.time %></td>
           <td><%= reservation.reservation_status %></td>
-          <td>
-            <% if reservation.reservation_status == '確認中' || (reservation.day != Time.zone.today && reservation.day != Time.zone.tomorrow) %>
-              <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
-            <% else %>
-              キャンセル
-            <% end %>
-          </td>
         </tr>
       <% end %>
     </table>

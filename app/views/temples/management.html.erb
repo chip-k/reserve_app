@@ -9,7 +9,7 @@
     
     <%= link_to "予約管理", all_temples_reservations_path(id: @temple.id) %>
     
-    <%= link_to "カレンダー", temples_reservations_month_path(id: @temple.id) %>
+    <%= link_to "カレンダー", temples_reservations_month_path(temple_id: @temple.id) %>
     
     <%= link_to "スケジュール", temples_reservations_by_day_path(id: @temple.id, day: Time.zone.today) %>
     

@@ -41,11 +41,11 @@
                   <%= @reservation.user.name %>
                 <% end %>
                 <% if @reservation.user_id.present? %>
-                  <%= link_to "ユーザーを変更", temples_users_path(source: 'edit_admins_users', reservation_id: @reservation.id) %>
+                  <%= link_to "ユーザーを変更", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id) %>
                   |
                   <%= link_to "削除", delete_user_temples_reservation_path(@reservation, user_id: @reservation.user_id), method: :patch, id: "delete-user-link" %>
                 <% else %>
-                  <%= link_to "ユーザーを追加", temples_users_path(source: 'edit_admins_users', reservation_id: @reservation.id), id: 'add-user-link' %>
+                  <%= link_to "ユーザーを追加", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), id: 'add-user-link' %>
                 <% end %>
               </td>
             </tr>

@@ -7,9 +7,9 @@
         <% if prev_week == Time.zone.today - 1.week %>
           <%= "&laquo; #{'前の一週間'}".html_safe %>
         <% elsif prev_week <= Time.zone.today %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: Time.zone.today) %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: Time.zone.today, temple_id: @temple) %>
         <% else %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: prev_week) %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: prev_week, temple_id: @temple) %>
         <% end %>
         <% unless temple_signed_in? %>
           <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
@@ -19,7 +19,7 @@
             </span>
           <% end %>
         <% end %>
-        <%= link_to "#{'次の一週間'} &raquo;".html_safe, temples_reservations_week_path(date: next_week) %>
+        <%= link_to "#{'次の一週間'} &raquo;".html_safe, temples_reservations_week_path(date: next_week, temple_id: @temple) %>
       </div>
       
       <table class="table table-responsive">
@@ -72,14 +72,14 @@
               <% @date_range.each do |day| %>
               <% start_time = Time.zone.parse("#{day} #{time}") %>
               <% end_time = start_time + 30.minutes %>
-              <% reservation = find_reservation(@reservations, day, start_time, end_time) %>
+              <% reservation = find_reservation(@reservations, day, start_time, end_time, @temple.id) %>
               
                 <% unless temple_signed_in? %>
                   <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
                   <% else %>
                     <td class="table-hover">
-                      <%= link_to '◎', new_reservation_path(day: day, time: time) %>
+                      <%= link_to '◎', new_reservation_path(day: day, time: time, temple_id: @temple) %>
                     </td>
                   <% end %>
                 <% end %>
@@ -88,7 +88,7 @@
                     <td class="reserved"><%= '×' %></td>
                   <% else %>
                     <td class="table-hover">
-                      <%= link_to '◎', new_temples_reservation_path(day: day, time: time) %>
+                      <%= link_to '◎', new_temples_reservation_path(day: day, time: time, temple_id: @temple) %>
                     </td>
                   <% end %>
                 <% end %>
