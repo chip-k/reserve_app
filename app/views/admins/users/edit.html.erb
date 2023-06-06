@@ -49,20 +49,7 @@
         <%= f.label :phone_number, "電話番号" %><br>
         <%= f.text_field :phone_number, class: 'form-control' %>
       </div>
-
-      <div class="field">
-        <%= f.label :password %> <i>(変更したくない場合は空白のままにしてください)</i><br />
-        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-        <% if @minimum_password_length %>
-          <em>※パスワードは<%= @minimum_password_length %> 文字以上入力してください</em>
-        <% end %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
-      </div>
-
+      
       <div class="actions pt-4">
         <%= f.submit "変更", class: "w-100" %>
       </div>
@@ -74,7 +61,7 @@
     <div class="text-center">
       <% if @user.reservations.where("day >= ?", Date.today).exists? %>
         予約が作成されているため削除できません。
-        <%= link_to "#{@user.name}様の予約一覧", admins_user_reservations_path(@user) %>
+        <%= link_to "#{@user.name}様の予約一覧", reservations_admins_user_path(@user) %>
       <% else %>
         アカウントを削除しますか？
         <%= button_to "削除", admins_user_path(@user), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete %>

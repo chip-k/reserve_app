@@ -34,24 +34,8 @@
       <% end %>
     </table>
     
-    <div class="text-center">
-      <% if @reservation.reservation_status == '確認中' || (@reservation.day != Time.zone.today && @reservation.day != Time.zone.tomorrow) %>
-        <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
-      <% elsif @reservation.reservation_status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
-        <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL: <%= @temple.phone_number %></p>
-      <% end %>
-    </div>
-    
-    <div>
-      <% if @reservation.reservation_status == '確認中' %>
-        <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
-        <p>※お寺の都合により予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
-      <% end %>
-    </div>
-    
     <div class="text-center mt-3">
-        <%= link_to "予約一覧へ", reservations_path %>
+        <%= link_to "予約一覧へ", reservations_admins_user_path(@user) %>
     </div>
     
   </div>

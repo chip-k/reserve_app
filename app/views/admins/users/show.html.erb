@@ -3,6 +3,15 @@
     
     <h2 class="text-center mt-5 mb-4">登録情報</h2>
     
+    <p>
+      所属寺院: 
+      <% if @user.temple %>
+        <%= link_to @user.temple.name, temple_path(@temple.id) %>
+      <% else %>
+        なし
+      <% end %>
+    </p>
+    
     <table class="table">
       
       <tr><th>氏名</th><td><%= @user.name %></td></tr>
@@ -26,7 +35,7 @@
     </table>
     
     <%= link_to "編集", edit_admins_user_path(@user.id), class: "text-center" %>
-    <%= link_to "#{@user.name}様の予約一覧", admins_user_reservations_path(@user), class: "text-center mt-3" %>
+    <%= link_to "#{@user.name}様の予約一覧", reservations_admins_user_path(@user), class: "text-center mt-3" %>
     
   </div>
 </div>

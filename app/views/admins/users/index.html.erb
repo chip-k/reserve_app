@@ -40,12 +40,7 @@
       <tr>
         <td><%= user.name %></td>
         <td><%= link_to "ユーザー詳細", admins_user_path(user.id) %></td>
-        <td><%= link_to "予約一覧", admins_user_reservations_path(user) %></td>
-        <% if params[:source] == 'new_admins_users' %>
-          <td><%= link_to '予約へ追加', new_admins_reservation_path(user_id: user.id, source: 'new_admins_users', day: params[:day], time: params[:time]) %></td>
-        <% elsif params[:source] == 'edit_admins_users' %>
-          <td><%= link_to '予約へ追加', edit_admins_reservation_path(params[:reservation_id], user_id: user.id, source: 'edit_admins_users', day: params[:day], time: params[:time]) %></td>
-        <% end %>
+        <td><%= link_to "予約一覧", reservations_admins_user_path(user.id) %></td>
       </tr>
       <% end %>
     </table>

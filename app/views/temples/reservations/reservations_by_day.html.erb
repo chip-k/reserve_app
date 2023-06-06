@@ -137,7 +137,7 @@
 
     function updateReservationStatus(id, status, statusElement) {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      const url = "/admins/reservations/" + id + "/update_status";
+      const url = "/temples/reservations/" + id + "/update_status";
 
       fetch(url, {
         method: 'PATCH',

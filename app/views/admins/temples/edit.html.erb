@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row col-7 mx-auto">
+    <h2 class="text-center mt-5 mb-4">登録情報の変更</h2>
+
+    <%= form_with(model: [@temple], url: admins_temple_path(@temple), method: :patch) do |f| %>
+
+      <div class="field">
+        <%= f.label :name, "氏名" %><br>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+      
+      <div class="field">
+        <%= f.label :name_kana, "氏名(カナ)" %><br>
+        <%= f.text_field :name_kana, class: 'form-control' %>
+      </div>
+  
+      <div class="field">
+        <%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %><br>
+        <%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code" %>
+      </div>
+  
+      <div class="field">
+        <%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %><br>
+        <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: "user_prefecture_code" %>
+      </div>
+  
+      <div class="field">
+        <%= f.label :address, "住所", id: "temple_address_label" %><br>
+        <%= f.text_field :address, class: 'form-control', id: "temple_address" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :メールアドレス %><br />
+        <%= f.email_field :email, autocomplete: "email", class: 'form-control' %>
+      </div>
+  
+      <div class="field">
+        <%= f.label :phone_number, "電話番号" %><br>
+        <%= f.text_field :phone_number, class: 'form-control' %>
+      </div>
+
+      <div class="actions pt-4">
+        <%= f.submit "変更", class: "w-100" %>
+      </div>
+      
+    <% end %>
+
+    <h3 class="text-center mt-5 mb-4">アカウント削除</h3>
+    <div class="text-center">
+      アカウントを削除しますか？
+      <%= button_to "削除", admins_temple_path(@temple), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete %>
+    </div>
+
+    <%= link_to "キャンセル", admins_temple_path(@temple), class: "text-center mt-3" %>
+
+  </div>
+</div>

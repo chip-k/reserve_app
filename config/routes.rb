@@ -2,10 +2,6 @@ Rails.application.routes.draw do
   
   root :to => 'homes#index'
   
-  devise_scope :user do
-    get '/users/sign_out' => 'users/sessions#destroy'
-  end
-  
   devise_for :users, controllers: {
     sessions:      'users/sessions',
     registrations: 'users/registrations',
@@ -22,35 +18,25 @@ Rails.application.routes.draw do
   }
   
   namespace :admins do
-    resources   :users,        only: %i(index show destroy edit update) #do
-     #resources :reservations, only: %i(show index destroy)
-    #end
-   #resources :reservations, only: %i(new create edit update) do
-     #patch :delete_user,    on: :member
-     #patch 'update_status', to: 'reservations#update_status', as: 'update_status'
-     #get   'all',           on: :collection
-   #end
-    resources :temples,      only: %i(index show destroy edit update)
-   #get    'reservations_by_day', to: 'reservations#reservations_by_day', as: 'reservations_by_day'
-   #delete 'reservations_by_day', to: 'reservations#destroy_by_day',      as: 'destroy_reservations_by_day'
+    resources   :users, only: %i(index show destroy edit update) do
+      get 'reservations', on: :member
+      get 'reservation',  on: :member
+    end
+    resources :temples, only: %i(index show destroy edit update)
   end
   
-  #get 'reservations/month' => 'reservations#month'
-  #get 'reservations/week'  => 'reservations#week'
-  
-  resources :reservations do
+  resources :reservations, only: %i(index show destroy update) do
     get 'complete', on: :member
   end
   
   namespace :temples do
-    resources   :users,         only: %i(index show) do
-      resources  :reservations, only: %i(show index destroy)
+    resources :users, only: %i(index show) do
+      resources :reservations, only: %i(show index destroy)
     end
     resources :reservations,  only: %i(new create edit update) do
       patch :delete_user,     on:   :member
       patch 'update_status',  to:   'reservations#update_status', as: 'update_status'
       get   'all',            on:   :collection
-      get   'month', to: 'reservations#month'
     end
     get     'reservations/month'   =>  'reservations#month'
     get     'reservations/week'    =>  'reservations#week'
@@ -62,11 +48,10 @@ Rails.application.routes.draw do
     get 'management', to: :collection
   end
   
-  post '/temples/:id/assign_temple', to: 'users#assign_temple', as: 'assign_temple'
-  patch '/users/unassign_temple', to: 'users#unassign_temple', as: 'unassign_temple'
+  post  '/temples/:id/assign_temple', to: 'users#assign_temple',   as: 'assign_temple'
+  patch '/users/unassign_temple',     to: 'users#unassign_temple', as: 'unassign_temple'
   
   resources :articles
-  resources :homes,  only: [:index]
   resources :posts
   resources :users,  only: [:show]
   resources :admins, only: [:index]

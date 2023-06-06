@@ -1,7 +1,19 @@
 <div class="container">
-  <div class="row col-7 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4"><%= @temple.name %></h2>
+    <h1 class="text-center mt-5 mb-4"><%= @temple.name %></h1>
+    
+    <div class="row">
+      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
+        <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %><br>
+        <% if temple_signed_in? && @temple.id == current_temple.id %>
+          <%= link_to "プロフィール編集", edit_temple_registration_path, class: "text-center" %>
+        <% end %>
+      </div>
+    
+      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto">
+        <%= @temple.introduction %>
+      </div>
+    </div>
     
     <% if user_signed_in? %>
       <% if current_user.temple == @temple %>
@@ -12,38 +24,36 @@
       <%= link_to "予約する", temples_reservations_month_path(temple_id: @temple.id) %>
     <% end %>
     
-    <div class="row my-5">
-        <% @articles.each do |article| %>
-          <div class="information-content col-4 px-5">
-            <h2 class="information-content-title"><%= article.title %></h2>
-            <% if article.content.length <= 70 %>
-              <p class="information-content-text"><%= article.content %></p>
-            <% else %>
-              <p class="information-content-text">
-                <%= truncate(article.content, length: 70) %>
-                <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
-              </p>
-            <% end %>
-            <small class="text-muted"><%= article.formatted_created_at %></small>
+    <div class="card-list-container row my-5">
+      <% @articles.each do |article| %>
+        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg">
+          <%= image_tag @temple.get_profile_image(200, 150) %>
+          <div class="card-body">
+            <div class="row">
+              <h2 class="card-title"><%= article.title %></h2>
+              <% if article.content.length <= 70 %>
+                <p class="card-text"><%= article.content %></p>
+              <% else %>
+                <p class="card-text">
+                  <%= truncate(article.content, length: 70) %>
+                  <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
+                </p>
+              <% end %>
+              <small class="text-muted"><%= article.formatted_created_at %></small>
+            </div>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
+    </div>
       
       <div class="text-center">
         <% if @temple.articles.count > 3 %>
-          <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+          <h4 class="pt-3 mb-5"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
         <% end %>
       </div>
     </div>
     
-    <div>
-      <% if temple_signed_in? && @temple.id == current_temple.id %>
-        <%= link_to "編集", edit_temple_registration_path, class: "text-center" %>
-        <%= link_to "管理画面", temple_management_path(@temple.id), class: "text-center mt-3" %>
-      <% end %>
-    </div>
-    
-    <div class="contact">
+    <div class="contact pt-5">
       <h6>お問い合わせ先</h6>
       <p>
         <%= @temple.name %><br>
@@ -53,7 +63,6 @@
       </p>
     </div>
     
-  </div>
 </div>
 
 
