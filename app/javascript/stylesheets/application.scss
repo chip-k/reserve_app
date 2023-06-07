@@ -107,3 +107,14 @@ footer {
   width: 50px;
 }
 
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.introduction-group {
+  background-color: #fffafa;
+}

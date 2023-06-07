@@ -1,33 +1,52 @@
-<div class="container">
+  <div class="introduction-group">
+    <div class="container">
+      <h1 class="text-center pt-5 mt-5 mb-4"><%= @temple.name %></h1>
     
-    <h1 class="text-center mt-5 mb-4"><%= @temple.name %></h1>
+      <div class="row">
+        <div class="col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
+          <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %><br>
+        
+          <div class="text-center pt-2">
+            <% if temple_signed_in? && @temple.id == current_temple.id %>
+              <%= link_to edit_temple_registration_path do %>
+                <button type="button" class="btn btn-outline-secondary">
+                  <i class="fas fa-vihara"></i> プロフィール編集
+                </button>
+              <% end %>
+            <% end %>
+          </div>
+        
+          <div class="text-center pt-2">
+            <% if user_signed_in? %>
+              <% if current_user.temple == @temple %>
+                <%= link_to unassign_temple_path, method: :patch do %>
+                  <button type="button" class="btn btn-outline-danger">所属解除</button>
+                <% end %>
+              <% else %>
+                <%= link_to assign_temple_path(@temple), method: :post do %>
+                  <button type="button" class="btn btn-outline-success">所属する</button>
+                <% end %>
+              <% end %>
+              <%= link_to temples_reservations_month_path(temple_id: @temple.id) do %>
+                <button type="button" class="btn btn-outline-primary">
+                  <i class="far fa-calendar-alt"></i> 予約する
+                </button>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
     
-    <div class="row">
-      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
-        <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %><br>
-        <% if temple_signed_in? && @temple.id == current_temple.id %>
-          <%= link_to "プロフィール編集", edit_temple_registration_path, class: "text-center" %>
-        <% end %>
-      </div>
-    
-      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto">
-        <%= @temple.introduction %>
+        <div class="col-lg-6 col-md-10 col-sm-10 mx-auto">
+          <%= @temple.introduction %>
+        </div>
       </div>
     </div>
+  </div>
     
-    <% if user_signed_in? %>
-      <% if current_user.temple == @temple %>
-        <%= button_to "所属解除", unassign_temple_path, method: :patch %>
-      <% else %>
-        <%= button_to "所属する", assign_temple_path(@temple), method: :post %>
-      <% end %>
-      <%= link_to "予約する", temples_reservations_month_path(temple_id: @temple.id) %>
-    <% end %>
-    
+  <div class="container">
     <div class="card-list-container row my-5">
       <% @articles.each do |article| %>
-        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg">
-          <%= image_tag @temple.get_profile_image(200, 150) %>
+        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg" onclick="redirectToArticle('<%= article_path(temple_id: @temple.id, id: article.id) %>')">
           <div class="card-body">
             <div class="row">
               <h2 class="card-title"><%= article.title %></h2>
@@ -39,7 +58,7 @@
                   <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
                 </p>
               <% end %>
-              <small class="text-muted"><%= article.formatted_created_at %></small>
+              <small class="text-muted no-link-style"><%= article.formatted_created_at %></small>
             </div>
           </div>
         </div>
@@ -64,6 +83,12 @@
     </div>
     
 </div>
+
+<script>
+  function redirectToArticle(url) {
+  window.location.href = url;
+}
+</script>
 
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>

@@ -10,9 +10,19 @@
         <%= f.file_field :profile_image, accept: "image/*", class: 'form-control' %>
       </div>
       
+      <% if @temple.profile_image.attached? && !@temple.profile_image.blob.filename.to_s.eql?("default-image.png") %>
+        <div>
+          <%= image_tag @temple.profile_image.variant(resize: "100x100") %>
+          <label>
+            <%= f.check_box :remove_profile_image %>
+            <%= f.label :remove_profile_image, "プロフィール画像を削除する" %>
+          </label>
+        </div>
+      <% end %>
+      
       <div class="field">
         <%= label :introduction, "紹介文" %><br>
-        <%= f. text_area :introduction, class: 'form-control' %>
+        <%= f. text_area :introduction, rows: 10, class: 'form-control' %>
       </div>
 
       <div class="field">
@@ -56,10 +66,7 @@
 
       <div class="field">
         <%= f.label :password, "新しいパスワード" %> <i>(変更したくない場合は空白のままにしてください)</i><br />
-        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-        <% if @minimum_password_length %>
-          <em>※パスワードは<%= @minimum_password_length %> 文字以上入力してください</em>
-        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control' %>
       </div>
 
       <div class="field">
