@@ -1,79 +1,83 @@
 <div class="container">
-  <div class="row col-7 mx-auto">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
     <h2 class="text-center mt-5 mb-4">登録情報の変更</h2>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
 
-      <div class="field">
-        <%= f.label :name, "氏名" %><br>
-        <%= f.text_field :name, class: 'form-control' %>
-      </div>
+      <table class="table table-responsive form-table">
+        <tbody>
+
+          <tr class="field">
+            <th><%= f.label :name, "氏名" %></th>
+            <td><%= f.text_field :name, class: 'form-control' %></td>
+          </tr>
       
-      <div class="field">
-        <%= f.label :name_kana, "氏名(カナ)" %><br>
-        <%= f.text_field :name_kana, class: 'form-control' %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :name_kana, "氏名(カナ)" %></th>
+            <td><%= f.text_field :name_kana, class: 'form-control' %></td>
+          </tr>
   
-      <div class="field">
-        <%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %><br>
-        <%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code" %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :postal_code, "郵便番号" %></th>
+            <td><%= f.text_field :postal_code, class: 'form-control' %></td>
+          </tr>
   
-      <div class="field">
-        <%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %><br>
-        <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: "user_prefecture_code" %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :prefecture_code, "都道府県" %></th>
+            <td><%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control' %></td>
+          </tr>
   
-      <div class="field">
-        <%= f.label :city, "市区町村", id: "user_city_label" %><br>
-        <%= f.text_field :city, class: 'form-control', id: "user_city" %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :city, "市区町村" %></th>
+            <td><%= f.text_field :city, class: 'form-control' %></td>
+          </tr>
   
-      <div class="field">
-        <%= f.label :street, "番地", id: "user_street_label" %><br>
-        <%= f.text_field :street, class: 'form-control', id: "user_street" %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :street, "番地" %></th>
+            <td><%= f.text_field :street, class: 'form-control' %></td>
+          </tr>
   
-      <div class="field">
-        <%= f.label :other_address, "建物名・部屋番号", id: "user_other_address_label" %><br>
-        <%= f.text_field :other_address, class: 'form-control', id: "user_other_address" %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :other_address, "建物名・部屋番号" %></th>
+            <td><%= f.text_field :other_address, class: 'form-control' %></td>
+          </tr>
 
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autocomplete: "email", class: 'form-control' %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :email %></th>
+            <td><%= f.email_field :email, autocomplete: "email", class: 'form-control' %></td>
+          </tr>
 
-      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-      <% end %>
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <span>Currently waiting confirmation for: <%= resource.unconfirmed_email %></span>
+          <% end %>
   
-      <div class="field">
-        <%= f.label :phone_number, "電話番号" %><br>
-        <%= f.text_field :phone_number, class: 'form-control' %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :phone_number, "電話番号" %></th>
+            <td><%= f.text_field :phone_number, class: 'form-control' %></td>
+          </tr>
 
-      <div class="field">
-        <%= f.label :password %> <i>(変更したくない場合は空白のままにしてください)</i><br />
-        <%= f.password_field :password, autocomplete: "new-password", class: 'form-control' %>
-        <% if @minimum_password_length %>
-          <em>※パスワードは<%= @minimum_password_length %> 文字以上入力してください</em>
-        <% end %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :password %> <i>(変更したくない場合は空白のままにしてください)</i></th>
+            <td><%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control' %></td>
+          </tr>
 
-      <div class="field">
-        <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :password_confirmation %></th>
+            <td><%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %></td>
+          </tr>
 
-      <div class="field">
-        <%= f.label :current_password %> <i>(変更するには現在のパスワードが必要です)</i><br />
-        <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %>
-      </div>
+          <tr class="field">
+            <th><%= f.label :current_password %> <i>(変更するには現在のパスワードが必要です)</i></th>
+            <td><%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %></td>
+          </tr>
+          
+        </tbody>
+      </table>
 
       <div class="actions pt-4">
-        <%= f.submit "変更", class: "w-100" %>
+        <%= f.submit "変更", class: "btn btn-outline-secondary w-100" %>
       </div>
       
     <% end %>
@@ -82,10 +86,10 @@
     <div class="text-center">
       <% if @user.reservations.where("day >= ?", Date.today).exists? %>
         予約が作成されているため削除できません。
-        <%= link_to "予約一覧", reservations_path(@user.id) %>
+        <%= link_to "予約一覧", reservations_path(@user.id), class: "btn btn-outline-primary" %>
       <% else %>
         アカウントを削除しますか？
-        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete %>
+        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
       <% end %>
     </div>
 

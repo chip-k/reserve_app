@@ -3,12 +3,14 @@
     <h1 class="text-center"><%= @temple.name %>のお知らせ一覧</h1>
     
     <% if temple_signed_in? && @temple.id == current_temple.id %>
-      <%= link_to "新規作成", new_article_path(temple_id: @temple.id) %>
+      <%= link_to new_article_path(temple_id: @temple.id) do %>
+        <button class="btn btn-outline-success">新規作成</button>
+      <% end %>
     <% end %>
     
     <% @articles.each do |article| %>
     
-      <div class="information-contents pb-5">
+      <div class="information-contents pb-5" onclick="redirectToArticle('<%= article_path(temple_id: @temple.id, id: article.id) %>')">
         
         <h3 class="information-content-title mt-5 pb-2 pt-5"><%= article.title %></h3>
         
@@ -25,9 +27,13 @@
         
         <% if temple_signed_in? && @temple.id == current_temple.id %>
           ｜
-          <%= link_to '編集', edit_article_path(temple_id: @temple.id, id: article.id) %>
+          <%= link_to edit_article_path(temple_id: @temple.id, id: article.id) do %>
+            <button class="btn btn-sm btn-outline-secondary">編集</button>
+          <% end %>
           ｜
-          <%= link_to "削除", article_path(temple_id: @temple.id, id: article.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+          <%= link_to article_path(temple_id: @temple.id, id: article.id), method: :delete, "data-confirm" => "本当に削除しますか？" do %>
+            <button class="btn btn-sm btn-outline-danger">削除</button>
+          <% end %>
         <% end %>
         
       </div>
@@ -36,3 +42,9 @@
     
   </div>
 </div>
+
+<script>
+  function redirectToArticle(url) {
+    window.location.href = url;
+  }
+</script>

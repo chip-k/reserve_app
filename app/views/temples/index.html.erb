@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row col-7 mx-auto">
+  <div class="row col-lg-7 mx-auto">
     
     <h2 class="text-center mt-5 mb-4">寺院一覧</h2>
     
@@ -12,9 +12,13 @@
     
     <table class="table mt-5">
       <% @temples.each do |temple| %>
-      <tr>
+      <tr class="text-center">
         <td><%= temple.name %></td>
-        <td><%= link_to "寺院詳細", temple_path(temple.id) %></td>
+        <td>
+          <%= link_to temple_path(temple.id) do %>
+            <button class="btn btn-outline-primary">寺院詳細</button>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     </table>

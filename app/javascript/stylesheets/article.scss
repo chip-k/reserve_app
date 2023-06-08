@@ -1,0 +1,8 @@
+.information-contents {
+  transition: transform 0.3s ease;
+}
+
+.information-contents:hover {
+  transform: scale(1.1);
+  background-color: #fffafa;
+}

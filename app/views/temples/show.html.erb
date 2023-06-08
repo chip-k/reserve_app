@@ -39,6 +39,7 @@
         <div class="col-lg-6 col-md-10 col-sm-10 mx-auto">
           <%= @temple.introduction %>
         </div>
+        
       </div>
     </div>
   </div>
@@ -65,29 +66,34 @@
       <% end %>
     </div>
       
-      <div class="text-center">
-        <% if @temple.articles.count > 3 %>
-          <h4 class="pt-3 mb-5"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
-        <% end %>
-      </div>
+    <div class="text-center">
+      <% if @temple.articles.count > 3 %>
+        <h4 class="pt-3 mb-5"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+      <% end %>
     </div>
+  </div>
     
-    <div class="contact pt-5">
-      <h6>お問い合わせ先</h6>
-      <p>
-        <%= @temple.name %><br>
-        〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
-        <%= @temple.address_with_prefecture %><br>
-        TEL：<%= @temple.phone_number %><br>
-      </p>
-    </div>
+  <div class="contact pt-5">
+    <h6>お問い合わせ先</h6>
+    <p>
+      <%= @temple.name %><br>
+      〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
+      <%= @temple.address_with_prefecture %><br>
+      TEL：<%= @temple.phone_number %><br>
+    </p>
+  </div>
     
 </div>
 
+<div class="map">
+  <div id="map"></div>
+</div>
+
+
 <script>
   function redirectToArticle(url) {
-  window.location.href = url;
-}
+    window.location.href = url;
+  }
 </script>
 
 
@@ -115,8 +121,3 @@
     });
   }
   </script>
-  
-  
-  <div class="map">
-    <div id="map"></div>
-  </div>

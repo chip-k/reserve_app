@@ -1,22 +1,28 @@
 <div class="container">
   <div class="row col-7 mt-5 mb-4 mx-auto">
-    <div class="information-contents pb-5">
+    <div class="article-content pb-5">
       
-      <h1 class="information-content-title text-center"><%= @article.title %></h1>
+      <h1 class="article-content-title text-center"><%= @article.title %></h1>
       
-      <p class="information-content-text"><%= simple_format(@article.content) %></p>
+      <p class="article-content-text"><%= simple_format(@article.content) %></p>
       
       <small class="text-muted"><%= @article.formatted_created_at %></small>
       
       <% if temple_signed_in? && @temple.id == current_temple.id %>
         ｜
-        <%= link_to '編集', edit_article_path(temple_id: @temple.id, id: @article.id) %>
+        <%= link_to edit_article_path(temple_id: @temple.id, id: @article.id) do %>
+          <button class="btn btn-sm btn-outline-secondary">編集</button>
+        <% end %>
         ｜
-        <%= link_to "削除", article_path(temple_id: @temple.id, id: @article.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+        <%= link_to article_path(temple_id: @temple.id, id: @article.id), method: :delete, "data-confirm" => "本当に削除しますか？" do %>
+          <button class="btn btn-sm btn-outline-danger">削除</button>
+        <% end %>
       <% end %>
       
       <div class="text-center mt-5">
-        <%= link_to 'お知らせ一覧へ', articles_path(temple_id: @temple.id) %>
+        <%= link_to articles_path(temple_id: @temple.id) do %>
+          <button class="btn btn-outline-primary">お知らせ一覧へ</button>
+        <% end %>
       </div>
       
     </div>

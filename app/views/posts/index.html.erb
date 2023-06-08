@@ -3,19 +3,21 @@
     <h1 class="text-center">お知らせ一覧</h1>
     
     <% if admin_signed_in? %>
-      <%= link_to "新規作成", new_post_path %>
+      <%= link_to new_post_path do %>
+        <button class="btn btn-outline-success">新規作成</button>
+      <% end %>
     <% end %>
     
     <% @posts.each do |post| %>
     
       <div class="information-contents pb-5">
         
-        <h3 class="information-content-title mt-5 pb-2 pt-5"><%= post.title %></h3>
+        <h3 class="post-content-title mt-5 pb-2 pt-5"><%= post.title %></h3>
         
         <% if post.body.length <= 70 %>
-          <p class="information-content-text"><%= post.body %></p>
+          <p class="post-content-text"><%= post.body %></p>
         <% else %>
-          <p class="information-content-text">
+          <p class="post-content-text">
             <%= truncate(post.body, length: 70) %>
             <small><%= link_to "続きを読む", post_path(post) %></small>
           </p>
@@ -25,9 +27,13 @@
         
         <% if admin_signed_in? %>
           ｜
-          <%= link_to '編集', edit_post_path(post) %>
+          <%= link_to edit_post_path(post) do %>
+            <button class="btn btn-sm btn-outline-secondary">編集</button>
+          <% end %>
           ｜
-          <%= link_to "削除", post_path(post.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+          <%= link_to post_path(post.id), method: :delete, "data-confirm" => "本当に削除しますか？" do %>
+            <button class="btn btn-sm btn-outline-danger">削除</button>
+          <% end %>
         <% end %>
         
       </div>

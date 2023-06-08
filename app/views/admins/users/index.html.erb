@@ -1,46 +1,31 @@
 <div class="container">
-  <div class="row col-7 mx-auto">
+  <div class="row col-lg-7 col-md-10 mx-auto">
     
     <h2 class="text-center mt-5 mb-4">ユーザー管理画面</h2>
     
-    <% if params[:source] == 'new_admins_users' %>
-      <%= form_tag(admins_users_path(source: 'new_admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>
-        <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
-        <%= hidden_field_tag(:source, 'new_admins_users') %>
-        <%= hidden_field_tag(:day, params[:day]) %>
-        <%= hidden_field_tag(:time, params[:time]) %>
-        <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
-          <i class="fas fa-search"></i> 検索
-        <% end %>
-      <% end %>
-      
-    <% elsif params[:source] == 'edit_admins_users' %>
-      <%= form_tag(admins_users_path(source: 'new_admins_users', day: @day, time: @time), method: :get, class: "input-group") do %>
-        <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
-        <%= hidden_field_tag(:source, 'edit_admins_users') %>
-        <%= hidden_field_tag(:day, params[:day]) %>
-        <%= hidden_field_tag(:time, params[:time]) %>
-        <%= hidden_field_tag(:reservation_id, params[:reservation_id]) %>
-        <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
-          <i class="fas fa-search"></i> 検索
-        <% end %>
-      <% end %>
-      
-    <% else %>
+    <div class="user_search">
       <%= form_tag(admins_users_path, method: :get, class: "input-group") do %>
         <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "名前を入力してください") %>
         <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
           <i class="fas fa-search"></i> 検索
         <% end %>
       <% end %>
-    <% end %>
+    </div>
     
-    <table class="table mt-5">
+    <table class="table mt-5 text-center">
       <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to "ユーザー詳細", admins_user_path(user.id) %></td>
-        <td><%= link_to "予約一覧", reservations_admins_user_path(user.id) %></td>
+        <td>
+          <%= link_to admins_user_path(user.id) do %>
+            <button class="btn btn-outline-primary">ユーザー詳細</button>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to reservations_admins_user_path(user.id) do %>
+            <button class="btn btn-outline-primary">予約一覧</button>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     </table>
