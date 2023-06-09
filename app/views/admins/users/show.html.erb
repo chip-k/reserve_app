@@ -1,16 +1,25 @@
 <div class="container">
-  <div class="row col-lg-7 col-md-10 mx-auto">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">登録情報</h2>
+    <div class="title text-center mt-5 mb-4">
+      <h2>登録情報</h2>
+    </div>
     
-    <p>
-      所属寺院: 
-      <% if @user.temple %>
-        <%= link_to @user.temple.name, temple_path(@temple.id) %>
-      <% else %>
-        なし
-      <% end %>
-    </p>
+    <div class="d-flex justify-content-between">
+      <div>
+        <p>
+          所属寺院: 
+          <% if @user.temple %>
+            <%= link_to @user.temple.name, admins_temple_path(@temple.id) %>
+          <% else %>
+            なし
+          <% end %>
+        </p>
+      </div>
+      <div>
+        <%= link_to "#{@user.name}様の予約一覧", reservations_admins_user_path(@user), class: "btn btn-outline-primary" %>
+      </div>
+    </div>
     
     <table class="table table-responsive user-table">
       <tbody>
@@ -63,12 +72,7 @@
       </tbody>
     </table>
     
-    <%= link_to edit_admins_user_path(@user.id), class: "text-center" do %>
-     <button class="btn btn-outline-secondary">編集</button>
-    <% end %>
-    <%= link_to reservations_admins_user_path(@user), class: "text-center mt-3" do %>
-      <button class="btn btn-outline-primary"><%= "#{@user.name}様の予約一覧" %></button>
-    <% end %>
+    <%= link_to "編集", edit_admins_user_path(@user.id), class: "btn btn-outline-secondary" %>
     
   </div>
 </div>

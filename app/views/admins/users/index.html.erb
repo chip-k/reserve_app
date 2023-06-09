@@ -1,7 +1,9 @@
 <div class="container">
-  <div class="row col-lg-7 col-md-10 mx-auto">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">ユーザー管理画面</h2>
+    <div class="text-center mt-5 mb-4">
+      <h2>ユーザー管理画面</h2>
+    </div>
     
     <div class="user_search">
       <%= form_tag(admins_users_path, method: :get, class: "input-group") do %>
@@ -12,22 +14,15 @@
       <% end %>
     </div>
     
-    <table class="table mt-5 text-center">
+    <table class="table table-responsive mt-5 text-center">
       <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td>
-          <%= link_to admins_user_path(user.id) do %>
-            <button class="btn btn-outline-primary">ユーザー詳細</button>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to reservations_admins_user_path(user.id) do %>
-            <button class="btn btn-outline-primary">予約一覧</button>
-          <% end %>
-        </td>
+        <td><%= link_to "ユーザー詳細", admins_user_path(user.id), class: "btn btn-sm btn-outline-primary" %></td>
+        <td><%= link_to "予約一覧", reservations_admins_user_path(user.id), class: "btn btn-sm btn-outline-primary" %></td>
       </tr>
       <% end %>
     </table>
+    
   </div>
 </div>

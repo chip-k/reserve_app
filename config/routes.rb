@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :temples, only: %i(index show destroy edit update)
   end
   
-  resources :reservations, only: %i(index show destroy update) do
+  resources :reservations, only: %i(new create index show destroy update) do
     get 'complete', on: :member
   end
   

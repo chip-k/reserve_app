@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">登録情報の変更</h2>
+    <div class="title text-center mt-5 mb-4">
+      <h2>登録情報の変更</h2>
+    </div>
 
     <%= form_with(model: [@temple], url: admins_temple_path(@temple), method: :patch) do |f| %>
 
@@ -52,13 +54,18 @@
       
     <% end %>
 
-    <h3 class="text-center mt-5 mb-4">アカウント削除</h3>
+    <div class="text-center mt-5 mb-4">
+      <h3>アカウント削除</h3>
+    </div>
+    
     <div class="text-center">
       アカウントを削除しますか？
       <%= button_to "削除", admins_temple_path(@temple), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
     </div>
-
-    <%= link_to "キャンセル", admins_temple_path(@temple), class: "text-center mt-3" %>
+    
+    <div class="text-center mt-3">
+      <%= link_to "キャンセル", admins_temple_path(@temple) %>
+    </div>
 
   </div>
 </div>

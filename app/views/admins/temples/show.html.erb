@@ -1,12 +1,18 @@
 <div class="introduction-group">
   <div class="container">
-    <h2 class="text-center pt-5 mt-5 mb-4"><%= @temple.name %></h2>
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2><%= @temple.name %></h2>
+    </div>
     
     <div class="row">
-      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
-        <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %><br>
+      <div class="profile col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
         
-        <div class="text-center pt-2">
+        <div class="profile-group">
+          <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %>
+        </div>
+        
+        <div class="profile-group text-center pt-2">
           <%= link_to edit_admins_temple_path(@temple.id) do %>
             <button type="button" class="btn btn-outline-secondary">
               <i class="fas fa-vihara"></i> 寺院情報編集
@@ -15,7 +21,7 @@
         </div>
       </div>
           
-      <div class="col-lg-6 col-md-10 col-sm-10 mx-auto">
+      <div class="profile-group col-lg-6 col-md-10 col-sm-10 mx-auto">
         <%= @temple.introduction %>
       </div>
           
@@ -25,7 +31,7 @@
   <div class="container">
     <div class="card-list-container row my-5">
       <% @articles.each do |article| %>
-        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg" onclick="redirectToArticle('<%= article_path(temple_id: @temple.id, id: article.id) %>')">
+        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg" onclick="location.href='<%= article_path(temple_id: @temple.id, id: article.id) %>';">
           <div class="card-body">
             <div class="row">
               <h2 class="card-title"><%= article.title %></h2>
@@ -67,12 +73,6 @@
   <div id="map"></div>
 </div>
 
-
-<script>
-  function redirectToArticle(url) {
-    window.location.href = url;
-  }
-</script>
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
   <script>
