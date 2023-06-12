@@ -27,8 +27,23 @@
   color: white;
 }
 
-.home {
-  margin-top: 500px;
+.moon {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  left: 100px;
+  border-radius: 100px;
+  background-color: #ffff00;
+}
+
+.temple-bell {
+  background-image: url('../../assets/images/temple-bell.png');
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 500px;
+  
 }
 
 section {

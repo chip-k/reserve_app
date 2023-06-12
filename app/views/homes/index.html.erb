@@ -4,19 +4,19 @@
     <div id="wrapper">
       <h1 class="site-name">TempleConnect Online</h1>
       <p class="sub-title">～お寺と繋がろう～</p>
+      <div class="moon"></div>
+      <div class="temple-bell"></div>
     </div>
   </div>
 </div>
-  
+
   <div class="home">
     <section id="top">
       <div class="container>">
         <div class="row">
           <div class="top-text col-10 mx-auto py-5 text-center">
             <p>当サイトでは架空の寺院情報や予約管理を運営しています。</p>
-            <%= link_to temples_path do %>
-              <button class="btn btn-outline-primary">寺院を探す</button>
-            <% end %>
+            <%= link_to "寺院を探す", temples_path, class: "btn btn-outline-primary" %>
           </div>
         </div>
       </div>

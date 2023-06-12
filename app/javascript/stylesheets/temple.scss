@@ -1,0 +1,35 @@
+.temple-reservation-table .field:hover {
+  background-color: #ffffe0;
+}
+
+.temple-reservation-table .field th:hover {
+  background-color: #fff;
+}
+
+@media screen and (max-width:768px) {
+  
+ .temple-reservation-table .field th {
+   display: none;
+ }
+ 
+ .temple-reservation-table .field td {
+   display: block;
+   border-bottom: none;
+  }
+  
+  .temple-reservation-table .field td:last-child {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 20px;
+  }
+ 
+ .temple-table .field td {
+   display: block;
+   border-bottom: none;
+  }
+  
+  .temple-table .field td:last-child {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 20px;
+  }
+  
+}

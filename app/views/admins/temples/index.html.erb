@@ -14,11 +14,15 @@
       <% end %>
     </div>
     
-    <table class="table table-responsive text-center mt-5">
+    <table class="table table-responsive temple-table text-center mt-5">
       <% @temples.each do |temple| %>
-      <tr>
-        <td><%= temple.name %></td>
-        <td><%= link_to "寺院詳細", admins_temple_path(temple.id) %></td>
+      <tr class="field">
+        <td class="col-md-4">
+          <%= image_tag temple.get_profile_image(200, 200) %><br>
+          <%= temple.name %>
+          <%= link_to "寺院詳細", admins_temple_path(temple.id), class: "btn btn-sm btn-outline-primary" %>
+        </td>
+        <td class="col-md-8"><%= temple.introduction %></td>
       </tr>
       <% end %>
     </table>

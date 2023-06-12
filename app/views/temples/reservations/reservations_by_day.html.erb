@@ -1,9 +1,11 @@
-<div class="container days">
-  <div class="row col-10 mt-5 mb-4 mx-auto">
+<div class="container-field days">
+  <div class="row col-11 mx-auto">
     
-    <div class="text-center title">
+    <div class="title text-center mt-5 mb-4">
       <h2>スケジュール画面</h2>
-      
+    </div>
+    
+    <div class="day text-center">
       <h4>
         <%= @date.strftime('%Y年%m月%d日') %>
         <% if @date.sunday? %>
@@ -21,34 +23,35 @@
           </span>
         <% end %>
       </h4>
-      
+    </div>
+    
+    <div class="search text-center">
       <%= form_with url: temples_reservations_by_day_path, method: :get, local: true, id: "search-form" do |f| %>
         <%= f.label :day, "日付検索", class: "form-label" %>
         <%= f.date_field :day, value: @search_date, name: "day", id: "search-date" %>
       <% end %>
-      
     </div>
     
     <div class="d-flex justify-content-between">
-    <%= link_to "&laquo; #{'前の日'}".html_safe, temples_reservations_by_day_path(day: @date.yesterday) %>
-    <%= link_to "#{'次の日'} &raquo;".html_safe, temples_reservations_by_day_path(day: @date.tomorrow) %>
+      <%= link_to "&laquo; #{'前の日'}".html_safe, temples_reservations_by_day_path(day: @date.yesterday), class: "btn btn-sm btn-outline-dark" %>
+      <%= link_to "#{'次の日'} &raquo;".html_safe, temples_reservations_by_day_path(day: @date.tomorrow), class: "btn btn-sm btn-outline-dark" %>
     </div>
     
-    <table class="table">
+    <table class="table table-responsive">
       
       <thead>
         <tr>
-          <th class="text-center col-1">日時</th>
+          <th class="text-center col-2">日時</th>
           <th class="text-center col-2">予約</th>
-          <th class="text-center col-5">備考</th>
-          <th class="text-center col-2">ステータス</th>
+          <th class="text-center col-6">備考</th>
+          <!--<th class="text-center col-sm-2">ステータス</th>-->
           <th class="text-center col-2"></th>
         </tr>
       </thead>
       
       <tbody class="text-center">
         <% times.each do |time| %>
-          <tr>
+          <tr class="reserved">
             <td class="table-light times"><%= time %></td>
             <% start_time = Time.zone.parse("#{@date} #{time}") %>
             <% end_time = start_time + 30.minutes %>
@@ -56,34 +59,37 @@
             <% if reservation.present? %>
               <% rowspan = ((reservation.end_time - start_time) / 30.minutes).to_i %>
               <% if start_time == reservation.start_time %>
-                <% if reservation.user.present? %>
-                  <td class="reserved" rowspan="<%= rowspan %>"><%= link_to reservation.user.name, temples_user_path(reservation.user) %></td>
-                <% elsif reservation.new_user_name.present? %>
-                  <td class="reserved" rowspan="<%= rowspan %>"><%= reservation.new_user_name %></td>
-                <% elsif reservation.temple.present? %>
-                  <td class="reserved" rowspan="<%= rowspan %>"><%= reservation.temple.name %></td>
-                <% else %>
-                  <td class="reserved" rowspan="<%= rowspan %>">予約あり（ユーザー名未登録）</td>
-                <% end %>
-                <td class="reserved" rowspan="<%= rowspan %>"><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %><br><%= reservation.comment %></td>
-                <td class="reserved" rowspan="<%= rowspan %>">
-                  <span id="status-<%= reservation.id %>"><%= reservation.reservation_status %></span>
-                  <label class="toggle col-auto">
-                    <input id="toggle-<%= reservation.id %>" class="toggle-input" type="checkbox" data-reservation-id="<%= reservation.id %>" data-update-url="<%= temples_reservation_update_status_path(reservation) %>" <%= reservation.status ? 'checked' : '' %> />
-                    <span for="toggle-<%= reservation.id %>" class="toggle-slider"></span>
-                  </label>
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>">
+                  <% if reservation.user.present? %>
+                    <%= link_to reservation.user.name, temples_user_path(reservation.user) %><br>
+                  <% elsif reservation.new_user_name.present? %>
+                    <%= reservation.new_user_name %>
+                  <% elsif reservation.temple.present? %>
+                    <%= reservation.temple.name %>
+                  <% else %>
+                    予約あり（ユーザー名未登録）
+                  <% end %>
+                  
+                  
                 </td>
-                <td class="reserved" rowspan="<%= rowspan %>">
-                  <%= link_to "編集", edit_temples_reservation_path(reservation) %>
-                  ｜
-                  <%= link_to "削除", temples_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>"><%= reservation.comment %></td>
+                <!--<td class="reserved <%#= reservation.status ? 'active' : 'inactive' %>" rowspan="<%#= rowspan %>">-->
+                  <!--<span id="status-<%#= reservation.id %>"><%#= reservation.reservation_status %></span>-->
+                  <!--<label class="toggle col-auto">-->
+                    <!--<input id="toggle-<%#= reservation.id %>" class="toggle-input" type="checkbox" data-reservation-id="<%#= reservation.id %>" data-update-url="<%#= temples_reservation_update_status_path(reservation) %>" <%#= reservation.status ? 'checked' : '' %> />-->
+                    <!--<span for="toggle-<%#= reservation.id %>" class="toggle-slider"></span>-->
+                  <!--</label>-->
+                <!--</td>-->
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>">
+                  <%= link_to "編集", edit_temples_reservation_path(reservation), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= link_to "削除", temples_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-sm btn-outline-danger" %>
                 </td>
               <% end %>
             <% else %>
               <td class="table-light"></td>
+              <!--<td class="table-light"></td>-->
               <td class="table-light"></td>
-              <td class="table-light"></td>
-              <td class="table-light"><%= link_to "追加", new_temples_reservation_path(day: @date, time: time) %></td>
+              <td class="table-light"><%= link_to "追加", new_temples_reservation_path(day: @date, time: time), class: "btn btn-sm btn-outline-success" %></td>
             <% end %>
           </tr>
         <% end %>
