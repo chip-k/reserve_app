@@ -5,10 +5,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  #belongs_to :admin
   belongs_to :temple, optional: true
   has_many :reservations, dependent: :destroy
   
+  #ユーザーを部分一致で検索
   def self.search(search)
     return User.all unless search
     User.where(['name LIKE ?', "%#{search}%"])

@@ -1,33 +1,38 @@
 <div class="container days">
-  <div class="row col-7 mt-5 mx-auto text-center">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mb-3">予約編集画面</h2>
+    <% if @reservation.errors.any? %>
+      <%= @reservation.errors.full_messages %>
+    <% end %>
     
-    <div class="edit-form-group col-7 mx-auto">
-      <%= form_with model: @reservation, url: temples_reservation_path(@reservation), method: :patch, local: true do |f| %>
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約編集画面</h2>
+    </div>
+    
+    <%= form_with model: @reservation, url: temples_reservation_path(@reservation), method: :patch, local: true do |f| %>
       
-        <div class="form-group mb-3">
-          <%= f.label :day, "日付", class: "form-label" %>
-          <%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %>
-        </div>
+      <div class="form-group mb-3">
+        <%= f.label :day, "日付", class: "form-label" %>
+        <%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %>
+      </div>
         
-        <div class="row">
-          <div class="form-group my-3 col-6">
-            <%= f.label :time, "開始時間", class: "form-label" %>
-            <div class="d-flex">
-              <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
-            </div>
+      <div class="row">
+        <div class="form-group my-3 col-6">
+          <%= f.label :time, "開始時間", class: "form-label" %>
+          <div class="d-flex">
+            <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
           </div>
-          
-          <div class="form-group my-3 col-6">
-            <%= f.label :end_time, '終了時間', class: "form-label" %>
-            <div class="d-flex">
-              <%= select_tag "reservation[end_times]", options_for_select(@end_times, selected: @selecteds_value), include_blank: false, class: 'form-control mr-2' %>
-            </div>
-          </div>
-          
         </div>
+          
+        <div class="form-group my-3 col-6">
+          <%= f.label :end_time, '終了時間', class: "form-label" %>
+          <div class="d-flex">
+            <%= select_tag "reservation[end_times]", options_for_select(@end_times, selected: @selecteds_value), include_blank: false, class: 'form-control mr-2' %>
+          </div>
+        </div>
+      </div>
         
+      <div class="form-group text-center mt-3">
         <table>
           <tbody>
             <tr>
@@ -41,57 +46,44 @@
                   <%= @reservation.user.name %>
                 <% end %>
                 <% if @reservation.user_id.present? %>
-                  <%= link_to "ユーザーを変更", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id) %>
+                  <%= link_to "ユーザーを変更", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), class: "btn btn-sm btn-outline-secondary" %>
                   |
-                  <%= link_to "削除", delete_user_temples_reservation_path(@reservation, user_id: @reservation.user_id), method: :patch, id: "delete-user-link" %>
+                  <%= link_to "削除", delete_user_temples_reservation_path(@reservation, user_id: @reservation.user_id), method: :patch, id: "delete-user-link", class: "btn btn-sm btn-outline-danger" %>
                 <% else %>
-                  <%= link_to "ユーザーを追加", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), id: 'add-user-link' %>
+                  <%= link_to "ユーザーを追加", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), id: 'add-user-link', class: "btn btn-sm btn-outline-success" %>
                 <% end %>
               </td>
             </tr>
           </tbody>
         </table>
         
-        <%= check_box_tag "reservation[user_id]", "new", false, id: "new-user-checkbox" %>
-        <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
-
-        <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+        <div class="form-group mt-3">
+          <%= check_box_tag "reservation[user_id]", "new", false, id: "new-user-checkbox" %>
+          <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
+          <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+        </div>
         
         <div class="form-group mt-2">
-          <%= f.label :comment, '備考欄', class: "form-label" %>
-          <%= f.text_area :comment, class: 'form-control' %>
+          <%= radio_button_tag(:status, true, @reservation.status == true) %>
+          <%= label_tag(:status, "確定") %>
+          <%= radio_button_tag(:status, false, @reservation.status == false) %>
+          <%= label_tag(:status, "確認中") %>
         </div>
+      </div>
         
-        <%= f.hidden_field :temple_id, value: current_temple.id %>
+      <div class="form-group mt-2">
+        <%= f.label :comment, '備考欄', class: "form-label" %>
+        <%= f.text_area :comment, rows: 5, class: 'form-control' %>
+      </div>
         
-        <div class="text-center mt-3">
-          <%= f.submit "更新", class: "btn btn-primary" %>
-        </div>
+      <%= f.hidden_field :temple_id, value: current_temple.id %>
         
-      <% end %>
-    </div>
+      <div class="form-group text-center mt-3">
+        <%= f.submit "更新", class: "btn btn-outline-primary" %>
+      </div>
+        
+    <% end %>
   </div>
 </div>
 
-
-<script>
-  document.addEventListener('turbolinks:load', function() {
-    let deleteLink = document.getElementById('delete-user-link');
-    let newUserNameField = document.getElementById('new-user-name');
-    let newUserCheckbox = document.getElementById('new-user-checkbox');
-    let addLink = document.getElementById('add-user-link');
-
-    newUserCheckbox.addEventListener('change', function() {
-      if (newUserCheckbox.checked) {
-        if (deleteLink) {
-          deleteLink.click();
-        }
-        newUserNameField.classList.remove('d-none');
-        addLink.style.display = 'none';
-      } else {
-        newUserNameField.classList.add('d-none');
-        addLink.style.display = 'block';
-      }
-    });
-  });
-</script>
+<%= javascript_pack_tag 'new_user_name' %>

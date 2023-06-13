@@ -5,12 +5,14 @@
       <h2>寺院一覧</h2>
     </div>
     
+    <div class="temple-search">
       <%= form_tag(temples_path, method: :get, class: "input-group") do %>
         <%= text_field_tag(:search, params[:search], class: "form-control", placeholder: "寺院名を入力してください") %>
         <%= button_tag(type: "submit", class: "btn btn-outline-primary", id: "button-addon2") do %>
           <i class="fas fa-search"></i> 検索
         <% end %>
       <% end %>
+    </div>
     
     <table class="table table-responsive temple-table text-center mt-5">
       <% @temples.each do |temple| %>

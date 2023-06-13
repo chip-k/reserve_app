@@ -13,6 +13,16 @@
   position: relative;
 }
 
+.tab li.confirm {
+  color: blue;
+  background: #e0ffff;
+}
+
+.tab li.confirming {
+  color: red;
+  background: #fff0f5;
+}
+
 .tab li.active {
   background: #fff;
 }

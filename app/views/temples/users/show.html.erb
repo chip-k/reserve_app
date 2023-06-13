@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">登録情報</h2>
+    <div class="title text-center mt-5 mb-4">
+      <h2>登録情報</h2>
+    </div>
     
     <div class="d-flex justify-content-between">
       <p>
@@ -12,8 +14,9 @@
           なし
         <% end %>
       </p>
-    
-      <%= link_to "#{@user.name}様の予約一覧", temples_user_reservations_path(@user), class: "btn btn-outline-primary" %>
+      <div>
+        <%= link_to "#{@user.name}様の予約一覧", temples_user_reservations_path(@user), class: "btn btn-outline-primary" %>
+      </div>
     </div>
     
     <table class="table table-responsive form-table">

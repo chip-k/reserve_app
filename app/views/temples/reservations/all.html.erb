@@ -7,13 +7,13 @@
     
     <div class="wrapper text-center">
       <ul class="tab">
-        <li>全予約</li>
-        <li>確定</li>
-        <li>確認中<span class="notice"><%= @reservations.where(status: false).count %></span></li>
+        <li class="all">全予約</li>
+        <li class="confirm">確定</li>
+        <li class="confirming">確認中<span class="notice"><%= @reservations.where(status: false).count %></span></li>
       </ul>
 
       <div id="all" class="area">
-        <h2>全ての予約一覧</h2>
+        <h3>全ての予約一覧</h3>
         <ul>
           <li>
             <% if @reservations.present? %>
@@ -25,13 +25,13 @@
                     <th>予約</th>
                     <th>日付</th>
                     <th>時間</th>
-                    <th>ステータス</th>
+                    <th></th>
                   </tr>
                 </thead>
                 
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
-                    <tr class="field reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
+                    <tr class="field reserved <%= reservation.status ? 'active' : 'inactive' %>">
                       <td>
                         <% if reservation.user.present? %>
                           <%= reservation.user.name %>
@@ -43,7 +43,7 @@
                       </td>
                       <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
                       <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
-                      <td><%= reservation.reservation_status %></td>
+                      <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
                     </tr>
                   <% end %>
                 </tbody>
@@ -58,7 +58,7 @@
       </div>
 
       <div id="confirm" class="area">
-        <h2>確定している予約一覧</h2>
+        <h3>確定している予約一覧</h3>
         <ul>
           <li>
             <% if @reservations.any? { |reservation| reservation.status == true } %>
@@ -70,13 +70,14 @@
                     <th>予約</th>
                     <th>日付</th>
                     <th>時間</th>
+                    <th></th>
                   </tr>
                 </thead>
                 
                 <tbody>
                   <% @sorted_reservations.each do |reservation| %>
                     <% if reservation.status == true %>
-                      <tr class="field reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
+                      <tr class="field reserved active">
                         <td>
                           <% if reservation.user.present? %>
                             <%= reservation.user.name %>
@@ -88,6 +89,7 @@
                         </td>
                         <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
                         <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
+                        <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -103,7 +105,7 @@
       </div>
 
       <div id="confirming" class="area">
-        <h2>確認中の予約一覧</h2>
+        <h3>確認中の予約一覧</h3>
         <ul>
           <li>
             <% if @reservations.any? { |reservation| reservation.status == false } %>
@@ -116,13 +118,14 @@
                     <th>日付</th>
                     <th>時間</th>
                     <th>予約受付</th>
+                    <th></th>
                   </tr>
                 </thead>
                 
                 <tbody>
                   <% @reservations.each do |reservation| %>
                     <% if reservation.status == false %>
-                      <tr class="field reservation-row" data-href="<%= temples_reservations_by_day_path(day: reservation.day) %>">
+                      <tr class="field reserved inactive">
                         <td>
                           <% if reservation.user.present? %>
                             <%= reservation.user.name %>
@@ -135,6 +138,7 @@
                         <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
                         <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
                         <td><%= reservation.created_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+                        <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
                       </tr>
                     <% end %>
                   <% end %>
@@ -152,20 +156,6 @@
   </div>
 </div>
 
-
-<script>
-  document.addEventListener("turbolinks:load", function() {
-    let reservationRows = document.querySelectorAll(".reservation-row");
-    Array.from(reservationRows).forEach(function(row) {
-      row.addEventListener("click", function() {
-        let url = this.dataset.href;
-        if (url) {
-          window.location.href = url;
-        }
-      });
-    });
-  });
-</script>
 
 <script>
   $('.tab li').on('click', function() {

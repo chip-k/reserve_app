@@ -15,6 +15,10 @@
    padding-right: 100px;
  }
  
+.user-reservations-table .field {
+  
+}
+ 
  
 @media screen and (max-width:425px) {
   
@@ -38,5 +42,25 @@
    border-bottom: none;
    text-align: center;
  }
+ 
+ .users-table .field td {
+   display: block;
+   border-bottom: none;
+  }
+  
+  .users-table .field td:last-child {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 20px;
+  }
+  
+  .user-reservations-table .field td {
+   display: block;
+   border-bottom: none;
+  }
+  
+  .user-reservations-table .field td:last-child {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 20px;
+  }
   
 }

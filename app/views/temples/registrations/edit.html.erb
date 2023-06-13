@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">登録情報の変更</h2>
+    <div class="title text-center mt-5 mb-4">
+      <h2>登録情報の変更</h2>
+    </div>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
       <%= render "devise/shared/error_messages", resource: resource %>
@@ -55,7 +57,7 @@
           </tr>
 
           <tr class="field">
-            <th><%= f.label :email %></th>
+            <th><%= f.label :メールアドレス %></th>
             <td><%= f.email_field :email, autocomplete: "email", class: 'form-control' %></td>
           </tr>
 
@@ -91,8 +93,11 @@
       </div>
       
     <% end %>
-
-    <h3 class="text-center mt-5 mb-4">アカウント削除</h3>
+    
+    <div class="text-center mt-5 mb-4">
+      <h3>アカウント削除</h3>
+    </div>
+    
     <div class="text-center">
       <% if @temple.reservations.where("day >= ?", Date.today).exists? %>
         予約が作成されているため削除できません。

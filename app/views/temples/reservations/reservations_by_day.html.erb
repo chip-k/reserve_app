@@ -44,7 +44,6 @@
           <th class="text-center col-2">日時</th>
           <th class="text-center col-2">予約</th>
           <th class="text-center col-6">備考</th>
-          <!--<th class="text-center col-sm-2">ステータス</th>-->
           <th class="text-center col-2"></th>
         </tr>
       </thead>
@@ -69,17 +68,8 @@
                   <% else %>
                     予約あり（ユーザー名未登録）
                   <% end %>
-                  
-                  
                 </td>
                 <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>"><%= reservation.comment %></td>
-                <!--<td class="reserved <%#= reservation.status ? 'active' : 'inactive' %>" rowspan="<%#= rowspan %>">-->
-                  <!--<span id="status-<%#= reservation.id %>"><%#= reservation.reservation_status %></span>-->
-                  <!--<label class="toggle col-auto">-->
-                    <!--<input id="toggle-<%#= reservation.id %>" class="toggle-input" type="checkbox" data-reservation-id="<%#= reservation.id %>" data-update-url="<%#= temples_reservation_update_status_path(reservation) %>" <%#= reservation.status ? 'checked' : '' %> />-->
-                    <!--<span for="toggle-<%#= reservation.id %>" class="toggle-slider"></span>-->
-                  <!--</label>-->
-                <!--</td>-->
                 <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>">
                   <%= link_to "編集", edit_temples_reservation_path(reservation), class: "btn btn-sm btn-outline-secondary" %>
                   <%= link_to "削除", temples_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-sm btn-outline-danger" %>
@@ -87,7 +77,6 @@
               <% end %>
             <% else %>
               <td class="table-light"></td>
-              <!--<td class="table-light"></td>-->
               <td class="table-light"></td>
               <td class="table-light"><%= link_to "追加", new_temples_reservation_path(day: @date, time: time), class: "btn btn-sm btn-outline-success" %></td>
             <% end %>
@@ -112,65 +101,4 @@
     });
   }
 });
-</script>
-
-
-<script>
-  document.addEventListener('turbolinks:load', function() {
-    const toggleInputs = document.querySelectorAll('.toggle-input');
-
-    toggleInputs.forEach(function(input) {
-      const reservationId = input.getAttribute('data-reservation-id');
-      const statusElement = document.querySelector(`#status-${reservationId}`);
-      const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
-      const initialStatus = storedStatus ? storedStatus === 'true' : false;
-      
-      console.log('initialStatus:', initialStatus);
-      
-      if (input.checked !== initialStatus) {
-        input.checked = initialStatus;
-        updateStatusDisplay(statusElement, initialStatus);
-      }
-
-      input.addEventListener('change', function() {
-        const status = input.checked;
-
-        localStorage.setItem(`reservation-${reservationId}-status`, status);
-
-        updateReservationStatus(reservationId, status, statusElement);
-      });
-    });
-
-    function updateReservationStatus(id, status, statusElement) {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      const url = "/temples/reservations/" + id + "/update_status";
-
-      fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
-        },
-        body: JSON.stringify({ status: status.toString() })
-      })
-        .then(function(response) {
-          if (response.ok) {
-            const newStatus = status ? '確定' : '確認中';
-            updateStatusDisplay(statusElement, status);
-          } else {
-            console.error('ステータスの更新に失敗しました');
-            setTimeout(function() {
-              updateReservationStatus(id, status, statusElement);
-            }, 5000);
-          }
-        })
-        .catch(function(error) {
-          console.error('Error:', error);
-        });
-    }
-    
-    function updateStatusDisplay(statusElement, status) {
-      statusElement.textContent = status ? '確定' : '確認中';
-    }
-  });
 </script>

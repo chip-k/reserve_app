@@ -6,7 +6,7 @@
       </div>
     
       <div class="row">
-        <div class="profile col-lg-6 col-md-10 col-sm-10 mx-auto mb-3">
+        <div class="profile row col-lg-6 col-md-10 mx-auto mb-3">
           
           <div class="profile-group">
             <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %>
@@ -93,9 +93,9 @@
 
 
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
-  <script>
+<script>
   function initMap(){
-    
+
     let mapPosition = {lat: <%= @temple.latitude %> , lng: <%= @temple.longitude %> };
     let map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
@@ -115,4 +115,4 @@
       title: contentString
     });
   }
-  </script>
+</script>

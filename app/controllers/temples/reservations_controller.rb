@@ -1,5 +1,5 @@
 class Temples::ReservationsController < ApplicationController
-  before_action :authenticate_temple!, only: [:new, :create, :index, :show, :edit, :update, :destroy, :reservations_by_day, :destroy_by_day, :all, :delete_user, :update_status]
+  before_action :authenticate_temple!, only: [:new, :create, :index, :show, :edit, :update, :destroy, :reservations_by_day, :destroy_by_day, :all, :delete_user]
 
   def new
     @user_id = params[:user_id]
@@ -19,6 +19,7 @@ class Temples::ReservationsController < ApplicationController
     @reservation.start_time = @start_time
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
+    @reservation.status = params[:status]
     temple_id = params[:temple_id]
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
@@ -96,6 +97,7 @@ class Temples::ReservationsController < ApplicationController
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_times"])
     @reservation.end_time = @end_time
     @reservation.comment = params[:reservation][:comment]
+    @reservation.status = params[:status]
     temple_id = params[:temple_id]
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
@@ -112,16 +114,6 @@ class Temples::ReservationsController < ApplicationController
       redirect_to temples_reservations_by_day_path(day: updated_date), notice: '予約を編集しました'
     else
       render :edit
-    end
-  end
-
-  def update_status
-    reservation = Reservation.find(params[:reservation_id])
-    new_status = params[:status] == 'true'
-    if reservation.update(status: new_status)
-      render json: { status: 'success' }
-    else
-      render json: { status: 'error' }, status: :unprocessable_entity
     end
   end
 

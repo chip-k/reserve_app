@@ -37,20 +37,15 @@ class Temple < ApplicationRecord
     profile_image.variant(resize_to_limit: [width, height]).processed
   end
   
-  #都道府県と以降の住所を合わせる
-  def address_with_prefecture
-    prefecture_code + address
-  end
-  
   #寺院を部分検索
   def self.search(search)
     return Temple.all unless search
     Temple.where(['name LIKE ?', "%#{search}%"])
   end
   
-  #def remove_profile_image?
-    #remove_profile_image.presence
-  #end
-  
+  #都道府県と以降の住所を合わせる
+  def address_with_prefecture
+    prefecture_code + address
+  end
   
 end
