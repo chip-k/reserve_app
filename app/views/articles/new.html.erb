@@ -4,6 +4,7 @@
     <div class="title text-center mt-5 mb-4">
       <h2>新規投稿</h2>
     </div>
+    <%= render 'layouts/errors', model: @article %>
     
     <%= form_with model: @article do |f| %>
     

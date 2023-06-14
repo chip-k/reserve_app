@@ -3,6 +3,15 @@ class Temple < ApplicationRecord
   after_validation :geocode, if: :address_changed?
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  
+  validates :name, presence: true
+  validates :name_kana, name_kana: true
+  validates :postal_code, postal_code: true
+  validates :prefecture_code, presence: true
+  validates :address, presence: true
+  validates :phone_number, phone_number: true
+  validates :introduction, allow_blank: true, length: { maximum: 350 }
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
@@ -10,7 +19,6 @@ class Temple < ApplicationRecord
   has_many :users,        through:   :reservations
   has_many :articles,     dependent: :destroy
   
-  has_one_attached :background_image
   has_one_attached :profile_image
   
   attr_accessor :remove_profile_image

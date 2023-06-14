@@ -6,13 +6,12 @@ class ArticlesController < ApplicationController
   end
   
   def create
-    article = Article.new(article_params)
-    article.temple_id = current_temple.id
-    if article.save
+    @article = Article.new(article_params)
+    @article.temple_id = current_temple.id
+    if @article.save
       flash[:success] = "投稿に成功しました。"
-      redirect_to article_path(temple_id: article.temple_id, id: article.id)
+      redirect_to article_path(temple_id: @article.temple_id, id: @article.id)
     else
-      flash[:danger] = "投稿に失敗。"
       render :new
     end
   end
