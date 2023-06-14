@@ -2,6 +2,12 @@ class User < ApplicationRecord
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  
+  validates :name, presence: true
+  validates :name_kana, name_kana: true
+  validates :postal_code, allow_blank: true, format: { with: /\A\d{7}\z/, message: "は7桁の数字のみ入力してください。" }
+  validates :phone_number, phone_number: true
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
