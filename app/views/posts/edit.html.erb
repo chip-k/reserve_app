@@ -9,12 +9,18 @@
     
       <div class="title">
         <h4>タイトル</h4>
-        <%= f.text_field :title, class: 'form-control mb-3' %>
+        <div class="form-group <%= 'has-error' if @post.errors.include?(:title) %>">
+          <%= f.text_field :title, class: 'form-control mb-3', id: 'edit-post-title' %>
+        </div>
+        <small id="edit-post-title-error"><%= render 'layouts/errors', model: @post, attribute: :title %></small>
       </div>
       
       <div class="body">
         <h4>本文</h4>
-        <%= f.text_area :body, class: 'form-control mb-5', rows: 10 %>
+        <div class="form-group <%= 'has-error' if @post.errors.include?(:body) %>">
+          <%= f.text_area :body, class: 'form-control mb-3', id: 'edit-post-body', rows: 10 %>
+        </div>
+        <small id="edit-post-body-error"><%= render 'layouts/errors', model: @post, attribute: :body %></small>
       </div>
       
       <div class="text-center">
@@ -25,3 +31,6 @@
     
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'post_errors' %>

@@ -4,18 +4,23 @@
     <div class="title text-center mt-5 mb-4">
       <h2>新規投稿</h2>
     </div>
-    <%= render 'layouts/errors', model: @article %>
     
     <%= form_with model: @article do |f| %>
     
-      <div>
+      <div class="title">
         <h4>タイトル</h4>
-        <%= f.text_field :title, class: 'form-control mb-3' %>
+        <div class="form-group <%= 'has-error' if @article.errors.include?(:title) %>">
+          <%= f.text_field :title, class: 'form-control mb-3', id: 'new-article-title' %>
+        </div>
+        <small id="new-article-title-error"><%= render 'layouts/errors', model: @article, attribute: :title %></small>
       </div>
       
-      <div>
+      <div class="content">
         <h4>本文</h4>
-        <%= f.text_area :content, class: 'form-control mb-5', rows: 10 %>
+        <div class="form-group <%= 'has-error' if @article.errors.include?(:content) %>">
+          <%= f.text_area :content, class: 'form-control mb-3', id: 'new-article-content', rows: 10 %>
+        </div>
+        <small id="new-article-content-error"><%= render 'layouts/errors', model: @article, attribute: :content %></small>
       </div>
       
       <div class="text-center">
@@ -26,3 +31,6 @@
     
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'article_errors' %>

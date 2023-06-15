@@ -12,13 +12,13 @@ class ArticlesController < ApplicationController
       flash[:success] = "投稿に成功しました。"
       redirect_to article_path(temple_id: @article.temple_id, id: @article.id)
     else
+      flash.now[:danger] = "投稿に失敗しました。"
       render :new
     end
   end
 
   def index
-    temple_id = params[:temple_id]
-    @temple = Temple.find(temple_id)
+    @temple = Temple.find(params[:temple_id])
     @articles = @temple.articles.order(created_at: :desc)
   end
 
@@ -29,19 +29,18 @@ class ArticlesController < ApplicationController
   end
   
   def edit
-    temple_id = params[:temple_id]
-    @temple = Temple.find(temple_id)
+    @temple = current_temple
     @article = Article.find(params[:id])
   end
   
   def update
-    article = Article.find(params[:id])
-    article.temple_id = current_temple.id
-    if article.update(article_params)
+    @article = Article.find(params[:id])
+    @article.temple_id = current_temple.id
+    if @article.update(article_params)
       flash[:success] = "投稿を編集しました。"
-      redirect_to article_path(temple_id: article.temple_id, id: article.id)
+      redirect_to article_path(temple_id: @article.temple_id, id: @article.id)
     else
-      flash[:danger] = "投稿を編集できませんでした。"
+      flash.now[:danger] = "投稿を編集できませんでした。"
       render :edit
     end
   end
@@ -53,7 +52,7 @@ class ArticlesController < ApplicationController
       flash[:success] = "投稿を削除しました。"
       redirect_to articles_path(temple_id: @temple)
     else
-      flash[:danger] = "投稿を削除できませんでした。"
+      flash.now[:danger] = "投稿を削除できませんでした。"
       render :show
     end
   end

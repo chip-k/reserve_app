@@ -32,13 +32,6 @@
         
         <div class="text-muted">
           <small><%= post.formatted_created_at %></small>
-        
-          <% if admin_signed_in? %>
-            ｜
-            <%= link_to "編集", edit_post_path(post), class: "btn btn-sm btn-outline-secondary" %>
-            ｜
-            <%= link_to "削除", post_path(post.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-sm btn-outline-danger" %>
-          <% end %>
         </div>
         
       </div>

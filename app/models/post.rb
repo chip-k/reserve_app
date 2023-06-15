@@ -1,6 +1,7 @@
 class Post < ApplicationRecord
   
-  belongs_to :admin
+  validates :title, presence: true
+  validates :body, presence: true
   
   
   def formatted_created_at

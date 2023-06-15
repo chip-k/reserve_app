@@ -1,12 +1,26 @@
----
 ja:
   activerecord:
     errors:
-      messages:
-        record_invalid: 'バリデーションに失敗しました: %{errors}'
-        restrict_dependent_destroy:
-          has_one: "%{record}が存在しているので削除できません"
-          has_many: "%{record}が存在しているので削除できません"
+      models:
+        post:
+          attributes:
+            title:
+              blank: "が入力されていません。"
+            body:
+              blank: "が入力されていません。"
+        article:
+          attributes:
+            title:
+              blank: "が入力されていません。"
+            content:
+              blank: "が入力されていません。"
+    attributes:
+      post:
+        title: "タイトル"
+        body: "本文"
+      article:
+        title: "タイトル"
+        content: "本文"
   date:
     abbr_day_names:
     - 日
