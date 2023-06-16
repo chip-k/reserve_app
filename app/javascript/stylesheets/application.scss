@@ -39,6 +39,20 @@ body {
   width: 100%;
 }
 
+.flash-message {
+  position: absolute;
+  top: 65px;
+  width: 100%;
+}
+
+.flash-message + .container {
+  margin-top: 60px;
+}
+
+.flash-message + .container-fluid {
+  margin-top: 60px;
+}
+
 table {
   table-layout: fixed;
   width: 100%;

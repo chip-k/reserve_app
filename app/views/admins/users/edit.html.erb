@@ -6,23 +6,32 @@
     </div>
     
     <%= form_with(model: [@user], url: admins_user_path(@user), method: :patch) do |f| %>
+      <div class="<%= 'error-box' if @user.errors.any? %>">
+        <%= render "layouts/error", model: @user %>
+      </div>
 
       <table class="table table-responsive form-table">
         <tbody>
         
           <tr class="field">
             <th><%= f.label :name, "氏名" %></th>
-            <td><%= f.text_field :name, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:name) %>">
+              <%= f.text_field :name, class: 'form-control', id: 'edit-admin-user-name' %>
+            </td>
           </tr>
       
           <tr class="field">
             <th><%= f.label :name_kana, "氏名(カナ)" %></th>
-            <td><%= f.text_field :name_kana, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:name_kana) %>">
+              <%= f.text_field :name_kana, class: 'form-control', id: 'edit-admin-user-name-kana' %>
+            </td>
           </tr>
   
           <tr class="field">
             <th><%= f.label :postal_code, "郵便番号" %></th>
-            <td><%= f.text_field :postal_code, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:postal_code) %>">
+              <%= f.text_field :postal_code, class: 'form-control', id: 'edit-admin-user-postal-code' %>
+            </td>
           </tr>
   
           <tr class="field">
@@ -46,13 +55,17 @@
           </tr>
 
           <tr class="field">
-            <th><%= f.label :email %></th>
-            <td><%= f.email_field :email, autocomplete: "email", class: 'form-control' %></td>
+            <th><%= f.label :email, "メールアドレス" %></th>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:email) %>">
+              <%= f.email_field :email, autocomplete: "email", class: 'form-control', id: 'edit-admin-user-email' %>
+            </td>
           </tr>
   
           <tr class="field">
             <th><%= f.label :phone_number, "電話番号" %></th>
-            <td><%= f.text_field :phone_number, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:phone_number) %>">
+              <%= f.text_field :phone_number, class: 'form-control', id: 'edit-admin-user-phone-number' %>
+            </td>
           </tr>
       
         </tbody>
@@ -84,3 +97,6 @@
 
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'admin_user_errors' %>

@@ -6,43 +6,60 @@
     </div>
 
     <%= form_with(model: [@temple], url: admins_temple_path(@temple), method: :patch) do |f| %>
+      <div class="<%= 'error-box' if @temple.errors.any? %>">
+        <%= render "layouts/error", model: @temple %>
+      </div>
 
       <table class="table table-responsive form-table">
         <tbody>
           
           <tr class="field">
             <th><%= f.label :name, "氏名" %></th>
-            <td><%= f.text_field :name, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:name) %>">
+              <%= f.text_field :name, class: 'form-control', id: 'edit-admin-temple-name' %>
+            </td>
           </tr>
       
           <tr class="field">
             <th><%= f.label :name_kana, "氏名(カナ)" %></th>
-            <td><%= f.text_field :name_kana, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:name_kana) %>">
+              <%= f.text_field :name_kana, class: 'form-control', id: 'edit-admin-temple-name-kana' %>
+            </td>
           </tr>
   
           <tr class="field">
-            <th><%= f.label :postal_code, "郵便番号", id: "user_postal_code_label" %></th>
-            <td><%= f.text_field :postal_code, class: 'form-control', id: "user_postal_code" %></td>
+            <th><%= f.label :postal_code, "郵便番号" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:postal_code) %>">
+              <%= f.text_field :postal_code, class: 'form-control', id: 'edit-admin-temple-postal-code' %>
+            </td>
           </tr>
   
           <tr class="field">
-            <th><%= f.label :prefecture_code, "都道府県", id: "user_prefecture_code_label" %></th>
-            <td><%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: "user_prefecture_code" %></td>
+            <th><%= f.label :prefecture_code, "都道府県" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:prefecture_code) %>">
+              <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: 'edit-admin-temple-prefecture-code' %>
+            </td>
           </tr>
   
           <tr class="field">
-            <th><%= f.label :address, "住所", id: "temple_address_label" %></th>
-            <td><%= f.text_field :address, class: 'form-control', id: "temple_address" %></td>
+            <th><%= f.label :address, "住所" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:address) %>">
+              <%= f.text_field :address, class: 'form-control', id: 'edit-admin-temple-address' %>
+            </td>
           </tr>
 
           <tr class="field">
-            <th><%= f.label :メールアドレス %></th>
-            <td><%= f.email_field :email, autocomplete: "email", class: 'form-control' %></td>
+            <th><%= f.label :email, "メールアドレス" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:email) %>">
+              <%= f.email_field :email, autocomplete: "email", class: 'form-control', id: 'edit-admin-temple-email' %>
+            </td>
           </tr>
   
           <tr class="field">
             <th><%= f.label :phone_number, "電話番号" %></th>
-            <td><%= f.text_field :phone_number, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:phone_number) %>">
+              <%= f.text_field :phone_number, class: 'form-control', id: 'edit-admin-temple-phone-number' %>
+            </td>
           </tr>
           
         </tbody>
@@ -69,3 +86,6 @@
 
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'admin_temple_errors' %>

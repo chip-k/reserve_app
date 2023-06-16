@@ -4,24 +4,32 @@
     <h2 class="text-center mt-5 mb-4">登録情報の変更</h2>
 
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <%= render "devise/shared/error_messages", resource: resource %>
+      <div class="<%= 'error-box' if @user.errors.any? %>">
+        <%= render "devise/shared/error_messages", resource: resource %>
+      </div>
 
       <table class="table table-responsive form-table">
         <tbody>
 
           <tr class="field">
             <th><%= f.label :name, "氏名" %></th>
-            <td><%= f.text_field :name, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:name) %>">
+              <%= f.text_field :name, class: 'form-control', id: 'edit-user-name' %>
+            </td>
           </tr>
       
           <tr class="field">
             <th><%= f.label :name_kana, "氏名(カナ)" %></th>
-            <td><%= f.text_field :name_kana, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:name_kana) %>">
+              <%= f.text_field :name_kana, class: 'form-control', id: 'edit-user-name-kana' %>
+            </td>
           </tr>
   
           <tr class="field">
             <th><%= f.label :postal_code, "郵便番号" %></th>
-            <td><%= f.text_field :postal_code, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:postal_code) %>">
+              <%= f.text_field :postal_code, class: 'form-control', id: 'edit-user-postal-code' %>
+            </td>
           </tr>
   
           <tr class="field">
@@ -46,7 +54,9 @@
 
           <tr class="field">
             <th><%= f.label :email %></th>
-            <td><%= f.email_field :email, autocomplete: "email", class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:email) %>">
+              <%= f.email_field :email, autocomplete: "email", class: 'form-control', id: 'edit-user-email' %>
+            </td>
           </tr>
 
           <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -55,22 +65,30 @@
   
           <tr class="field">
             <th><%= f.label :phone_number, "電話番号" %></th>
-            <td><%= f.text_field :phone_number, class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:phone_number) %>">
+              <%= f.text_field :phone_number, class: 'form-control', id: 'edit-user-phone-number' %>
+            </td>
           </tr>
 
           <tr class="field">
             <th><%= f.label :password %> <i>(変更したくない場合は空白のままにしてください)</i></th>
-            <td><%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:password) %>">
+              <%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control' , id: 'edit-user-password-length' %>
+            </td>
           </tr>
 
           <tr class="field">
             <th><%= f.label :password_confirmation %></th>
-            <td><%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:password_confirmation) %>">
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', id: 'edit-user-password-confirmation' %>
+            </td>
           </tr>
 
           <tr class="field">
             <th><%= f.label :current_password %> <i>(変更するには現在のパスワードが必要です)</i></th>
-            <td><%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control' %></td>
+            <td class="form-group <%= 'has-error' if @user.errors.include?(:current_password) %>">
+              <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control', id: 'edit-user-current-password' %>
+            </td>
           </tr>
           
         </tbody>
@@ -97,3 +115,6 @@
 
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'user_errors' %>

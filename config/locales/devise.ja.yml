@@ -53,6 +53,7 @@ ja:
         remember_me: "次回から自動的にログイン"
       temple:
         current_password: "現在のパスワード"
+        introduction: "紹介文"
         name: "名前"
         name_kana: "名前(カナ)"
         postal_code: "郵便番号"

@@ -6,6 +6,7 @@
     </div>
 
     <%= form_with model: @temple, url: temple_session_path do |f| %>
+      
       <div class="field">
         <%= f.label :email, "メールアドレス" %><br />
         <%= f.email_field :email, autocomplete: "email", class: 'form-control' %>

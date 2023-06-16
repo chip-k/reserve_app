@@ -21,15 +21,19 @@ class Admins::UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to admins_user_path(@user), notice: 'ユーザー情報を更新しました。'
     else
-      flash.now[:alert] = @user.errors.full_messages.join("\n")
+      flash.now[:danger] = "ユーザー情報を更新できませんでした。"
       render :edit
     end
   end
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-    redirect_to admins_users_path, notice: 'ユーザーを削除しました。'
+    if @user.destroy
+      redirect_to admins_users_path, notice: 'ユーザーを削除しました。'
+    else
+      flash.now[:danger] = "ユーザーを削除できませんでした。"
+      render :edit
+    end
   end
   
   def reservations

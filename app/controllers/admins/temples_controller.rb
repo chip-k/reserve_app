@@ -22,15 +22,19 @@ class Admins::TemplesController < ApplicationController
     if @temple.update(temple_params)
       redirect_to admins_temple_path(@temple), notice: '寺院情報を更新しました。'
     else
-      flash.now[:alert] = @temple.errors.full_messages.join("\n")
+      flash.now[:danger] = "寺院情報を更新できませんでした。"
       render :edit
     end
   end
 
   def destroy
     @temple = Temple.find(params[:id])
-    @temple.destroy
-    redirect_to admins_temples_path, notice: '寺院を削除しました。'
+    if @temple.destroy
+      redirect_to admins_temples_path, notice: '寺院を削除しました。'
+    else
+      flash.now[:danger] = "寺院を削除できませんでした。"
+      render :edit
+    end
   end
   
   def reservations
