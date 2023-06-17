@@ -1,2 +1,2 @@
-class Home < ApplicationRecor
+class Home < ApplicationRecord
 end
