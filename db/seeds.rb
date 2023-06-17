@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Admin.find_or_create_by(id: 1) do |admin|
- admin = Admin.find(1)
+ #admin = Admin.find(1)
  admin.name = "TempleConnect Online運営"
  admin.email = "example@example.com"
  admin.password = "example"
