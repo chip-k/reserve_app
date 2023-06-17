@@ -1,32 +1,38 @@
 <div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
-    <div class="text-center title">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
       <h2>予約一覧画面</h2>
     </div>
-    <div class="text-center mt-3">
+    
+    <div class="text-center my-3">
       <% if @reservations.count > 0 %>
         <p>下記の日時で予約されています。</p>
-        <p>※（確定後）当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL：<%= @admin.phone_number %></p>
       <% else %>
         <p>予約がありません。</p>
       <% end %>
     </div>
-    <table class="table mt-3">
-      <% @reservations.each do |reservation| %>
-        <tr class="text-center">
-          <td><%= link_to reservation.day.strftime('%Y年%m月%d日'), reservation_path(reservation) %></td>
-          <td><%= reservation.time %></td>
-          <td><%= reservation.reservation_status %></td>
-          <td>
-            <% if reservation.reservation_status == '確認中' || (reservation.day != Time.zone.today && reservation.day != Time.zone.tomorrow) %>
-              <%= link_to "キャンセル", reservation_path(reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
-            <% else %>
-              キャンセル
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
+    
+    <table class="table table-responsive text-center">
+      <thead>
+        <th>日付</th>
+        <th>寺院</th>
+        <th>時間</th>
+        <th>ステータス</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <% @reservations.each do |reservation| %>
+          <tr>
+            <td><%= reservation.day.strftime('%Y年%m月%d日') %></td>
+            <td><%= link_to reservation.temple.name, temple_path(reservation.temple_id) %></td>
+            <td><%= reservation.time %></td>
+            <td><%= reservation.reservation_status %></td>
+            <td><%= link_to "詳細", reservation_path(reservation), class: "btn btn-sm btn-outline-primary" %></td>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
+    
   </div>
 </div>

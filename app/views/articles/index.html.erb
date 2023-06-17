@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2><%= @temple.name %>のお知らせ一覧</h2>
+    </div>
+    
+    <% if temple_signed_in? && @temple.id == current_temple.id %>
+      <%= link_to "新規作成", new_article_path(temple_id: @temple.id), class: "btn btn-outline-success" %>
+    <% end %>
+    
+    <% @articles.each do |article| %>
+    
+      <div class="information-contents pb-5" onclick="location.href='<%= article_path(temple_id: @temple.id, id: article.id) %>';">
+        
+        <div class="title mt-5 pb-2 pt-5">
+          <h3><%= article.title %></h3>
+        </div>
+        
+        <% if article.content.length <= 70 %>
+          <div class="body">
+            <p><%= article.content %></p>
+          </div>
+        <% else %>
+          <div class="body">
+            <p>
+              <%= truncate(article.content, length: 70) %>
+              <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
+            </p>
+          </div>
+        <% end %>
+        
+        <div class="text-muted">
+          <small><%= article.formatted_created_at %></small>
+        </div>
+        
+      </div>
+      
+    <% end %>
+    
+  </div>
+</div>

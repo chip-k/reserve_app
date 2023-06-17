@@ -1,34 +1,38 @@
 <div class="container">
-  <div class="row col-7 mt-5 mx-auto">
-    <h1 class="text-center">お知らせ一覧</h1>
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>お知らせ一覧</h2>
+    </div>
     
     <% if admin_signed_in? %>
-      <%= link_to "新規作成", new_post_path %>
+      <%= link_to "新規作成", new_post_path, class: "btn btn-outline-success" %>
     <% end %>
     
     <% @posts.each do |post| %>
     
-      <div class="information-contents pb-5">
+      <div class="information-contents pb-5" onclick="location.href='<%= post_path(post.id) %>';">
         
-        <h3 class="information-content-title mt-5 pb-2 pt-5"><%= post.title %></h3>
+        <div class="title mt-5 pb-2 pt-5">
+          <h3><%= post.title %></h3>
+        </div>
         
         <% if post.body.length <= 70 %>
-          <p class="information-content-text"><%= post.body %></p>
+          <div class="body">
+            <p><%= post.body %></p>
+          </div>
         <% else %>
-          <p class="information-content-text">
-            <%= truncate(post.body, length: 70) %>
-            <small><%= link_to "続きを読む", post_path(post) %></small>
-          </p>
+          <div class="body">
+            <p>
+              <%= truncate(post.body, length: 70) %>
+              <small><%= link_to "続きを読む", post_path(post) %></small>
+            </p>
+          </div>
         <% end %>
         
-        <small class="text-muted"><%= post.formatted_created_at %></small>
-        
-        <% if admin_signed_in? %>
-          ｜
-          <%= link_to '編集', edit_post_path(post) %>
-          ｜
-          <%= link_to "削除", post_path(post.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
-        <% end %>
+        <div class="text-muted">
+          <small><%= post.formatted_created_at %></small>
+        </div>
         
       </div>
       

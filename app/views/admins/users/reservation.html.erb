@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約詳細画面</h2>
+    </div>
+    
+    <table class="table table-responsive user-reservation-table mt-3">
+      <tbody>
+      
+        <tr class="field">
+          <th>日付：</th>
+          <td><%= @reservation.day.strftime('%Y年%m月%d日') %></td>
+        </tr>
+      
+        <tr class="field">
+          <th>寺院：</th>
+          <td><%= link_to @temple.name, temple_path(@temple.id) %></td>
+        </tr>
+      
+        <tr class="field">
+          <th>時間：</th>
+          <td><%= @reservation.time %></td>
+        </tr>
+      
+        <tr class="field">
+          <% if @reservation.user.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.user.name %></td>
+          <% elsif @reservation.new_user_name.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.new_user_name %></td>
+          <% elsif @reservation.temple.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.temple.name %></td>
+          <% end %>
+        </tr>
+      
+        <tr class="field">
+          <th>ステータス：</th>
+          <td><%= @reservation.reservation_status %></td>
+        </tr>
+      
+        <% if @reservation.comment.present? %>
+        <tr class="field">
+          <th>備考欄：</th>
+          <td><%= @reservation.comment %></td>
+        </tr>
+        <% end %>
+      
+      </tbody>
+    </table>
+    
+    <div class="text-center mt-3">
+        <%= link_to "予約一覧へ", reservations_admins_user_path(@user), class: "btn btn-outline-primary" %>
+    </div>
+    
+  </div>
+</div>

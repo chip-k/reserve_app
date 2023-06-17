@@ -1,0 +1,141 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>登録情報の変更</h2>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <div class="<%= 'error-box' if @temple.errors.any? %>">
+        <%= render "devise/shared/error_messages", resource: resource %>
+      </div>
+      
+      <table class="table table-responsive form-table">
+        <tbody>
+          
+          <tr class="field">
+            <th><%= f.label :profile_image, "プロフィール画像" %></th>
+            <td><%= f.file_field :profile_image, accept: "image/*", class: 'form-control' %></td>
+          </tr>
+      
+          <% if @temple.profile_image.attached? && !@temple.profile_image.blob.filename.to_s.eql?("default-image.png") %>
+            <tr class="field">
+              <th><%= image_tag @temple.profile_image.variant(resize: "100x100") %></th>
+              <td>
+                <%= f.check_box :remove_profile_image %>
+                <%= f.label :remove_profile_image, "プロフィール画像を削除する" %>
+              </td>
+            </tr>
+          <% end %>
+      
+          <tr class="field">
+            <th><%= label :introduction, "紹介文" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:introduction) %>">
+              <%= f. text_area :introduction, rows: 10, class: 'form-control', id: 'edit-temple-introduction' %>
+            </td>
+          </tr>
+
+          <tr class="field">
+            <th><%= f.label :name, "氏名" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:name) %>">
+              <%= f.text_field :name, class: 'form-control', id: 'edit-temple-name' %>
+            </td>
+          </tr>
+      
+          <tr class="field">
+            <th><%= f.label :name_kana, "氏名(カナ)" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:name_kana) %>">
+              <%= f.text_field :name_kana, class: 'form-control', id: 'edit-temple-name-kana' %>
+            </td>
+          </tr>
+  
+          <tr class="field">
+            <th><%= f.label :postal_code, "郵便番号" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:postal_code) %>">
+              <%= f.text_field :postal_code, class: 'form-control', id: 'edit-temple-postal-code' %>
+            </td>
+          </tr>
+  
+          <tr class="field">
+            <th><%= f.label :prefecture_code, "都道府県" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:prefecture_code) %>">
+              <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :name, :name, class: 'form-control', id: 'edit-temple-prefecture-code' %>
+            </td>
+          </tr>
+  
+          <tr class="field">
+            <th><%= f.label :address, "住所" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:address) %>">
+              <%= f.text_field :address, class: 'form-control', id: 'edit-temple-address' %>
+            </td>
+          </tr>
+
+          <tr class="field">
+            <th><%= f.label :email, "メールアドレス" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:email) %>">
+              <%= f.email_field :email, autocomplete: "email", class: 'form-control', id: 'edit-temple-email' %>
+            </td>
+          </tr>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <span>Currently waiting confirmation for: <%= resource.unconfirmed_email %></span>
+          <% end %>
+  
+          <tr class="field">
+            <th><%= f.label :phone_number, "電話番号" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:phone_number) %>">
+              <%= f.text_field :phone_number, class: 'form-control', id: 'edit-temple-phone-number' %>
+            </td>
+          </tr>
+
+          <tr class="field">
+            <th><%= f.label :password, "新しいパスワード" %> <i>(変更したくない場合は空白のままにしてください)</i></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:password) %>">
+              <%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control', id: 'edit-temple-password-length'%>
+            </td>
+          </tr>
+
+          <tr class="field">
+            <th><%= f.label :password_confirmation, "確認用パスワード" %></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:password_confirmation) %>">
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', id: 'edit-temple-password-confirmation' %>
+            </td>
+          </tr>
+
+          <tr class="field">
+            <th><%= f.label :current_password, "現在のパスワード" %> <i>(変更するには現在のパスワードが必要です)</i></th>
+            <td class="form-group <%= 'has-error' if @temple.errors.include?(:current_password) %>">
+              <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control', id: 'edit-temple-current-password' %>
+            </td>
+          </tr>
+      
+        </tbody>
+      </table>
+
+      <div class="actions pt-4">
+        <%= f.submit "変更", class: "btn btn-outline-secondary w-100" %>
+      </div>
+      
+    <% end %>
+    
+    <div class="text-center mt-5 mb-4">
+      <h3>アカウント削除</h3>
+    </div>
+    
+    <div class="text-center">
+      <% if @temple.reservations.where("day >= ?", Date.today).exists? %>
+        予約が作成されているため削除できません。
+        <%= link_to "予約管理画面", all_temples_reservations_path(@temple), class: "btn btn-outline-primary" %>
+      <% else %>
+        アカウントを削除しますか？
+        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
+      <% end %>
+    </div>
+
+    <%= link_to "キャンセル", temple_path(@temple), class: "text-center mt-3" %>
+
+  </div>
+</div>
+
+
+<%= javascript_pack_tag 'temple_errors' %>

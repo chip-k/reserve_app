@@ -7,3 +7,32 @@
    background-color: #C44;
    content: "必須";
  }
+ 
+ .form-table .field th,
+ .form-table .field td {
+   border-top: 1px solid #d7d7d7;
+   border-bottom: 1px solid #d7d7d7;
+ }
+ 
+ .form-table .field td {
+   padding: 20px;
+ }
+ 
+ .form-table .field th {
+   background-color: #ffecea;
+   padding-left: 50px;
+   vertical-align: middle;
+ }
+ 
+ 
+ @media screen and (max-width:425px) {
+  
+  .form-table .field th,
+  .form-table .field td {
+    display: block;
+    border-bottom: none;
+    padding-left: 0px;
+    text-align: center;
+  }
+  
+ }

@@ -1,0 +1,89 @@
+<div class="container days">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <% if @reservation.errors.any? %>
+      <%= @reservation.errors.full_messages %>
+    <% end %>
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約編集画面</h2>
+    </div>
+    
+    <%= form_with model: @reservation, url: temples_reservation_path(@reservation), method: :patch, local: true do |f| %>
+      
+      <div class="form-group mb-3">
+        <%= f.label :day, "日付", class: "form-label" %>
+        <%= f.date_field :day, name: "reservation[day]", id: "reservation-day", class: "form-control" %>
+      </div>
+        
+      <div class="row">
+        <div class="form-group my-3 col-6">
+          <%= f.label :time, "開始時間", class: "form-label" %>
+          <div class="d-flex">
+            <%= select_tag "reservation[time]", options_for_select(@start_times, selected: @selected_value), include_blank: false, class: "form-control" %>
+          </div>
+        </div>
+          
+        <div class="form-group my-3 col-6">
+          <%= f.label :end_time, '終了時間', class: "form-label" %>
+          <div class="d-flex">
+            <%= select_tag "reservation[end_times]", options_for_select(@end_times, selected: @selecteds_value), include_blank: false, class: 'form-control mr-2' %>
+          </div>
+        </div>
+      </div>
+        
+      <div class="form-group text-center mt-3">
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <% if params[:user_id].present? %>
+                  <% @reservation.user_id = params[:user_id] %>
+                  <% @user = User.find(params[:user_id]) %>
+                  <%= @user.name %>
+                  <%= f.hidden_field :user_id, value: @reservation.user_id %>
+                <% elsif @reservation.user.present? %>
+                  <%= @reservation.user.name %>
+                <% end %>
+                <% if @reservation.user_id.present? %>
+                  <%= link_to "ユーザーを変更", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), class: "btn btn-sm btn-outline-secondary" %>
+                  |
+                  <%= link_to "削除", delete_user_temples_reservation_path(@reservation, user_id: @reservation.user_id), method: :patch, id: "delete-user-link", class: "btn btn-sm btn-outline-danger" %>
+                <% else %>
+                  <%= link_to "ユーザーを追加", temples_users_path(source: 'edit_temples_users', reservation_id: @reservation.id), id: 'add-user-link', class: "btn btn-sm btn-outline-success" %>
+                <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="form-group mt-3">
+          <%= check_box_tag "reservation[user_id]", "new", false, id: "new-user-checkbox" %>
+          <%= label_tag "new-user-checkbox", "任意の名前を入力" %>
+          <%= text_field_tag "reservation[new_user_name]", nil, id: "new-user-name", placeholder: "ユーザー名を入力してください", class: "form-control d-none" %>
+        </div>
+        
+        <div class="form-group mt-2">
+          <%= radio_button_tag(:status, true, @reservation.status == true) %>
+          <%= label_tag(:status, "確定") %>
+          <%= radio_button_tag(:status, false, @reservation.status == false) %>
+          <%= label_tag(:status, "確認中") %>
+        </div>
+      </div>
+        
+      <div class="form-group mt-2">
+        <%= f.label :comment, '備考欄', class: "form-label" %>
+        <%= f.text_area :comment, rows: 5, class: 'form-control' %>
+      </div>
+        
+      <%= f.hidden_field :temple_id, value: current_temple.id %>
+        
+      <div class="form-group text-center mt-3">
+        <%= f.submit "更新", class: "btn btn-outline-primary" %>
+      </div>
+        
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'new_user_name' %>

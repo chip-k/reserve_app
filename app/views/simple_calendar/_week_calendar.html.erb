@@ -1,29 +1,34 @@
 <div class="simple-calendar-week">
   <div class="container">
     <div class="row col-12 mt-5">
+      
+      <% unless temple_signed_in? %>
+        <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
+          <span class="text-center">
+            <%= '※当日、翌日の予約はできません。お電話にてご相談ください。' %>
+            (TEL: <%= @temple.phone_number %>)
+          </span>
+        <% end %>
+      <% end %>
+      
       <div class="calendar-heading d-flex justify-content-between">
         <% prev_week = @date - 1.week %>
         <% next_week = @date + 1.week %>
+        
         <% if prev_week == Time.zone.today - 1.week %>
-          <%= "&laquo; #{'前の一週間'}".html_safe %>
+          <small><%= "&laquo; #{'前の一週間'}".html_safe %></small>
         <% elsif prev_week <= Time.zone.today %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: Time.zone.today) %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: Time.zone.today, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
         <% else %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, reservations_week_path(date: prev_week) %>
+          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: prev_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
         <% end %>
-        <% unless admin_signed_in? %>
-          <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
-            <span class="text-center">
-              <%= '※当日、翌日の予約はできません。お電話にてご相談ください。' %>
-              (TEL: <%= @admin.phone_number %>)
-            </span>
-          <% end %>
-        <% end %>
-        <%= link_to "#{'次の一週間'} &raquo;".html_safe, reservations_week_path(date: next_week) %>
+        
+        <%= link_to "#{'次の一週間'} &raquo;".html_safe, temples_reservations_week_path(date: next_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
       </div>
       
       <table class="table table-responsive">
         <thead>
+          
           <tr>
             <th rowspan="3", class="text-center">日時<br>　</th>
             <% start_date = @date %>
@@ -36,10 +41,11 @@
               <th colspan="<%= 7 - days_in_month %>"><%= end_date.strftime('%Y年%m月') %></th>
             <% end %>
           </tr>
+          
           <tr>
             <% @date_range.each_slice(7).each do |week| %>
               <% week.each do |date| %>
-                <% if admin_signed_in? %>
+                <% if temple_signed_in? %>
                   <% if date.sunday? %>
                     <th class="text-center text-red table-cell table-hover" data-date="<%= date %>">
                   <% elsif date.saturday? %>
@@ -62,38 +68,37 @@
               <% end %>
             <% end %>
           </tr>
+          
         </thead>
         
         <tbody class="text-center">
           <% times.each do |time| %>
+          
             <tr>
               <td class="table-light times"><%= time %></td>
               
               <% @date_range.each do |day| %>
               <% start_time = Time.zone.parse("#{day} #{time}") %>
               <% end_time = start_time + 30.minutes %>
-              <% reservation = find_reservation(@reservations, day, start_time, end_time) %>
+              <% reservation = find_reservation(@reservations, day, start_time, end_time, @temple.id) %>
               
-                <% unless admin_signed_in? %>
+                <% unless temple_signed_in? %>
                   <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
                     <td class="reserved"><%= '×' %></td>
                   <% else %>
-                    <td class="table-hover">
-                      <%= link_to '◎', new_reservation_path(day: day, time: time) %>
-                    </td>
+                    <td class="table-hover circle" onclick="location.href='<%= new_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
                   <% end %>
                 <% end %>
-                <% if admin_signed_in? %>
+                <% if temple_signed_in? %>
                   <% if reservation || day.past? %>
                     <td class="reserved"><%= '×' %></td>
                   <% else %>
-                    <td class="table-hover">
-                      <%= link_to '◎', new_admins_reservation_path(day: day, time: time) %>
-                    </td>
+                    <td class="table-hover circle" onclick="location.href='<%= new_temples_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
                   <% end %>
                 <% end %>
               <% end %>
             </tr>
+            
           <% end %>
         </tbody>
         
@@ -109,7 +114,7 @@
     cells.forEach(function(cell) {
       cell.addEventListener("click", function() {
         const date = this.dataset.date;
-        window.location.href = "<%= admins_reservations_by_day_path %>?day=" + date;
+        window.location.href = "<%= temples_reservations_by_day_path %>?day=" + date;
       });
     });
   });

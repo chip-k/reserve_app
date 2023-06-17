@@ -1,114 +1,75 @@
 <div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
-    <div class="text-center title">
-      <h1>予約詳細画面</h1>
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約詳細画面</h2>
     </div>
-    <table class="table mt-3 content">
-      <tr>
-        <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
-      </tr>
-      <tr>
-        <th class="text-center">時間：<td><%= @reservation.time %></td></th>
-      </tr>
-      <tr>
-        <% if @reservation.user.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.user.name %></td></th>
-        <% elsif @reservation.new_user_name.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.new_user_name %></td></th>
-        <% elsif @reservation.admin.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.admin.name %></td></th>
-        <% end %>
-      </tr>
-      <tr>
-        <th class="text-center">ステータス：　　　<td><%= @reservation.reservation_status %></td></th>
-      </tr>
-      <% if @reservation.comment.present? %>
-      <tr>
-        <th class="text-center">備考欄：　<td><%= @reservation.comment %></td></th>
-      </tr>
-      <% end %>
-      <% if admin_signed_in? %>
-        <tr>
-          <th class="text-center">ステータス：　　　
-            <td class="toggle_button col-auto">
-              <span id="status-<%= @reservation.id %>"><%= @reservation.status %></span>
-              <input id="toggle-<%= @reservation.id %>" class="toggle_input" type="checkbox" data-reservation-id="<%= @reservation.id %>" data-update-url="<%= admins_reservation_update_status_path(@reservation) %>" <%= @reservation.status ? 'checked' : '' %> />
-              <label for="toggle-<%= @reservation.id %>" class="toggle_label"></label>
-            </td>
-          </th>
+    
+    <table class="table table-responsive user-reservation-table">
+      <tbody>
+      
+        <tr class="field">
+          <th>日付：</th>
+          <td><%= @reservation.day.strftime('%Y年%m月%d日') %></td>
         </tr>
-      <% end %>
+      
+        <tr class="field">
+          <th>寺院：</th>
+          <td><%= link_to @temple.name, temple_path(@temple.id) %></td>
+        </tr>
+      
+        <tr class="field">
+          <th>時間：</th>
+          <td><%= @reservation.time %></td>
+        </tr>
+      
+        <tr class="field">
+          <% if @reservation.user.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.user.name %></td>
+          <% elsif @reservation.new_user_name.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.new_user_name %></td>
+          <% elsif @reservation.temple.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.temple.name %></td>
+          <% end %>
+        </tr>
+      
+        <tr class="field">
+          <th>ステータス：</th>
+          <td><%= @reservation.reservation_status %></td>
+        </tr>
+      
+        <% if @reservation.comment.present? %>
+        <tr class="field">
+          <th>備考欄：</th>
+          <td><%= @reservation.comment %></td>
+        </tr>
+        <% end %>
+      
+      </tbody>
     </table>
+    
     <div class="text-center">
       <% if @reservation.reservation_status == '確認中' || (@reservation.day != Time.zone.today && @reservation.day != Time.zone.tomorrow) %>
-        <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
-      <% elsif @reservation.status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
+        <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-outline-danger" %>
+      <% elsif @reservation.reservation_status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
         <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL: <%= @admin.phone_number %></p>
+        <p>TEL: <%= @temple.phone_number %></p>
       <% end %>
     </div>
-    <% if user_signed_in? && @reservation.status == '確認中' %>
-      <div>
+    
+    <div class="note text-center my-3">
+      <% if @reservation.reservation_status == '確認中' %>
         <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
         <p>※お寺の都合により予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
-      </div>
-    <% end %>
-    <div class="text-center mt-3">
-      <% if admin_signed_in? %>
-        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
-      <% elsif user_signed_in? %>
-        <%= link_to "予約一覧へ", reservations_path %>
       <% end %>
     </div>
+    
+    <div class="text-center">
+        <%= link_to "予約一覧へ", reservations_path, class: "btn btn-outline-primary" %>
+    </div>
+    
   </div>
 </div>
-
-
-<script>
-  document.addEventListener('turbolinks:load', function() {
-  const toggleInputs = document.querySelectorAll('.toggle_input');
-
-  toggleInputs.forEach(function(input) {
-    const reservationId = input.getAttribute('data-reservation-id');
-    const storedStatus = localStorage.getItem(`reservation-${reservationId}-status`);
-    const initialStatus = storedStatus ? storedStatus === 'true' : false;
-    
-    input.checked = initialStatus;
-    
-    input.addEventListener('change', function() {
-      const reservationId = input.getAttribute('data-reservation-id');
-      const status = input.checked;
-      
-      localStorage.setItem(`reservation-${reservationId}-status`, status);
-
-      updateReservationStatus(reservationId, status);
-    });
-  });
-
-  function updateReservationStatus(reservationId, status) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    const url = "/admins/reservations/" + reservationId + "/update_status";
-
-    fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
-      },
-      body: JSON.stringify({ status: status.toString() })
-    })
-    .then(function(response) {
-      if (response.ok) {
-        const statusElement = document.querySelector(`#status-${reservationId}`);
-        const newStatus = status ? '確定' : '確認中';
-        statusElement.textContent = newStatus;
-      } else {
-        // ステータスの更新が失敗した場合の処理を記述
-      }
-    })
-    .catch(function(error) {
-      console.error('Error:', error);
-    });
-  }
-});
-</script>

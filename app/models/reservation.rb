@@ -1,10 +1,9 @@
 class Reservation < ApplicationRecord
-  belongs_to :admin, optional: true
+  belongs_to :temple
   belongs_to :user, optional: true
 
   validates :day, presence: true
   validates :time, presence: true
-  validates :start_time, uniqueness: true, allow_blank: true
   
   
   # 過去または当日、翌日を選択していないか判定
@@ -24,11 +23,11 @@ class Reservation < ApplicationRecord
   end
   
   # 予約が重複していないか判定
-  def self.reserved?(start_time, end_time, reservation_id = nil)
+  def self.reserved?(start_time, end_time, reservation_id = nil, temple_id)
     if reservation_id.nil?
-      where("start_time < ? AND end_time > ?", end_time, start_time).exists?
+      where("start_time < ? AND end_time > ? AND temple_id = ?", end_time, start_time, temple_id).exists?
     else
-      where("start_time < ? AND end_time > ? AND id != ?", end_time, start_time, reservation_id).exists?
+      where("start_time < ? AND end_time > ? AND id != ? AND temple_id = ?", end_time, start_time, reservation_id, temple_id).exists?
     end
   end
   

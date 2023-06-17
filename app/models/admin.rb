@@ -6,7 +6,8 @@ class Admin < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_many :reservations
-  has_many :users, through: :reservations
+  has_many :users
+  has_many :temples
+  has_many :posts
   
 end

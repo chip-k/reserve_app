@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1.4'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -61,6 +61,13 @@ gem 'jquery-rails'
 gem "simple_calendar", "~> 2.4"
 gem 'rails-i18n'
 gem 'devise-i18n'
-gem 'dotenv-rails'
 gem 'gmaps4rails'
 gem 'geocoder'
+gem 'dotenv-rails'
+group :production do
+  gem 'mysql2'
+end
+
+gem "net-smtp"
+gem "net-pop"
+gem "net-imap"

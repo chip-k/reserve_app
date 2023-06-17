@@ -1,123 +1,133 @@
-  <section id="top">
-    <div class="container>">
-      <div class="row">
-        
-        <div class="top-image">
-          <%= image_tag("top.jpg") %>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div id="particles-js"></div>
+    <div id="wrapper">
+      <h1 class="site-name">TempleConnect Online</h1>
+      <p class="sub-title">～お寺と繋がろう～</p>
+      <div class="moon"></div>
+      <div class="temple-bell"></div>
+    </div>
+  </div>
+</div>
+
+  <div class="home">
+    <section id="top">
+      <div class="container>">
+        <div class="row">
+          <div class="top-text col-10 mx-auto py-5 text-center">
+            <p>当サイトでは架空の寺院情報や予約管理を運営しています。</p>
+            <%= link_to "寺院を探す", temples_path, class: "btn btn-outline-primary" %>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section id="information">
+      <div class="container">
+      
+        <div class="row">
+          <div class="information-title col-6 mx-auto mt-5">
+            <h2>お知らせ</h2>
+          </div>
+        </div>
+      
+        <div class="row my-5">
+          <% @posts.each do |post| %>
+            <div class="information-content col-lg-4 col-md-10 col-sm-10 px-5 mx-auto">
+              <h3 class="information-content-title"><%= post.title %></h3>
+              <% if post.body.length <= 70 %>
+                <p class="information-content-text"><%= post.body %></p>
+              <% else %>
+                <p class="information-content-text">
+                  <%= truncate(post.body, length: 70) %>
+                  <small><%= link_to "続きを読む", post_path(post) %></small>
+                </p>
+              <% end %>
+              <small class="text-muted"><%= post.formatted_created_at %></small>
+            </div>
+          <% end %>
+        </div>
+      
+        <div class="past-news text-center">
+          <h4 class="pt-3 mb-4"><%= link_to "過去のお知らせはこちら", posts_path %></h4>
+        </div>
+      </div>
+    </section>
+
+    <section id="main">
+      <div class="container border-bottom mt-5 pb-5">
+        <div class="row py-5">
+          <div class="main-content col-lg-5 col-md-10 mx-auto">
+            <div class="main-title text-center mb-3">
+              <h2>法事について</h2>
+            </div>
+            <p class="main-text">
+              年忌法要など、ご法事の依頼を受け賜っています。仏事に関する疑問、ご相談などございましたら、お気軽にお尋ねください。
+            </p>
+          </div>
         
-        <div class="top-text col-10 mx-auto py-5">
+          <div class="main-content col-lg-5 col-md-10 mx-auto">
+            <div class="main-title text-center mb-3">
+              <h2>葬儀について</h2>
+            </div>
+            <p class="main-text">
+              ご門徒の皆さまはもちろん、これまでお寺にご縁のなかった皆さまのご葬儀も大切にお勤めいたします。
+            </p>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="main-content col-lg-5 col-md-10 mx-auto">
+            <div class="main-title text-center mb-3">
+              <h2>門徒会について</h2>
+            </div>
+            <p class="main-text">
+              葬儀・法事の依頼等、継続的にお寺とのお付き合いを続けていただける方には、門徒会への加入をお願いしており、
+              その門徒会によって他力本願寺は支えられています。
+            </p>
+          </div>
+        
+          <div class="main-content col-lg-5 col-md-10 mx-auto">
+            <div class="main-title text-center mb-3">
+              <h2>納骨堂について</h2>
+            </div>
+            <p class="main-text">
+              現在、第5期納骨堂の新規加入者を募集しております。<br>
+              第5期納骨堂には、<br>
+              「御先祖様・御家族様用（１段式納骨壇）」<br>
+              「お一人様・お二人様用（多段式納骨壇）」<br>
+              の2種類の納骨壇がございます。<br>
+              納骨堂は二階建てで、エレベーター完備です。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container pt-5">
+        <div class="contact">
+          <h6>お問い合わせ先</h6>
           <p>
-            当サイトでは寺院の紹介や予約管理を運営しています。<br>
-            <br>
-            <br>
-            <br>
-            
-          </p>
-        </div>
-        
-      </div>
-    </div>
-  </section>
-
-
-  <section id="information">
-    <div class="container">
-      
-      <div class="row">
-        <div class="information-image mt-5">
-          <%= image_tag("information.jpg") %>
-        </div>
-      </div>
-      
-      <div class="row my-5">
-        <% @posts.each do |post| %>
-          <div class="information-content col-4 px-5">
-            <h2 class="information-content-title"><%= post.title %></h2>
-            <% if post.body.length <= 70 %>
-              <p class="information-content-text"><%= post.body %></p>
-            <% else %>
-              <p class="information-content-text">
-                <%= truncate(post.body, length: 70) %>
-                <small><%= link_to "続きを読む", post_path(post) %></small>
-              </p>
-            <% end %>
-            <small class="text-muted"><%= post.formatted_created_at %></small>
-          </div>
-        <% end %>
-      </div>
-      
-      <div class="text-center">
-      <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', posts_path %></h4>
-      </div>
-    </div>
-  </section>
-
-  <section id="main">
-    <div class="container border-bottom mt-5 pb-5">
-      <div class="row py-5">
-        <div class="main-content col-5 mx-auto">
-          <div class="main-image mb-3">
-            <%= image_tag("memorial-service.jpg") %>
-          </div>
-          <p class="main-text">
-            年忌法要など、ご法事の依頼を受け賜っています。仏事に関する疑問、ご相談などございましたら、お気軽にお尋ねください。
-          </p>
-        </div>
-        
-        <div class="main-content col-5 mx-auto">
-          <div class="main-image mb-3">
-            <%= image_tag("funeral.jpg") %>
-          </div>
-          <p class="main-text">
-            ご門徒の皆さまはもちろん、これまでお寺にご縁のなかった皆さまのご葬儀も大切にお勤めいたします。
+            <%= @admin.name %><br>
+            〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
+            <%= @admin.address %><br>
+            TEL：<%= @admin.phone_number %><br>
+            FAX：012-345-6789
           </p>
         </div>
       </div>
-      
-      <div class="row">
-        <div class="main-content col-5 mx-auto">
-          <div class="main-image mb-3">
-            <%= image_tag("disciples-association.jpg") %>
-          </div>
-          <p class="main-text">
-            葬儀・法事の依頼等、継続的にお寺とのお付き合いを続けていただける方には、門徒会への加入をお願いしており、
-            その門徒会によって他力本願寺は支えられています。
-          </p>
-        </div>
-        
-        <div class="main-content col-5 mx-auto">
-          <div class="main-image mb-3">
-            <%= image_tag("ossuary.jpg") %>
-          </div>
-          <p class="main-text">
-            現在、第5期納骨堂の新規加入者を募集しております。<br>
-            第5期納骨堂には、<br>
-            「御先祖様・御家族様用（１段式納骨壇）」<br>
-            「お一人様・お二人様用（多段式納骨壇）」<br>
-            の2種類の納骨壇がございます。<br>
-            納骨堂は二階建てで、エレベーター完備です。
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="container pt-5">
-      <div class="contact">
-        <h6>お問い合わせ先</h6>
-        <p>
-          <%= @admin.name %><br>
-          〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
-          <%= @admin.address %><br>
-          TEL：<%= @admin.phone_number %><br>
-          FAX：012-345-6789
-        </p>
-      </div>
-    </div>
-  </section>
+    </section>
   
+    <div class="map">
+      <div id="map"></div>
+    </div>
+  
+  </div>
+  
+  
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <%= javascript_pack_tag 'particles' %>
   
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
   <script>
@@ -143,8 +153,3 @@
     });
   }
   </script>
-  
-  
-  <div class="map">
-    <div id="map"></div>
-  </div>

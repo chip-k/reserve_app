@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2><%= @user.name %>様の予約一覧画面</h2>
+    </div>
+    
+    <div class="text-center">
+      <%= link_to "#{@user.name}様の登録情報", admins_user_path(@user), class: "btn btn-outline-secondary" %>
+    </div>
+    
+    <div class="text-center mt-3">
+      <% if @reservations.count > 0 %>
+        <p>下記の日時で予約されています。</p>
+    
+        <table class="table table-responsive mt-3">
+          <thead>
+            <th>日付</th>
+            <th>寺院</th>
+            <th>時間</th>
+            <th>ステータス</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <% @reservations.each do |reservation| %>
+              <tr>
+                <td><%= reservation.day.strftime('%Y年%m月%d日') %></td>
+                <td><%= link_to reservation.temple.name, admins_temple_path(reservation.temple_id) %></td>
+                <td><%= reservation.time %></td>
+                <td><%= reservation.reservation_status %></td>
+                <td><%= link_to "詳細", reservation_admins_user_path(reservation), class: "btn btn-sm btn-outline-primary" %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+    
+    <% else %>
+        <p>予約がありません。</p>
+      <% end %>
+    </div>
+    
+  </div>
+</div>

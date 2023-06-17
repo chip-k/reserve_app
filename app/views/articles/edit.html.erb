@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>編集画面</h2>
+    </div>
+    
+    <%= form_with model: @article do |f| %>
+    
+      <div class="title">
+        <h4>タイトル</h4>
+        <div class="form-group <%= 'has-error' if @article.errors.include?(:title) %>">
+          <%= f.text_field :title, class: 'form-control mb-3', id: 'edit-article-title' %>
+        </div>
+        <small id="edit-article-title-error"><%= render 'layouts/errors', model: @article, attribute: :title %></small>
+      </div>
+      
+      <div class="content">
+        <h4>本文</h4>
+        <div class="form-group <%= 'has-error' if @article.errors.include?(:content) %>">
+          <%= f.text_area :content, class: 'form-control mb-3', id: 'edit-article-content', rows: 10 %>
+        </div>
+        <small id="edit-article-content-error"><%= render 'layouts/errors', model: @article, attribute: :content %></small>
+      </div>
+      
+      <div class="text-center">
+        <%= f.submit '保存', class: "btn btn-outline-dark" %>
+      </div>
+      
+    <% end %>
+  </div>
+</div>
+
+
+<%= javascript_pack_tag 'article_errors' %>

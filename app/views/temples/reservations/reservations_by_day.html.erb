@@ -1,0 +1,104 @@
+<div class="container-field days">
+  <div class="row col-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>スケジュール画面</h2>
+    </div>
+    
+    <div class="day text-center">
+      <h4>
+        <%= @date.strftime('%Y年%m月%d日') %>
+        <% if @date.sunday? %>
+          <span class="text-center text-red">
+            <%= @date.strftime('(%a)').gsub(/(Sun)/, {'Sun' => '日'}[@date.strftime('%a')]) %>
+          </span>
+        <% elsif @date.saturday? %>
+          <span class="text-center text-blue">
+            <%= @date.strftime('(%a)').gsub(/(Sat)/, {'Sat' => '土'}[@date.strftime('%a')]) %>
+          </span>
+        <% else %>
+          <span class="text-center">
+            <%= @date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri)/, 
+            {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金'}[@date.strftime('%a')]) %>
+          </span>
+        <% end %>
+      </h4>
+    </div>
+    
+    <div class="search text-center">
+      <%= form_with url: temples_reservations_by_day_path, method: :get, local: true, id: "search-form" do |f| %>
+        <%= f.label :day, "日付検索", class: "form-label" %>
+        <%= f.date_field :day, value: @search_date, name: "day", id: "search-date" %>
+      <% end %>
+    </div>
+    
+    <div class="d-flex justify-content-between">
+      <%= link_to "&laquo; #{'前の日'}".html_safe, temples_reservations_by_day_path(day: @date.yesterday), class: "btn btn-sm btn-outline-dark" %>
+      <%= link_to "#{'次の日'} &raquo;".html_safe, temples_reservations_by_day_path(day: @date.tomorrow), class: "btn btn-sm btn-outline-dark" %>
+    </div>
+    
+    <table class="table table-responsive">
+      
+      <thead>
+        <tr>
+          <th class="text-center col-2">日時</th>
+          <th class="text-center col-2">予約</th>
+          <th class="text-center col-6">備考</th>
+          <th class="text-center col-2"></th>
+        </tr>
+      </thead>
+      
+      <tbody class="text-center">
+        <% times.each do |time| %>
+          <tr class="reserved">
+            <td class="table-light times"><%= time %></td>
+            <% start_time = Time.zone.parse("#{@date} #{time}") %>
+            <% end_time = start_time + 30.minutes %>
+            <% reservation = @reservations.find { |r| r.start_time < end_time && r.end_time > start_time } %>
+            <% if reservation.present? %>
+              <% rowspan = ((reservation.end_time - start_time) / 30.minutes).to_i %>
+              <% if start_time == reservation.start_time %>
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>">
+                  <% if reservation.user.present? %>
+                    <%= link_to reservation.user.name, temples_user_path(reservation.user) %><br>
+                  <% elsif reservation.new_user_name.present? %>
+                    <%= reservation.new_user_name %>
+                  <% elsif reservation.temple.present? %>
+                    <%= reservation.temple.name %>
+                  <% else %>
+                    予約あり（ユーザー名未登録）
+                  <% end %>
+                </td>
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>"><%= reservation.comment %></td>
+                <td class="reserved <%= reservation.status ? 'active' : 'inactive' %>" rowspan="<%= rowspan %>">
+                  <%= link_to "編集", edit_temples_reservation_path(reservation), class: "btn btn-sm btn-outline-secondary" %>
+                  <%= link_to "削除", temples_reservations_by_day_path(id: reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-sm btn-outline-danger" %>
+                </td>
+              <% end %>
+            <% else %>
+              <td class="table-light"></td>
+              <td class="table-light"></td>
+              <td class="table-light"><%= link_to "追加", new_temples_reservation_path(day: @date, time: time), class: "btn btn-sm btn-outline-success" %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+      
+    </table>
+    
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener("turbolinks:load", function() {
+  const searchForm = document.querySelector("#search-form");
+  const searchDate = document.querySelector("#search-date");
+
+  if (searchDate) {
+    searchDate.addEventListener("change", function() {
+      searchForm.submit();
+    });
+  }
+});
+</script>

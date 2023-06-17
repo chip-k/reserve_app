@@ -1,63 +1,90 @@
 <div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
-    <div class="text-center title">
-      <h1>予約完了画面</h1>
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約完了画面</h2>
     </div>
-    <table class="table mt-3 content">
-      <tr>
-        <th class="text-center">日付：<td><%= @reservation.day.strftime('%Y年%m月%d日') %></td></th>
-      </tr>
-      <tr>
-        <% if user_signed_in? %>
-          <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %></td></th>
-        <% elsif admin_signed_in? %>
-          <th class="text-center">時間：<td><%= @reservation.start_time.strftime("%H:%M") %>　-　<%= @reservation.end_time.strftime("%H:%M") %></td></th>
-        <% end %>
-      </tr>
-      <tr>
-        <% if @reservation.user.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.user.name %></td></th>
-        <% elsif @reservation.new_user_name.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.new_user_name %></td></th>
-        <% elsif @reservation.admin.present? %>
-          <th class="text-center">ユーザー名：　　　<td><%= @reservation.admin.name %></td></th>
-        <% end %>
-      </tr>
-      <tr>
-        <th class="text-center">ステータス：　　　<td><%= @reservation.reservation_status %></td></th>
-      </tr>
-      <% if admin_signed_in? %>
-        <tr>
-          <th class="text-center">備考欄：　　<td><%= @reservation.comment %></td></th>
+    
+    <table class="table table-responsive user-reservation-table">
+      <tbody>
+      
+        <tr class="field">
+          <th>日付：</th>
+          <td><%= @reservation.day.strftime('%Y年%m月%d日') %></td>
         </tr>
-      <% end %>
+      
+        <tr class="field">
+          <th>寺院：</th>
+          <td><%= link_to @temple.name, temple_path(@temple.id) %></td>
+        </tr>
+      
+        <tr class="field">
+          <% if user_signed_in? %>
+            <th>時間：</th>
+            <td><%= @reservation.start_time.strftime("%H:%M") %></td>
+          <% elsif temple_signed_in? %>
+            <th>時間：</th>
+            <td><%= @reservation.start_time.strftime("%H:%M") %>　-　<%= @reservation.end_time.strftime("%H:%M") %></td>
+          <% end %>
+        </tr>
+      
+        <tr class="field">
+          <% if @reservation.user.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.user.name %></td>
+          <% elsif @reservation.new_user_name.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.new_user_name %></td>
+          <% elsif @reservation.temple.present? %>
+            <th>ユーザー名：</th>
+            <td><%= @reservation.temple.name %></td>
+          <% end %>
+        </tr>
+      
+        <tr class="field">
+          <th>ステータス：</th>
+          <td><%= @reservation.reservation_status %></td>
+        </tr>
+      
+        <% if temple_signed_in? %>
+          <tr class="field">
+            <th>備考欄：</th>
+            <td><%= @reservation.comment %></td>
+          </tr>
+        <% end %>
+      
+      </tbody>
     </table>
+    
     <div class="text-center">
       <% if user_signed_in? %>
         <% if @reservation.reservation_status == '確認中' || (@reservation.day != Time.zone.today && @reservation.day != Time.zone.tomorrow) %>
-          <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+          <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-outline-danger" %>
         <% elsif @reservation.reservation_status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
           <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-          <p>TEL: <%= @admin.phone_number %></p>
+          <p>TEL: <%= @temple.phone_number %></p>
         <% end %>
-      <% elsif admin_signed_in? %>
-        <%= link_to "予約を取り消す", admins_reservations_by_day_path(id: @reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+      <% elsif temple_signed_in? %>
+        <%= link_to "予約を取り消す", temples_reservations_by_day_path(id: @reservation.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-outline-danger" %>
       <% end %>
     </div>
+    
     <% if user_signed_in? %>
-      <div>
+      <div class="note text-center mt-3">
         <p>※まだ予約は確定されていません。お寺から確認のお電話を致しますのでお待ちください。</p>
         <p>※お寺の都合により予約をされた場合でもご希望の日時に添えない場合がございますがご了承ください。</p>
       </div>
     <% end %>
+    
     <div class="text-center mt-3">
-      <%= link_to '予約画面に戻る', reservations_month_path %><br>
+      <%= link_to '予約画面に戻る', temples_reservations_month_path(temple_id: @temple.id), class: "btn btn-outline-primary" %><br>
       <br>
-      <% if admin_signed_in? %>
-        <%= link_to "スケジュール画面へ", admins_reservations_by_day_path(day: @reservation.day.to_date), from_link: true %>
+      <% if temple_signed_in? %>
+        <%= link_to "スケジュール画面へ", temples_reservations_by_day_path(day: @reservation.day.to_date, temple_id: current_temple.id), from_link: true, class: "btn btn-outline-primary" %>
       <% elsif user_signed_in? %>
-        <%= link_to "予約一覧へ", reservations_path %>
+        <%= link_to "予約一覧へ", reservations_path, class: "btn btn-outline-primary" %>
       <% end %>
     </div>
+    
   </div>
 </div>

@@ -1,0 +1,100 @@
+<div class="introduction-group">
+  <div class="container">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2><%= @temple.name %></h2>
+    </div>
+    
+    <div class="row">
+      <div class="profile col-lg-6 col-md-10 mx-auto mb-3">
+        
+        <div class="profile-group">
+          <%= image_tag @temple.get_profile_image(600, 400), class: "profile-image" %>
+        </div>
+        
+        <div class="profile-group text-center pt-2">
+          <%= link_to edit_admins_temple_path(@temple.id) do %>
+            <button type="button" class="btn btn-outline-secondary">
+              <i class="fas fa-vihara"></i> 寺院情報編集
+            </button>
+          <% end %>
+        </div>
+      </div>
+          
+      <div class="profile-group col-lg-6 col-md-10 col-sm-10 mx-auto">
+        <%= @temple.introduction %>
+      </div>
+          
+    </div>
+  </div>
+    
+  <div class="container">
+    <div class="card-list-container row my-5">
+      <% @articles.each do |article| %>
+        <div class="card col-lg-3 col-md-5 col-sm-8 mx-auto mt-4 p-3 shadow-lg" onclick="location.href='<%= article_path(temple_id: @temple.id, id: article.id) %>';">
+          <div class="card-body">
+            <div class="row">
+              <h2 class="card-title"><%= article.title %></h2>
+              <% if article.content.length <= 70 %>
+                <p class="card-text"><%= article.content %></p>
+              <% else %>
+                <p class="card-text">
+                  <%= truncate(article.content, length: 70) %>
+                  <small><%= link_to "続きを読む", article_path(temple_id: @temple.id, id: article.id) %></small>
+                </p>
+              <% end %>
+              <small class="text-muted no-link-style"><%= article.formatted_created_at %></small>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+      
+    <div class="text-center">
+      <% if @temple.articles.count > 3 %>
+        <h4 class="pt-3 mb-4"><%= link_to '過去のお知らせはこちら', articles_path(temple_id: @temple.id) %></h4>
+      <% end %>
+    </div>
+  </div>
+    
+  <div class="contact">
+    <h6>お問い合わせ先</h6>
+    <p>
+      <%= @temple.name %><br>
+      〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
+      <%= @temple.address_with_prefecture %><br>
+      TEL：<%= @temple.phone_number %><br>
+    </p>
+  </div>
+
+</div>
+
+<div class="map">
+  <div id="map"></div>
+</div>
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<%= ENV['GOOGLE_MAP_API_KEY'] %>&callback=initMap" async defer></script>
+<script>
+  function initMap(){
+
+    let mapPosition = {lat: <%= @temple.latitude %> , lng: <%= @temple.longitude %> };
+    let map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: mapPosition
+    });
+    let transitLayer = new google.maps.TransitLayer();
+    transitLayer.setMap(map);
+    
+    let contentString = '<%= @temple.address %>';
+    let infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    let marker = new google.maps.Marker({
+      position: mapPosition,
+      map: map,
+      title: contentString
+    });
+  }
+</script>

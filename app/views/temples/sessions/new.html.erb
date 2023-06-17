@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row col-md-7 col-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>寺院ログイン画面</h2>
+    </div>
+
+    <%= form_with model: @temple, url: temple_session_path do |f| %>
+      
+      <div class="field">
+        <%= f.label :email, "メールアドレス" %><br />
+        <%= f.email_field :email, autocomplete: "email", class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password, "パスワード" %><br />
+        <%= f.password_field :password, autocomplete: "current-password", class: 'form-control' %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="field">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, class: 'form-control' %>
+        </div>
+      <% end %>
+
+      <div class="actions text-center pt-3">
+        <%= f.submit "ログイン", class: "btn btn-outline-dark" %>
+      </div>
+  
+    <% end %>
+
+  </div>
+</div>

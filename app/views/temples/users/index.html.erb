@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>ユーザー管理画面</h2>
+    </div>
+    
+    <div class="user-search">
+      <% if params[:source] == 'new_temples_users' %>
+        <%= form_tag(temples_users_path(source: 'new_temples_users', day: @day, time: @time), method: :get, class: "input-group") do %>
+          <%= hidden_field_tag(:source, 'new_temples_users') %>
+          <%= hidden_field_tag(:day, params[:day]) %>
+          <%= hidden_field_tag(:time, params[:time]) %>
+          <%= user_search %>
+        <% end %>
+      
+      <% elsif params[:source] == 'edit_temples_users' %>
+        <%= form_tag(temples_users_path(source: 'new_temples_users', day: @day, time: @time), method: :get, class: "input-group") do %>
+          <%= hidden_field_tag(:source, 'edit_temples_users') %>
+          <%= hidden_field_tag(:day, params[:day]) %>
+          <%= hidden_field_tag(:time, params[:time]) %>
+          <%= hidden_field_tag(:reservation_id, params[:reservation_id]) %>
+          <%= user_search %>
+        <% end %>
+      
+      <% else %>
+        <%= form_tag(temples_users_path, method: :get, class: "input-group") do %>
+          <%= user_search %>
+        <% end %>
+      <% end %>
+    </div>
+    
+    <table class="table table-responsive users-table text-center mt-5">
+      <% @users.each do |user| %>
+      <tr class="field">
+        <td><%= user.name %></td>
+        <td><%= link_to "ユーザー詳細", temples_user_path(user.id), class: "btn btn-sm btn-outline-primary" %></td>
+        <td><%= link_to "予約一覧", temples_user_reservations_path(user), class: "btn btn-sm btn-outline-primary" %></td>
+        <% if params[:source] == 'new_temples_users' %>
+          <td><%= link_to '予約へ追加', new_temples_reservation_path(user_id: user.id, source: 'new_temples_users', day: params[:day], time: params[:time]), class: "btn btn-sm btn-outline-success" %></td>
+        <% elsif params[:source] == 'edit_temples_users' %>
+          <td><%= link_to '予約へ追加', edit_temples_reservation_path(params[:reservation_id], user_id: user.id, source: 'edit_temples_users', day: params[:day], time: params[:time]), class: "btn btn-sm btn-outline-success" %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

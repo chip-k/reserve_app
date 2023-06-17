@@ -1,21 +1,36 @@
 <div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
     
-    <h1 class="text-cente">新規投稿</h1>
+    <div class="title text-cente mt-5 mb-4">
+      <h2>新規投稿</h2>
+    </div>
     
     <%= form_with model: @post do |f| %>
     
-      <h4>タイトル</h4>
-      <%= f.text_field :title, class: 'form-control mb-3' %>
+      <div class="title">
+        <h4>タイトル</h4>
+        <div class="form-group <%= 'has-error' if @post.errors.include?(:title) %>">
+          <%= f.text_field :title, class: 'form-control mb-3', id: 'new-post-title' %>
+        </div>
+        <small id="new-post-title-error"><%= render 'layouts/errors', model: @post, attribute: :title %></small>
+      </div>
       
-      <h4>本文</h4>
-      <%= f.text_area :body, class: 'form-control mb-5', rows: 10 %>
+      <div class="body">
+        <h4>本文</h4>
+        <div class="form-group <%= 'has-error' if @post.errors.include?(:body) %>">
+          <%= f.text_area :body, class: 'form-control mb-3', id: 'new-post-body', rows: 10 %>
+        </div>
+        <small id="new-post-body-error"><%= render 'layouts/errors', model: @post, attribute: :body %></small>
+      </div>
       
-      <div class="d-flex justify-content-center">
-        <%= f.submit '投稿' %>
+      <div class="text-center">
+        <%= f.submit '投稿', class: "btn btn-outline-dark" %>
       </div>
       
     <% end %>
     
   </div>
 </div>
+
+
+<%= javascript_pack_tag 'post_errors' %>

@@ -1,7 +1,11 @@
 @charset "UTF-8";
 
+@import "errors";
+@import "temple";
+@import "user";
+@import "notice";
+@import "image";
 @import "tab_menu";
-@import "toggle_button";
 @import "header";
 @import "reservations_by_day";
 @import "simple_calendar";
@@ -32,6 +36,21 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+}
+
+.flash-message {
+  position: absolute;
+  top: 65px;
+  width: 100%;
+}
+
+.flash-message + .container {
+  margin-top: 60px;
+}
+
+.flash-message + .container-fluid {
+  margin-top: 60px;
 }
 
 table {
@@ -41,45 +60,6 @@ table {
 
 td, th {
   width: auto;
-}
-
-section {
-  width: 100%;
-}
-
-.top-image {
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-.information-image {
-  img {
-    width: 50%;
-    border-radius: 100vh;
-    margin: auto;
-    display: block;
-  }
-}
-
-.information-content:not(:last-child) {
-  border-right: 1px solid #ccc;
-}
-
-.information-contents:not(:last-child) {
-  border-bottom: 1px solid #ccc;
-}
-
-.main-image {
-  img {
-    width: 100%;
-    border-radius: 30px;
-  }
-}
-
-.contact {
-  text-align: center;
 }
 
 footer {
@@ -106,3 +86,47 @@ footer {
   width: 50px;
 }
 
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.introduction-group {
+  background-color: #fffafa;
+}
+
+.buddhist-monk {
+  width: 100px;
+  height: 200px;
+  background-color: #000;
+  position: relative;
+}
+
+.buddhist-monk::before,
+.buddhist-monk::after {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+}
+
+.buddhist-monk::before {
+  top: 0;
+  border-radius: 50%;
+}
+
+.buddhist-monk::after {
+  bottom: 0;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
+.buddhist-monk::before,
+.buddhist-monk::after {
+  left: 0;
+  right: 0;
+}

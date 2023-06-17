@@ -1,5 +1,123 @@
+#particles-js {
+  position: absolute;
+	z-index: -1;
+	width: 100%;
+	height: 500px;
+	background-color:#191970;
+}
+
+#wrapper {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+}
+
+.site-name {
+  position: relative;
+  top: 250px;
+  text-align: center;
+  color: white;
+}
+
+.sub-title {
+  position: relative;
+  top: 250px;
+  text-align: center;
+  color: white;
+}
+
+.moon {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  left: 100px;
+  border-radius: 100px;
+  background-color: #ffff00;
+}
+
+.temple-bell {
+  background-image: url('../../assets/images/temple-bell.png');
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 500px;
+  
+}
+
+section {
+  width: 100%;
+}
+
+.information-title {
+  position: relative;
+  padding: 1em 2em;
+  text-align: center;
+}
+
+.information-title:before,
+.information-title:after {
+  position: absolute;
+  content: '';
+}
+
+.information-title:after {
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  border-top: 2px solid #191970;
+  border-left: 2px solid #191970;
+}
+
+.information-title:before {
+  right: 0;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  border-right: 2px solid #191970;
+  border-bottom: 2px solid #191970;
+}
+
+.information-content:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+.information-contents:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.main-title {
+  background: linear-gradient(transparent 60%, #b0c4de 60%)
+}
+
+.contact {
+  text-align: center;
+}
+
 #map {
-  width: 50vw;
+  width: 60vw;
   height: 40vh;
   margin: 0 auto;
+}
+
+
+@media screen and (max-width:1024px) {
+  
+  .information-content:not(:last-child) {
+    border-right: 0px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 50px;
+  }
+  
+  .main-content:nth-child(1),
+  .main-content:nth-child(3) {
+    margin-bottom: 50px;
+  }
+  
+  #map {
+    width: 80vw;
+  }
+  
 }

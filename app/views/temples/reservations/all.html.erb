@@ -1,0 +1,171 @@
+<div class="container">
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2>予約管理画面</h2>
+    </div>
+    
+    <div class="wrapper text-center">
+      <ul class="tab">
+        <li class="all">全予約</li>
+        <li class="confirm">確定</li>
+        <li class="confirming">確認中<span class="notice"><%= @reservations.where(status: false).count %></span></li>
+      </ul>
+
+      <div id="all" class="area">
+        <h3>全ての予約一覧</h3>
+        <ul>
+          <li>
+            <% if @reservations.present? %>
+            
+              <table class="table table-responsive temple-reservation-table">
+                
+                <thead>
+                  <tr class="field">
+                    <th>予約</th>
+                    <th>日付</th>
+                    <th>時間</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <% @sorted_reservations.each do |reservation| %>
+                    <tr class="field reserved <%= reservation.status ? 'active' : 'inactive' %>">
+                      <td>
+                        <% if reservation.user.present? %>
+                          <%= reservation.user.name %>
+                        <% elsif reservation.new_user_name.present? %>
+                          <%= reservation.new_user_name %>
+                        <% elsif reservation.temple.present? %>
+                          <%= reservation.temple.name %>
+                        <% end %>
+                      </td>
+                      <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
+                      <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
+                      <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                
+              </table>
+              
+            <% else %>
+              <p>予約はありません。</p>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+
+      <div id="confirm" class="area">
+        <h3>確定している予約一覧</h3>
+        <ul>
+          <li>
+            <% if @reservations.any? { |reservation| reservation.status == true } %>
+            
+              <table class="table table-responsive temple-reservation-table">
+                
+                <thead>
+                  <tr class="field">
+                    <th>予約</th>
+                    <th>日付</th>
+                    <th>時間</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <% @sorted_reservations.each do |reservation| %>
+                    <% if reservation.status == true %>
+                      <tr class="field reserved active">
+                        <td>
+                          <% if reservation.user.present? %>
+                            <%= reservation.user.name %>
+                          <% elsif reservation.new_user_name.present? %>
+                            <%= reservation.new_user_name %>
+                          <% elsif reservation.temple.present? %>
+                            <%= reservation.temple.name %>
+                          <% end %>
+                        </td>
+                        <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
+                        <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
+                        <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+                
+              </table>
+              
+            <% else %>
+              <p>確定している予約はありません。</p>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+
+      <div id="confirming" class="area">
+        <h3>確認中の予約一覧</h3>
+        <ul>
+          <li>
+            <% if @reservations.any? { |reservation| reservation.status == false } %>
+            
+              <table class="table table-responsive temple-reservation-table">
+                
+                <thead>
+                  <tr class="field">
+                    <th>予約</th>
+                    <th>日付</th>
+                    <th>時間</th>
+                    <th>予約受付</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                
+                <tbody>
+                  <% @reservations.each do |reservation| %>
+                    <% if reservation.status == false %>
+                      <tr class="field reserved inactive">
+                        <td>
+                          <% if reservation.user.present? %>
+                            <%= reservation.user.name %>
+                          <% elsif reservation.new_user_name.present? %>
+                            <%= reservation.new_user_name %>
+                          <% elsif reservation.temple.present? %>
+                            <%= reservation.temple.name %>
+                          <% end %>
+                        </td>
+                        <td><%= reservation.day.strftime("%Y年%m月%d日") %></td>
+                        <td><%= reservation.start_time.strftime("%H:%M") %>　-　<%= reservation.end_time.strftime("%H:%M") %></td>
+                        <td><%= reservation.created_at.strftime("%Y年%m月%d日 %H:%M") %></td>
+                        <td><%= link_to "詳細", temples_reservations_by_day_path(day: reservation.day), class: "btn btn-sm btn-outline-primary" %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+                
+              </table>
+              
+            <% else %>
+              <p>確認中の予約はありません。</p>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  $('.tab li').on('click', function() {
+    let tabIndex = $(this).index();
+    $('.tab li').removeClass('active');
+    $(this).addClass('active');
+    $('.area').removeClass('is-active');
+    $('.area').eq(tabIndex).addClass('is-active');
+  });
+
+  $('.tab li:first-of-type').addClass('active');
+  $('.area:first-of-type').addClass('is-active');
+</script>

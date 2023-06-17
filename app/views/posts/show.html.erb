@@ -1,20 +1,24 @@
 <div class="container">
-  <div class="row col-7 mt-5 mb-4 mx-auto">
-    <div class="information-contents pb-5">
-      
-      <h1 class="information-content-title text-center"><%= @post.title %></h1>
-      
-      <p class="information-content-text"><%= simple_format(@post.body) %></p>
-      
-      <small class="text-muted"><%= @post.formatted_created_at %></small>
+  <div class="row col-md-10 clo-sm-11 mx-auto">
+    
+    <div class="title text-center mt-5 mb-4">
+      <h2><%= @post.title %></h2>
+    </div>
+    
+    <div class="body">
+      <p><%= simple_format(@post.body) %></p>
+    </div>
+    
+    <div class="text-muted">
+      <small><%= @post.formatted_created_at %></small>
       
       <% if admin_signed_in? %>
         ｜
-        <%= link_to '編集', edit_post_path(@post) %>
+        <%= link_to "編集", edit_post_path(@post), class: "btn btn-sm btn-outline-secondary" %>
         ｜
-        <%= link_to "削除", post_path(@post.id), method: :delete, "data-confirm" => "本当に削除しますか？" %>
+        <%= link_to "削除", post_path(@post.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-sm btn-outline-danger" %>
       <% end %>
-      
     </div>
+  
   </div>
 </div>

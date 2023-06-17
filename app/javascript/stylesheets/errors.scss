@@ -1,0 +1,14 @@
+.error-text {
+  color: red;
+}
+
+.has-error .form-control {
+  border-color: red;
+}
+
+.error-box {
+  border: 2px solid red;
+  padding: 10px;
+  color: red;
+  margin-bottom: 10px;
+}
