@@ -1,15 +1,44 @@
 <div class="container">
-  <div class="row col-7 mx-auto">
     
-    <h2 class="text-center mt-5 mb-4">管理画面</h2>
+  <h2 class="text-center mt-5 mb-5">管理画面</h2>
+
+  <div class="card-list row d-flex justify-content-md-between justify-content-center pt-5">
+      
+    <div class="card management text-center col-lg-3 col-md-5 col-sm-8 col-10 mb-5">
+      <div class="card-body" onclick="location.href='<%= posts_path %>';">
+        <div class="card-icon">
+          <i class="fas fa-book-open fa-5x" style='color:lightgreen;'></i>
+        </div>
+        <div class="card-text">
+          <p>お知らせ管理</p>
+        </div>
+      </div>
+    </div>
     
-    <%= link_to 'お知らせ管理', posts_path %>
+    <div class="card management text-center col-lg-3 col-md-5 col-sm-8 col-10 mb-5">
+      <div class="card-body" onclick="location.href='<%= admins_users_path %>';">
+        <div class="card-icon">
+          <i class="fas fa-user fa-5x" style='color:skyblue;'></i>
+        </div>
+        <div class="card-text">
+          <p>ユーザー管理</p>
+        </div>
+      </div>
+    </div>
     
-    <%= link_to "ユーザー管理", admins_users_path %>
+    <%#= link_to "寺院登録", new_temple_registration_path %>
     
-    <%= link_to "寺院登録", new_temple_registration_path %>
-    
-    <%= link_to "寺院管理", admins_temples_path %>
+    <div class="card management text-center col-lg-3 col-md-5 col-sm-8 col-10 mb-5">
+      <div class="card-body" onclick="location.href='<%= admins_temples_path %>';">
+        <div class="card-icon">
+          <i class="fas fa-vihara fa-5x" style='color:orange;'></i>
+        </div>
+        <div class="card-text">
+          <p>寺院管理</p>
+        </div>
+      </div>
+    </div>
     
   </div>
+
 </div>

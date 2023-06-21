@@ -81,51 +81,19 @@ footer {
   right: 20px;
   bottom: 20px;
 }
+
 #arrow img {
   width: 50px;
 }
 
-.card {
+.management {
   transition: transform 0.3s ease;
 }
 
-.card:hover {
+.management:hover {
   transform: scale(1.1);
 }
 
 .introduction-group {
   background-color: #fffafa;
-}
-
-.buddhist-monk {
-  width: 100px;
-  height: 200px;
-  background-color: #000;
-  position: relative;
-}
-
-.buddhist-monk::before,
-.buddhist-monk::after {
-  content: "";
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  background-color: #fff;
-}
-
-.buddhist-monk::before {
-  top: 0;
-  border-radius: 50%;
-}
-
-.buddhist-monk::after {
-  bottom: 0;
-  border-top-left-radius: 50%;
-  border-top-right-radius: 50%;
-}
-
-.buddhist-monk::before,
-.buddhist-monk::after {
-  left: 0;
-  right: 0;
 }
