@@ -11,6 +11,7 @@ module ReservationsHelper
     end
   end
   
+  #カレンダー時間帯の表示
   def times
     times = ["9:00","9:30",
             "10:00","10:30",

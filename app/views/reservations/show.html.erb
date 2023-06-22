@@ -56,7 +56,7 @@
         <%= link_to "予約を取り消す", reservation_path(@reservation), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-outline-danger" %>
       <% elsif @reservation.reservation_status == '確定' && (@reservation.day == Time.zone.today || @reservation.day == Time.zone.tomorrow) %>
         <p>※当日、翌日のキャンセルは直接お電話でお知らせください。</p>
-        <p>TEL: <%= @temple.phone_number %></p>
+        <p>TEL: <%= number_with_hyphen_format(@temple.phone_number) %></p>
       <% end %>
     </div>
     

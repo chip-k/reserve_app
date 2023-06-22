@@ -34,7 +34,7 @@
       
         <tr class="field">
           <th>郵便番号</th>
-          <td><%= @user.postal_code %></td>
+          <td><%= number_with_hyphen_format(@user.postal_code) %></td>
         </tr>
       
         <tr class="field">
@@ -64,7 +64,7 @@
       
         <tr class="field">
           <th>電話番号</th>
-          <td><%= @user.phone_number %></td>
+          <td><%= number_with_hyphen_format(@user.phone_number) %></td>
         </tr>
       
       </tbody>

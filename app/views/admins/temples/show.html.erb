@@ -64,7 +64,7 @@
     <%= @temple.name %><br>
     〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
     <%= @temple.address_with_prefecture %><br>
-    TEL：<%= @temple.phone_number %><br>
+    TEL：<%= number_with_hyphen_format(@temple.phone_number) %><br>
   </p>
 </div>
 

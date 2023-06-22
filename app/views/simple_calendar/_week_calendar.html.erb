@@ -1,109 +1,107 @@
 <div class="simple-calendar-week">
-  <div class="container">
-    <div class="row col-12 mt-5">
+  <div class="container-fuild mt-5">
       
-      <% unless temple_signed_in? %>
-        <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
-          <span class="text-center">
-            <%= '※当日、翌日の予約はできません。お電話にてご相談ください。' %>
-            (TEL: <%= @temple.phone_number %>)
-          </span>
-        <% end %>
+    <% unless temple_signed_in? %>
+      <% if @date == Time.zone.today || @date == Time.zone.tomorrow %>
+        <p class="text-center">
+          <%= '※当日、翌日の予約はできません。お電話にてご相談ください。' %>
+          <%= "(TEL: #{number_with_hyphen_format(@temple.phone_number)})" %>
+        </p>
       <% end %>
+    <% end %>
       
-      <div class="calendar-heading d-flex justify-content-between">
-        <% prev_week = @date - 1.week %>
-        <% next_week = @date + 1.week %>
+    <div class="calendar-heading d-flex justify-content-between">
+      <% prev_week = @date - 1.week %>
+      <% next_week = @date + 1.week %>
         
-        <% if prev_week == Time.zone.today - 1.week %>
-          <small><%= "&laquo; #{'前の一週間'}".html_safe %></small>
-        <% elsif prev_week <= Time.zone.today %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: Time.zone.today, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
-        <% else %>
-          <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: prev_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
-        <% end %>
+      <% if prev_week == Time.zone.today - 1.week %>
+        <small><%= "&laquo; #{'前の一週間'}".html_safe %></small>
+      <% elsif prev_week <= Time.zone.today %>
+        <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: Time.zone.today, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
+      <% else %>
+        <%= link_to "&laquo; #{'前の一週間'}".html_safe, temples_reservations_week_path(date: prev_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
+      <% end %>
         
-        <%= link_to "#{'次の一週間'} &raquo;".html_safe, temples_reservations_week_path(date: next_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
-      </div>
-      
-      <table class="table table-responsive">
-        <thead>
-          
-          <tr>
-            <th rowspan="3", class="text-center">日時<br>　</th>
-            <% start_date = @date %>
-            <% end_date = start_date + 6.days %>
-            <% if start_date.month == end_date.month %>
-              <th colspan="7"><%= start_date.strftime('%Y年%m月') %></th>
-            <% else %>
-              <% days_in_month = start_date.end_of_month.day - start_date.day + 1 %>
-              <th colspan="<%= days_in_month %>"><%= start_date.strftime('%Y年%m月') %></th>
-              <th colspan="<%= 7 - days_in_month %>"><%= end_date.strftime('%Y年%m月') %></th>
-            <% end %>
-          </tr>
-          
-          <tr>
-            <% @date_range.each_slice(7).each do |week| %>
-              <% week.each do |date| %>
-                <% if temple_signed_in? %>
-                  <% if date.sunday? %>
-                    <th class="text-center text-red table-cell table-hover" data-date="<%= date %>">
-                  <% elsif date.saturday? %>
-                    <th class="text-center text-blue table-cell table-hover" data-date="<%= date %>">
-                  <% else %>
-                    <th class="text-center table-cell table-hover" data-date="<%= date %>">
-                  <% end %>
-                <% else %>
-                  <% if date.sunday? %>
-                    <th class="text-center text-red">
-                  <% elsif date.saturday? %>
-                    <th class="text-center text-blue">
-                  <% else %>
-                    <th class="text-center">
-                  <% end %>
-                <% end %>
-                <%= date.strftime('%d') %><br>
-                <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
-                {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金', 'Sat' => '土', 'Sun' => '日'}[date.strftime('%a')]) %>
-              <% end %>
-            <% end %>
-          </tr>
-          
-        </thead>
-        
-        <tbody class="text-center">
-          <% times.each do |time| %>
-          
-            <tr>
-              <td class="table-light times"><%= time %></td>
-              
-              <% @date_range.each do |day| %>
-              <% start_time = Time.zone.parse("#{day} #{time}") %>
-              <% end_time = start_time + 30.minutes %>
-              <% reservation = find_reservation(@reservations, day, start_time, end_time, @temple.id) %>
-              
-                <% unless temple_signed_in? %>
-                  <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
-                    <td class="reserved"><%= '×' %></td>
-                  <% else %>
-                    <td class="table-hover circle" onclick="location.href='<%= new_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
-                  <% end %>
-                <% end %>
-                <% if temple_signed_in? %>
-                  <% if reservation || day.past? %>
-                    <td class="reserved"><%= '×' %></td>
-                  <% else %>
-                    <td class="table-hover circle" onclick="location.href='<%= new_temples_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
-                  <% end %>
-                <% end %>
-              <% end %>
-            </tr>
-            
-          <% end %>
-        </tbody>
-        
-      </table>
+      <%= link_to "#{'次の一週間'} &raquo;".html_safe, temples_reservations_week_path(date: next_week, temple_id: @temple), class: "btn btn-sm btn-outline-dark" %>
     </div>
+      
+    <table class="table table-responsive">
+      <thead>
+          
+        <tr>
+          <th rowspan="3", class="text-center">日時<br>　</th>
+          <% start_date = @date %>
+          <% end_date = start_date + 6.days %>
+          <% if start_date.month == end_date.month %>
+            <th class="year-month" colspan="7"><%= start_date.strftime('%Y年%m月') %></th>
+          <% else %>
+            <% days_in_month = start_date.end_of_month.day - start_date.day + 1 %>
+            <th class="year-month" colspan="<%= days_in_month %>"><%= start_date.strftime('%Y年%m月') %></th>
+            <th class="year-month" colspan="<%= 7 - days_in_month %>"><%= end_date.strftime('%Y年%m月') %></th>
+          <% end %>
+        </tr>
+          
+        <tr>
+          <% @date_range.each_slice(7).each do |week| %>
+            <% week.each do |date| %>
+              <% if temple_signed_in? %>
+                <% if date.sunday? %>
+                  <th class="text-center text-red table-cell table-hover" data-date="<%= date %>">
+                <% elsif date.saturday? %>
+                  <th class="text-center text-blue table-cell table-hover" data-date="<%= date %>">
+                <% else %>
+                  <th class="text-center table-cell table-hover" data-date="<%= date %>">
+                <% end %>
+              <% else %>
+                <% if date.sunday? %>
+                  <th class="text-center text-red">
+                <% elsif date.saturday? %>
+                  <th class="text-center text-blue">
+                <% else %>
+                  <th class="text-center">
+                <% end %>
+              <% end %>
+              <%= date.strftime('%d') %><br>
+              <%= date.strftime('(%a)').gsub(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, 
+              {'Mon' => '月', 'Tue' => '火', 'Wed' => '水', 'Thu' => '木', 'Fri' => '金', 'Sat' => '土', 'Sun' => '日'}[date.strftime('%a')]) %>
+            <% end %>
+          <% end %>
+        </tr>
+          
+      </thead>
+        
+      <tbody class="text-center">
+        <% times.each do |time| %>
+          
+          <tr>
+            <td class="table-light times"><%= time %></td>
+              
+            <% @date_range.each do |day| %>
+            <% start_time = Time.zone.parse("#{day} #{time}") %>
+            <% end_time = start_time + 30.minutes %>
+            <% reservation = find_reservation(@reservations, day, start_time, end_time, @temple.id) %>
+              
+              <% unless temple_signed_in? %>
+                <% if reservation || day.past? || day == Time.zone.today || day == Time.zone.tomorrow %>
+                  <td class="reserved"><%= '×' %></td>
+                <% else %>
+                  <td class="table-hover circle" onclick="location.href='<%= new_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
+                <% end %>
+              <% end %>
+              <% if temple_signed_in? %>
+                <% if reservation || day.past? %>
+                  <td class="reserved"><%= '×' %></td>
+                <% else %>
+                  <td class="table-hover circle" onclick="location.href='<%= new_temples_reservation_path(day: day, time: time, temple_id: @temple) %>';">◎</td>
+                <% end %>
+              <% end %>
+            <% end %>
+          </tr>
+            
+        <% end %>
+      </tbody>
+        
+    </table>
   </div>
 </div>
 

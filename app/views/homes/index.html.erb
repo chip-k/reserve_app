@@ -112,7 +112,7 @@
             <%= @admin.name %><br>
             〒<%= number_with_hyphen_format(@admin.postal_code) %><br>
             <%= @admin.address %><br>
-            TEL：<%= @admin.phone_number %><br>
+            TEL：<%= number_with_hyphen_format(@admin.phone_number) %><br>
             FAX：012-345-6789
           </p>
         </div>

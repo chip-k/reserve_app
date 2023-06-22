@@ -34,6 +34,9 @@
                   <i class="far fa-calendar-alt"></i> 予約する
                 </button>
               <% end %>
+            <% elsif !user_signed_in? && !temple_signed_in? %>
+              <p>予約を行うには<%= link_to "ログイン", new_user_session_path %>が必要です。</p>
+
             <% end %>
           </div>
         </div>
@@ -81,7 +84,7 @@
       <%= @temple.name %><br>
       〒<%= number_with_hyphen_format(@temple.postal_code) %><br>
       <%= @temple.address_with_prefecture %><br>
-      TEL：<%= @temple.phone_number %><br>
+      TEL：<%= number_with_hyphen_format(@temple.phone_number) %><br>
     </p>
   </div>
 
