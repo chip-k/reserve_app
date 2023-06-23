@@ -89,3 +89,15 @@
 
 
 <%= javascript_pack_tag 'admin_temple_errors' %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
+<script>
+  $(".modal-open").modaal({
+	  overlay_close:true,
+	  before_open:function(){
+		  $('html').css('overflow-y','hidden');
+	  },
+	  after_close:function(){
+		  $('html').css('overflow-y','scroll');
+	  }
+  });
+</script>

@@ -18,8 +18,20 @@
       <% @users.each do |user| %>
       <tr>
         <td><%= user.name %></td>
-        <td><%= link_to "ユーザー詳細", admins_user_path(user.id), class: "btn btn-sm btn-outline-primary" %></td>
-        <td><%= link_to "予約一覧", reservations_admins_user_path(user.id), class: "btn btn-sm btn-outline-primary" %></td>
+        <td>
+          <%= link_to admins_user_path(user.id) do %>
+            <button type="button" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-id-card"></i> ユーザー詳細
+            </button>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to reservations_admins_user_path(user.id) do %>
+            <button type="button" class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-list-ul"></i> 予約一覧
+            </button>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     </table>

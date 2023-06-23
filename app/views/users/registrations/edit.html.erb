@@ -104,10 +104,27 @@
     <div class="text-center">
       <% if @user.reservations.where("day >= ?", Date.today).exists? %>
         予約が作成されているため削除できません。
-        <%= link_to "予約一覧", reservations_path(@user.id), class: "btn btn-outline-primary" %>
+        <%= link_to reservations_path(@user.id) do %>
+          <button type="button" class="btn btn-outline-primary">
+            <i class="fas fa-list-ul"></i> 予約一覧
+          </button>
+        <% end %>
       <% else %>
-        アカウントを削除しますか？
-        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
+        <p>アカウントを削除しますか？</p>
+        <a href="#modal-window" class="modal-open">
+          <button type="button" class="btn btn-outline-danger">
+            <i class="fas fa-user-slash"></i> 削除
+          </button>
+        </a>
+        <section id="modal-window">
+          <h3 class="text-center">アカウント削除</h3>
+          <p class="text-center">全ての情報が失われます。本当に削除しますか？</p>
+          <div class="text-center">
+            <%= button_to registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
+              <i class="fas fa-user-slash"></i> 削除
+            <% end %>
+          </div>
+        </section>
       <% end %>
     </div>
 
@@ -118,3 +135,15 @@
 
 
 <%= javascript_pack_tag 'user_errors' %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
+<script>
+  $(".modal-open").modaal({
+	  overlay_close:true,
+	  before_open:function(){
+		  $('html').css('overflow-y','hidden');
+	  },
+	  after_close:function(){
+		  $('html').css('overflow-y','scroll');
+	  }
+  });
+</script>

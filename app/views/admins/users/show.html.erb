@@ -17,7 +17,11 @@
         </p>
       </div>
       <div>
-        <%= link_to "#{@user.name}様の予約一覧", reservations_admins_user_path(@user), class: "btn btn-outline-primary" %>
+        <%= link_to reservations_admins_user_path(@user) do %>
+          <button type="button" class="btn btn-outline-primary">
+            <i class="fas fa-list-ul"></i><%= " #{@user.name}様の予約一覧" %>
+          </button>
+        <% end %>
       </div>
     </div>
     
@@ -72,7 +76,13 @@
       </tbody>
     </table>
     
-    <%= link_to "編集", edit_admins_user_path(@user.id), class: "btn btn-outline-secondary" %>
+    <div class="text-center mt-3">
+      <%= link_to edit_admins_user_path(@user.id) do %>
+        <button type="button" class="btn btn-outline-secondary">
+          <i class="fas fa-user-edit"></i> ユーザー情報編集
+        </button>
+      <% end %>
+    </div>
     
   </div>
 </div>
