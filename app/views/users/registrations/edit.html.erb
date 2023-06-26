@@ -53,7 +53,7 @@
           </tr>
 
           <tr class="field">
-            <th><%= f.label :email %></th>
+            <th><%= f.label :email, "メールアドレス" %></th>
             <td class="form-group <%= 'has-error' if @user.errors.include?(:email) %>">
               <%= f.email_field :email, autocomplete: "email", class: 'form-control', id: 'edit-user-email' %>
             </td>
@@ -71,21 +71,21 @@
           </tr>
 
           <tr class="field">
-            <th><%= f.label :password %> <i>(変更したくない場合は空白のままにしてください)</i></th>
+            <th><%= f.label :password, "パスワード" %> <i>(変更したくない場合は空白のままにしてください)</i></th>
             <td class="form-group <%= 'has-error' if @user.errors.include?(:password) %>">
               <%= f.password_field :password, autocomplete: "new-password", placeholder: "※パスワードは#{@minimum_password_length}文字以上入力してください", class: 'form-control' , id: 'edit-user-password-length' %>
             </td>
           </tr>
 
           <tr class="field">
-            <th><%= f.label :password_confirmation %></th>
+            <th><%= f.label :password_confirmation, "パスワード確認" %></th>
             <td class="form-group <%= 'has-error' if @user.errors.include?(:password_confirmation) %>">
               <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', id: 'edit-user-password-confirmation' %>
             </td>
           </tr>
 
           <tr class="field">
-            <th><%= f.label :current_password %> <i>(変更するには現在のパスワードが必要です)</i></th>
+            <th><%= f.label :current_password, "現在のパスワード" %> <i>(変更するには現在のパスワードが必要です)</i></th>
             <td class="form-group <%= 'has-error' if @user.errors.include?(:current_password) %>">
               <%= f.password_field :current_password, autocomplete: "current-password", class: 'form-control', id: 'edit-user-current-password' %>
             </td>
@@ -111,20 +111,11 @@
         <% end %>
       <% else %>
         <p>アカウントを削除しますか？</p>
-        <a href="#modal-window" class="modal-open">
-          <button type="button" class="btn btn-outline-danger">
+        <div class="text-center">
+          <%= button_to registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
             <i class="fas fa-user-slash"></i> 削除
-          </button>
-        </a>
-        <section id="modal-window">
-          <h3 class="text-center">アカウント削除</h3>
-          <p class="text-center">全ての情報が失われます。本当に削除しますか？</p>
-          <div class="text-center">
-            <%= button_to registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
-              <i class="fas fa-user-slash"></i> 削除
-            <% end %>
-          </div>
-        </section>
+          <% end %>
+        </div>
       <% end %>
     </div>
 
@@ -135,15 +126,3 @@
 
 
 <%= javascript_pack_tag 'user_errors' %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
-<script>
-  $(".modal-open").modaal({
-	  overlay_close:true,
-	  before_open:function(){
-		  $('html').css('overflow-y','hidden');
-	  },
-	  after_close:function(){
-		  $('html').css('overflow-y','scroll');
-	  }
-  });
-</script>

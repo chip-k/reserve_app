@@ -21,7 +21,11 @@
     </div>
       
     <div class="text-center mt-5">
-      <%= link_to "お知らせ一覧へ", articles_path(temple_id: @temple.id), class: "btn btn-outline-primary" %>
+      <%= link_to articles_path(temple_id: @temple.id) do %>
+        <button type="button" class="btn btn-outline-primary">
+          <i class="fas fa-list-ul"></i> お知らせ一覧へ
+        </button>
+      <% end %>
     </div>
   
   </div>

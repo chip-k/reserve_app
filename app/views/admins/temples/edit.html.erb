@@ -76,8 +76,12 @@
     </div>
     
     <div class="text-center">
-      アカウントを削除しますか？
-      <%= button_to "削除", admins_temple_path(@temple), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
+      <p>アカウントを削除しますか？</p>
+      <div class="text-center">
+        <%= button_to admins_temple_path(@temple), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
+          <i class="fas fa-user-slash"></i> 削除
+        <% end %>
+      </div>
     </div>
     
     <div class="text-center mt-3">
@@ -89,15 +93,3 @@
 
 
 <%= javascript_pack_tag 'admin_temple_errors' %>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
-<script>
-  $(".modal-open").modaal({
-	  overlay_close:true,
-	  before_open:function(){
-		  $('html').css('overflow-y','hidden');
-	  },
-	  after_close:function(){
-		  $('html').css('overflow-y','scroll');
-	  }
-  });
-</script>

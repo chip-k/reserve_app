@@ -68,7 +68,11 @@
     </div>
     
     <div class="text-center">
-        <%= link_to "予約一覧へ", reservations_path, class: "btn btn-outline-primary" %>
+      <%= link_to reservations_path do %>
+        <button type="button" class="btn btn-outline-primary">
+          <i class="fas fa-list-ul"></i> 予約一覧へ
+        </button>
+      <% end %>
     </div>
     
   </div>

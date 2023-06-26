@@ -6,7 +6,11 @@
     </div>
     
     <div class="text-center">
-      <%= link_to "#{@user.name}様の登録情報", temples_user_path(@user), class: "btn btn-outline-secondary" %>
+      <%= link_to temples_user_path(@user) do %>
+        <button type="button" class="btn btn-outline-secondary">
+          <i class="fas fa-id-card"></i> <%= "#{@user.name}様の登録情報" %>
+        </button>
+      <% end %>
     </div>
     
     <div class="text-center mt-3">

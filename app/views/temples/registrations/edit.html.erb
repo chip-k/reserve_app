@@ -96,7 +96,7 @@
           </tr>
 
           <tr class="field">
-            <th><%= f.label :password_confirmation, "確認用パスワード" %></th>
+            <th><%= f.label :password_confirmation, "パスワード確認" %></th>
             <td class="form-group <%= 'has-error' if @temple.errors.include?(:password_confirmation) %>">
               <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control', id: 'edit-temple-password-confirmation' %>
             </td>
@@ -127,8 +127,12 @@
         予約が作成されているため削除できません。
         <%= link_to "予約管理画面", all_temples_reservations_path(@temple), class: "btn btn-outline-primary" %>
       <% else %>
-        アカウントを削除しますか？
-        <%= button_to "削除", registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" %>
+        <p>アカウントを削除しますか？</p>
+        <div class="text-center">
+          <%= button_to registration_path(resource_name), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
+            <i class="fas fa-user-slash"></i> 削除
+          <% end %>
+        </div>
       <% end %>
     </div>
 

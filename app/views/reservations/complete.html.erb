@@ -82,7 +82,11 @@
       <% if temple_signed_in? %>
         <%= link_to "スケジュール画面へ", temples_reservations_by_day_path(day: @reservation.day.to_date, temple_id: current_temple.id), from_link: true, class: "btn btn-outline-primary" %>
       <% elsif user_signed_in? %>
-        <%= link_to "予約一覧へ", reservations_path, class: "btn btn-outline-primary" %>
+        <%= link_to reservations_path do %>
+          <button type="button" class="btn btn btn-outline-primary">
+            <i class="fas fa-list-ul"></i> 予約一覧へ
+          </button>
+        <% end %>
       <% end %>
     </div>
     

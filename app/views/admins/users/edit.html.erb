@@ -83,20 +83,11 @@
     
     <div class="text-center">
       <p>アカウントを削除しますか？</p>
-      <a href="#admin-user-delete" class="modal-open">
-        <button type="button" class="btn btn-outline-danger">
+      <div class="text-center">
+        <%= button_to admins_user_path(@user), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
           <i class="fas fa-user-slash"></i> 削除
-        </button>
-      </a>
-      <section id="admin-user-delete" class="hide-area">
-        <h3 class="text-center">アカウント削除</h3>
-        <p class="text-center">全ての情報が失われます。本当に削除しますか？</p>
-        <div class="text-center">
-          <%= button_to admins_user_path(@user), data: { confirm: "本当に削除しますか？", turbo_confirm: "本当に削除しますか？" }, method: :delete, class: "btn btn-outline-danger" do %>
-            <i class="fas fa-user-slash"></i> 削除
-          <% end %>
-        </div>
-      </section>
+        <% end %>
+      </div>
     </div>
     
     <div class="text-center mt-3">
@@ -107,16 +98,4 @@
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
-<script>
-  $(".modal-open").modaal({
-	  overlay_close:true,
-	  before_open:function(){
-		  $('html').css('overflow-y','hidden');
-	  },
-	  after_close:function(){
-		  $('html').css('overflow-y','scroll');
-	  }
-  });
-</script>
 <%= javascript_pack_tag 'admin_user_errors' %>

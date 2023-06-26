@@ -52,7 +52,11 @@
     </table>
     
     <div class="text-center mt-3">
-        <%= link_to "予約一覧へ", reservations_admins_user_path(@user), class: "btn btn-outline-primary" %>
+      <%= link_to reservations_admins_user_path(@user) do %>
+        <button type="button" class="btn btn-sm btn-outline-primary">
+          <i class="fas fa-list-ul"></i> 予約一覧
+        </button>
+      <% end %>
     </div>
     
   </div>

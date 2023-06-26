@@ -15,7 +15,11 @@
         <% end %>
       </p>
       <div>
-        <%= link_to "#{@user.name}様の予約一覧", temples_user_reservations_path(@user), class: "btn btn-outline-primary" %>
+        <%= link_to temples_user_reservations_path(@user) do %>
+          <button type="button" class="btn btn-outline-primary">
+            <i class="fas fa-list-ul"></i> <%= "#{@user.name}様の予約一覧" %>
+          </button>
+        <% end %>
       </div>
     </div>
     

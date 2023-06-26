@@ -22,21 +22,32 @@
             <% end %>
           </div>
         
-          <div class="profile-group text-center pt-2">
+          <div class="profile-group text-center pt-2 row">
             <% if user_signed_in? %>
-              <% if current_user.temple == @temple %>
-                <%= link_to "所属解除", unassign_temple_path, method: :patch, class: "btn btn-outline-danger" %>
-              <% else %>
-                <%= link_to "所属する", assign_temple_path(@temple), method: :post, class: "btn btn-outline-success" %>
-              <% end %>
-              <%= link_to temples_reservations_month_path(temple_id: @temple.id) do %>
-                <button class="btn btn-outline-primary">
-                  <i class="far fa-calendar-alt"></i> 予約する
-                </button>
+              <div class="col">
+                <% if current_user.temple == @temple %>
+                  <%= link_to unassign_temple_path, method: :patch do %>
+                    <button type="button" class="btn btn-outline-danger">
+                      <i class="fas fa-user-minus"></i> 所属解除
+                    </button>
+                  <% end %>
+                <% else %>
+                  <%= link_to assign_temple_path(@temple), method: :post do %>
+                    <button type="button" class="btn btn-outline-success">
+                      <i class="fas fa-user-plus"></i> 所属する
+                    </button>
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="col">
+                <%= link_to temples_reservations_month_path(temple_id: @temple.id) do %>
+                  <button class="btn btn-outline-primary">
+                    <i class="far fa-calendar-alt"></i> 予約する
+                  </button>
+                </div>
               <% end %>
             <% elsif !user_signed_in? && !temple_signed_in? %>
               <p>予約を行うには<%= link_to "ログイン", new_user_session_path %>が必要です。</p>
-
             <% end %>
           </div>
         </div>
