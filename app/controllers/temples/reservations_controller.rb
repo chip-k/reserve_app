@@ -20,7 +20,8 @@ class Temples::ReservationsController < ApplicationController
     @end_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation]["end_time(4i)"] + ":" + params[:reservation]["end_time(5i)"])
     @reservation.end_time = @end_time
     @reservation.status = params[:status]
-    temple_id = params[:temple_id]
+    temple_id = params[:reservation][:temple_id]
+    @reservation.temple_id = temple_id
     if Reservation.before_start_time(@start_time, @end_time)
       flash[:alert] = "終了時間は開始時間よりも後に設定してください。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
@@ -28,7 +29,7 @@ class Temples::ReservationsController < ApplicationController
       flash[:alert] = "指定された日時は既に予約済みです。"
       redirect_to temples_reservations_by_day_path(day: @reservation.day)
     elsif @reservation.save
-      flash[:success] = "下記の日時で仮予約を行いました。"
+      flash[:success] = "下記の日時で予約を行いました。"
       redirect_to complete_reservation_path @reservation.id
     else
       render :new
@@ -98,7 +99,8 @@ class Temples::ReservationsController < ApplicationController
     @reservation.end_time = @end_time
     @reservation.comment = params[:reservation][:comment]
     @reservation.status = params[:status]
-    temple_id = params[:temple_id]
+    temple_id = params[:reservation][:temple_id]
+    @reservation.temple_id = temple_id
     if params[:reservation][:user_id] == "new" && params[:reservation][:new_user_name].present?
       @reservation.new_user_name = params[:reservation][:new_user_name]
     end
