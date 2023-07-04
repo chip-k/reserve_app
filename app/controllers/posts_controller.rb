@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   before_action :authenticate_admin!, only: [:create, :edit, :update, :destroy]
+  require_relative '../../lib/language'
   
   def new
     @post = Post.new
@@ -7,6 +8,7 @@ class PostsController < ApplicationController
   
   def create
     @post = Post.new(post_params)
+    #@post.entities = Language.get_data(post_params[:body])
     if @post.save
       flash[:success] = "投稿に成功しました。"
       redirect_to post_path(@post.id)
@@ -22,6 +24,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @entities = Language.get_data(@post.body)
   end
   
   def edit
