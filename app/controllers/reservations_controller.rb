@@ -11,7 +11,8 @@ class ReservationsController < ApplicationController
   def create
     @reservation = Reservation.new(reservation_params)
     @reservation.temple = Temple.find(params[:reservation][:temple_id])
-    temple_id = params[:temple_id]
+    temple_id = params[:reservation][:temple_id]
+    @reservation.temple_id = temple_id
     @start_time = Time.zone.parse(params[:reservation][:day] + " " + params[:reservation][:time])
     @reservation.start_time = @start_time
     @reservation.end_time = @reservation.start_time + 1.hour

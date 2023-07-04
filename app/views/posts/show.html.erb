@@ -9,10 +9,15 @@
       <p><%= simple_format(@post.body) %></p>
     </div>
     
-    <% @entities.each do |entity| %>
-      <% wiki_link = Language.generate_wiki_link(entity['name']) %>
-      <p><%= link_to entity['name'], wiki_link, target: '_blank' %></p>
-    <% end %>
+    <div class="row my-5 entity-link">
+      <p>Wikipediaで検索</p>
+      <% @entities.each do |entity| %>
+        <% wiki_link = Language.generate_wiki_link(entity['name']) %>
+        <span class="entity-link col-auto">
+          <%= link_to entity['name'], wiki_link, target: '_blank' %>
+        </span>
+      <% end %>
+    </div>
     
     <div class="text-muted">
       <small><%= @post.formatted_created_at %></small>

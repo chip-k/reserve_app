@@ -26,7 +26,10 @@ module Language
       if (error = response_body['error']).present?
         raise error['message']
       else
-        response_body['entities']
+        entities = response_body['entities']
+        entities.uniq! { |entity| entity['name'] } # 重複するエンティティを削除
+        entities = remove_numeric_entities(entities) # 数字を含むエンティティを削除
+        entities.compact
       end
     end
     
@@ -35,6 +38,14 @@ module Language
       base_url = 'https://ja.wikipedia.org/wiki/'
       encoded_name = URI.encode_www_form_component(entity_name)
       "#{base_url}#{encoded_name}"
+    end
+    
+    def remove_numeric_entities(entities)
+      entities.reject { |entity| contains_number?(entity['name']) }
+    end
+    
+    def contains_number?(word)
+      /\d/.match?(word)
     end
    
   end 
